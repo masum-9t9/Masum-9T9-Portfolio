@@ -271,12 +271,12 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.94, y: -20 }}
           transition={{ type: 'spring', stiffness: 450, damping: 30 }}
-          className="relative w-full max-w-2xl bg-[#090E1A] border border-white/15 rounded-3xl shadow-[0_25px_80px_rgba(0,0,0,0.9),0_0_40px_rgba(56,189,248,0.15)] overflow-hidden z-10 flex flex-col max-h-[80vh]"
+          className="relative w-full max-w-2xl bg-[#12100D] border border-[#C7A77D]/25 rounded-3xl shadow-2xl overflow-hidden z-10 flex flex-col max-h-[80vh]"
           onKeyDown={handleKeyDown}
         >
           {/* Top Search Input Row */}
-          <div className="relative flex items-center px-5 py-4 border-b border-white/10 bg-neutral-900/60">
-            <Search className="w-5 h-5 text-sky-400 shrink-0 mr-3 animate-pulse" />
+          <div className="relative flex items-center px-5 py-4 border-b border-[#C7A77D]/15 bg-[#181511]">
+            <Search className="w-5 h-5 text-[#C7A77D] shrink-0 mr-3" />
             <input
               ref={inputRef}
               type="text"
@@ -290,28 +290,28 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
                   ? 'প্রজেক্ট, থাম্বনেল, কোডিং টুলস বা স্কিল দিয়ে সার্চ করুন...'
                   : 'Search design projects, thumbnails, web tools, or skills...'
               }
-              className="w-full bg-transparent text-white text-sm sm:text-base placeholder-neutral-400 focus:outline-none font-medium pr-10"
+              className="w-full bg-transparent text-[#F1E8DC] text-sm sm:text-base placeholder-[#B8AA98] focus:outline-none font-medium pr-10"
             />
             {query && (
               <button
                 onClick={() => setQuery('')}
-                className="p-1 text-neutral-400 hover:text-white rounded-lg hover:bg-white/10 mr-2 transition-colors"
+                className="p-1 text-[#B8AA98] hover:text-[#F1E8DC] rounded-lg hover:bg-[#211D17] mr-2 transition-colors cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
             )}
             <button
               onClick={onClose}
-              className="p-1.5 rounded-xl bg-neutral-800/80 hover:bg-neutral-700 text-neutral-300 hover:text-white transition-colors text-xs font-bold border border-white/10 flex items-center gap-1 shrink-0"
+              className="p-1.5 rounded-xl bg-[#0B0A08] hover:bg-[#211D17] text-[#B8AA98] hover:text-[#F1E8DC] transition-colors text-xs font-bold border border-[#C7A77D]/20 flex items-center gap-1 shrink-0 cursor-pointer"
             >
               <span>ESC</span>
             </button>
           </div>
 
           {/* Filter Pills */}
-          <div className="flex items-center gap-2 px-5 py-3 border-b border-white/10 bg-neutral-950/80 overflow-x-auto no-scrollbar shrink-0">
-            <span className="text-[11px] font-extrabold text-neutral-400 uppercase tracking-wider flex items-center gap-1 shrink-0 mr-1">
-              <Filter className="w-3 h-3 text-sky-400" />
+          <div className="flex items-center gap-2 px-5 py-3 border-b border-[#C7A77D]/15 bg-[#0B0A08] overflow-x-auto no-scrollbar shrink-0">
+            <span className="text-[11px] font-bold text-[#DFC29A] uppercase tracking-wider flex items-center gap-1 shrink-0 mr-1">
+              <Filter className="w-3 h-3 text-[#C7A77D]" />
               <span>{language === 'bn' ? 'ফিল্টার:' : 'Filter:'}</span>
             </span>
 
@@ -328,14 +328,14 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
                   setActiveFilter(f.id as FilterCategory);
                   setSelectedIndex(0);
                 }}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap shrink-0 flex items-center gap-1.5 ${
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap shrink-0 flex items-center gap-1.5 cursor-pointer ${
                   activeFilter === f.id
-                    ? 'bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-md shadow-sky-500/20 ring-1 ring-white/30'
-                    : 'bg-neutral-900/80 text-neutral-300 hover:text-white border border-white/10'
+                    ? 'bg-[#C7A77D] text-[#0B0A08] shadow-md'
+                    : 'bg-[#181511] text-[#B8AA98] hover:text-[#F1E8DC] border border-[#C7A77D]/20'
                 }`}
               >
                 <span>{f.label}</span>
-                <span className="text-[10px] opacity-75 bg-black/40 px-1.5 py-0.5 rounded-full">
+                <span className="text-[10px] opacity-75 bg-[#0B0A08]/60 px-1.5 py-0.5 rounded-full">
                   {f.count}
                 </span>
               </button>
@@ -349,20 +349,20 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
                 const isSelected = index === selectedIndex;
 
                 let BadgeIcon = FolderKanban;
-                let badgeColor = 'text-sky-400 bg-sky-500/10 border-sky-500/30';
+                let badgeColor = 'text-[#C7A77D] bg-[#181511] border-[#C7A77D]/30';
                 let badgeText = language === 'bn' ? 'ডিজাইন প্রজেক্ট' : 'Design Project';
 
                 if (item.type === 'coding') {
                   BadgeIcon = Laptop;
-                  badgeColor = 'text-indigo-400 bg-indigo-500/10 border-indigo-500/30';
+                  badgeColor = 'text-[#DFC29A] bg-[#181511] border-[#C7A77D]/30';
                   badgeText = language === 'bn' ? 'কোডিং প্ল্যাটফর্ম' : 'Coding Platform';
                 } else if (item.type === 'services') {
                   BadgeIcon = Briefcase;
-                  badgeColor = 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30';
+                  badgeColor = 'text-[#C7A77D] bg-[#181511] border-[#C7A77D]/30';
                   badgeText = language === 'bn' ? 'সার্ভিস paquetes' : 'Service';
                 } else if (item.type === 'skills') {
                   BadgeIcon = Code2;
-                  badgeColor = 'text-amber-400 bg-amber-500/10 border-amber-500/30';
+                  badgeColor = 'text-[#DFC29A] bg-[#181511] border-[#C7A77D]/30';
                   badgeText = language === 'bn' ? 'দক্ষতা' : 'Skill';
                 }
 
@@ -373,8 +373,8 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
                     onMouseEnter={() => setSelectedIndex(index)}
                     className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between gap-4 ${
                       isSelected
-                        ? 'bg-sky-500/15 border-sky-400/50 shadow-[0_0_20px_rgba(56,189,248,0.2)]'
-                        : 'bg-neutral-900/50 border-white/5 hover:border-white/20'
+                        ? 'bg-[#181511] border-[#C7A77D]/50'
+                        : 'bg-[#12100D]/50 border-white/5 hover:border-[#C7A77D]/20'
                     }`}
                   >
                     <div className="flex items-center gap-3.5 min-w-0 flex-1">
@@ -383,7 +383,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
                         <img
                           src={item.image}
                           alt={item.title}
-                          className="w-14 h-14 rounded-xl object-cover border border-white/10 shrink-0 bg-neutral-950"
+                          className="w-14 h-14 rounded-xl object-cover border border-[#C7A77D]/20 shrink-0 bg-[#0B0A08]"
                           onError={(e) => {
                             e.currentTarget.style.display = 'none';
                           }}
@@ -396,21 +396,21 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
 
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-2 mb-1">
-                          <span className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold border ${badgeColor}`}>
+                          <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${badgeColor}`}>
                             {badgeText}
                           </span>
                           {item.subtitle && (
-                            <span className="text-[11px] font-bold text-neutral-400 truncate">
+                            <span className="text-[11px] font-bold text-[#B8AA98] truncate">
                               • {item.subtitle}
                             </span>
                           )}
                         </div>
 
-                        <h4 className="text-sm font-extrabold text-white truncate group-hover:text-sky-300">
+                        <h4 className="text-sm font-bold text-[#F1E8DC] truncate">
                           {item.title}
                         </h4>
 
-                        <p className="text-xs text-neutral-400 truncate font-normal mt-0.5">
+                        <p className="text-xs text-[#B8AA98] truncate font-normal mt-0.5">
                           {item.description}
                         </p>
 
@@ -420,7 +420,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
                             {(item.tags || []).slice(0, 3).map((tag, tIdx) => (
                               <span
                                 key={tIdx}
-                                className="text-[10px] font-semibold text-neutral-300 bg-neutral-950/80 px-2 py-0.5 rounded-md border border-white/10"
+                                className="text-[10px] font-semibold text-[#B8AA98] bg-[#0B0A08] px-2 py-0.5 rounded-md border border-[#C7A77D]/15"
                               >
                                 #{tag}
                               </span>
@@ -431,10 +431,10 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
                     </div>
 
                     <div className="shrink-0 flex items-center gap-2">
-                      <span className="text-xs text-sky-400 font-bold hidden sm:inline">
+                      <span className="text-xs text-[#DFC29A] font-bold hidden sm:inline">
                         {language === 'bn' ? 'দেখুন' : 'View'}
                       </span>
-                      <div className="w-8 h-8 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center border border-sky-400/30">
+                      <div className="w-8 h-8 rounded-xl bg-[#C7A77D]/15 text-[#C7A77D] flex items-center justify-center border border-[#C7A77D]/30">
                         <ArrowRight className="w-4 h-4" />
                       </div>
                     </div>
@@ -443,13 +443,13 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
               })
             ) : (
               <div className="p-10 text-center flex flex-col items-center justify-center">
-                <div className="w-16 h-16 rounded-2xl bg-neutral-900 border border-white/10 flex items-center justify-center text-neutral-500 mb-4">
+                <div className="w-16 h-16 rounded-2xl bg-[#12100D] border border-[#C7A77D]/20 flex items-center justify-center text-[#B8AA98] mb-4">
                   <Search className="w-8 h-8" />
                 </div>
-                <h3 className="text-base font-bold text-white mb-1">
+                <h3 className="text-base font-bold text-[#F1E8DC] mb-1">
                   {language === 'bn' ? 'কোন ফলাফল পাওয়া যায়নি' : 'No matching results found'}
                 </h3>
-                <p className="text-xs text-neutral-400 max-w-sm mb-6">
+                <p className="text-xs text-[#B8AA98] max-w-sm mb-6">
                   {language === 'bn'
                     ? 'অন্য কোন কীওয়ার্ড যেমন "Poster", "Thumbnail", "Photoshop" বা "React" দিয়ে ট্রাই করে দেখুন।'
                     : 'Try searching with keywords like "Poster", "Thumbnail", "Photoshop" or "React".'}
@@ -457,14 +457,14 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
 
                 {/* Popular Keywords suggestion pills */}
                 <div className="flex flex-wrap items-center justify-center gap-2 max-w-md">
-                  <span className="text-xs text-neutral-400 font-semibold mr-1">
+                  <span className="text-xs text-[#B8AA98] font-semibold mr-1">
                     {language === 'bn' ? 'জনপ্রিয় সার্চ:' : 'Suggestions:'}
                   </span>
                   {['Poster', 'Thumbnail', 'Pixellab', 'React', 'YouTube', 'Bangla'].map((kw) => (
                     <button
                       key={kw}
                       onClick={() => setQuery(kw)}
-                      className="px-2.5 py-1 rounded-lg bg-neutral-900 border border-white/10 text-xs font-bold text-sky-400 hover:bg-sky-500/20 transition-all"
+                      className="px-2.5 py-1 rounded-lg bg-[#12100D] border border-[#C7A77D]/20 text-xs font-bold text-[#DFC29A] hover:bg-[#181511] transition-all cursor-pointer"
                     >
                       {kw}
                     </button>
@@ -475,19 +475,19 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
           </div>
 
           {/* Footer Navigation Hints */}
-          <div className="px-5 py-3 border-t border-white/10 bg-neutral-950/90 text-neutral-400 text-xs flex items-center justify-between shrink-0 font-medium">
+          <div className="px-5 py-3 border-t border-[#C7A77D]/15 bg-[#0B0A08] text-[#B8AA98] text-xs flex items-center justify-between shrink-0 font-medium">
             <div className="flex items-center gap-4">
               <span className="flex items-center gap-1">
-                <kbd className="px-1.5 py-0.5 rounded bg-neutral-800 text-neutral-200 text-[10px] font-mono border border-white/10">↑↓</kbd>
+                <kbd className="px-1.5 py-0.5 rounded bg-[#181511] text-[#F1E8DC] text-[10px] font-mono border border-[#C7A77D]/20">↑↓</kbd>
                 <span>{language === 'bn' ? 'সরে যান' : 'Navigate'}</span>
               </span>
               <span className="flex items-center gap-1">
-                <kbd className="px-1.5 py-0.5 rounded bg-neutral-800 text-neutral-200 text-[10px] font-mono border border-white/10">↵</kbd>
+                <kbd className="px-1.5 py-0.5 rounded bg-[#181511] text-[#F1E8DC] text-[10px] font-mono border border-[#C7A77D]/20">↵</kbd>
                 <span>{language === 'bn' ? 'সিলেক্ট করুন' : 'Select'}</span>
               </span>
             </div>
 
-            <div className="flex items-center gap-1.5 text-sky-400 font-bold">
+            <div className="flex items-center gap-1.5 text-[#DFC29A] font-bold">
               <Sparkles className="w-3.5 h-3.5" />
               <span>Masum 9T9 Global Search</span>
             </div>

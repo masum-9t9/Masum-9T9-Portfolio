@@ -1,4 +1,47 @@
+# ==============================================================================
+# Robots.txt for Masum 9T9 Official Website (https://9t9.pro.bd/)
+# Optimized for Google, Bing, DuckDuckGo, Applebot, Social & AI Search Indexers
+# Last Updated: 2026-09-12
+# ==============================================================================
+
 User-agent: *
 Allow: /
+Allow: /about
+Allow: /services
+Allow: /projects
+Allow: /reviews
+Allow: /contact
+Allow: /resume.html
+Disallow: /api/
 
+# Major Search Engine Crawlers
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+# Social Crawlers for Rich OpenGraph & Card Previews
+User-agent: Twitterbot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: WhatsApp
+Allow: /
+
+User-agent: TelegramBot
+Allow: /
+
+# Canonical XML Sitemap
 Sitemap: https://9t9.pro.bd/sitemap.xml

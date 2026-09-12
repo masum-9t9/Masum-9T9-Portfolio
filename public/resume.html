@@ -3,20 +3,31 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Masum 9T9 — Resume & CV | Graphic Designer • Web Developer • Content Creator</title>
+  <title>Masum 9T9 — Official Resume & CV | Lead Designer & Developer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
+    @font-face {
+      font-family: 'Evantic';
+      src: url('/fonts/Evantic-Regular.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
     :root {
-      --primary-accent: #3A86FF;
-      --primary-hover: #2563eb;
-      --bg-dark: #090a0f;
-      --card-bg: #11131a;
-      --card-border: #222634;
-      --text-main: #f3f4f6;
-      --text-muted: #9ca3af;
-      --text-sub: #d1d5db;
+      --primary-accent: #FF7A18;
+      --primary-hover: #E8590C;
+      --accent-glow: rgba(255, 122, 24, 0.35);
+      --accent-gold: #DFC29A;
+      --bg-dark: #0E0A07;
+      --card-bg: #15100C;
+      --card-border: #2D1E16;
+      --card-inner: #1D1510;
+      --text-main: #FAF6F0;
+      --text-muted: #A9A39A;
+      --text-sub: #D8D2C8;
     }
 
     * {
@@ -28,6 +39,7 @@
     body {
       font-family: 'Hind Siliguri', 'Plus Jakarta Sans', sans-serif;
       background-color: var(--bg-dark);
+      background-image: radial-gradient(circle at 50% 0%, rgba(235, 94, 40, 0.15) 0%, transparent 65%);
       color: var(--text-main);
       line-height: 1.6;
       padding: 30px 16px;
@@ -38,13 +50,13 @@
     }
 
     .resume-container {
-      max-width: 920px;
+      max-width: 940px;
       width: 100%;
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 20px;
-      padding: 38px;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.85), 0 0 40px rgba(255, 122, 24, 0.08);
       position: relative;
     }
 
@@ -53,8 +65,8 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 24px;
-      padding-bottom: 16px;
+      margin-bottom: 28px;
+      padding-bottom: 18px;
       border-bottom: 1px solid var(--card-border);
       gap: 12px;
       flex-wrap: wrap;
@@ -62,7 +74,7 @@
 
     .lang-switcher {
       display: inline-flex;
-      background: #1a1d29;
+      background: #1C1510;
       border: 1px solid var(--card-border);
       border-radius: 30px;
       padding: 4px;
@@ -84,7 +96,7 @@
     .lang-btn.active {
       background: var(--primary-accent);
       color: #ffffff;
-      box-shadow: 0 4px 14px rgba(58, 134, 255, 0.4);
+      box-shadow: 0 4px 14px var(--accent-glow);
     }
 
     .print-actions {
@@ -93,11 +105,11 @@
     }
 
     .action-btn {
-      background: rgba(58, 134, 255, 0.12);
-      border: 1px solid rgba(58, 134, 255, 0.35);
+      background: rgba(255, 122, 24, 0.12);
+      border: 1px solid rgba(255, 122, 24, 0.35);
       color: var(--primary-accent);
-      padding: 8px 16px;
-      border-radius: 10px;
+      padding: 8px 18px;
+      border-radius: 12px;
       font-size: 13px;
       font-weight: 700;
       cursor: pointer;
@@ -111,44 +123,53 @@
     .action-btn:hover {
       background: var(--primary-accent);
       color: #ffffff;
+      box-shadow: 0 0 16px var(--accent-glow);
     }
 
     /* Hero Header */
     .hero-header {
       display: flex;
       align-items: center;
-      gap: 24px;
+      gap: 28px;
       margin-bottom: 28px;
       flex-wrap: wrap;
     }
 
-    .profile-photo {
-      width: 110px;
-      height: 110px;
-      border-radius: 22px;
-      object-fit: cover;
-      border: 3px solid var(--primary-accent);
-      box-shadow: 0 0 24px rgba(58, 134, 255, 0.35);
+    .profile-photo-wrapper {
+      position: relative;
+      width: 120px;
+      height: 120px;
       flex-shrink: 0;
+    }
+
+    .profile-photo {
+      width: 100%;
+      height: 100%;
+      border-radius: 24px;
+      object-fit: cover;
+      border: 2px solid var(--primary-accent);
+      box-shadow: 0 0 30px var(--accent-glow);
+      background: #1C1510;
     }
 
     .hero-text {
       flex: 1;
-      min-width: 260px;
+      min-width: 280px;
     }
 
     .hero-name {
-      font-size: 32px;
+      font-size: 36px;
       font-weight: 800;
       color: #ffffff;
       letter-spacing: -0.5px;
       display: flex;
       align-items: center;
       gap: 10px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
     }
 
     .hero-title {
-      font-size: 16px;
+      font-size: 17px;
       font-weight: 700;
       color: var(--primary-accent);
       margin-top: 4px;
@@ -156,331 +177,292 @@
     }
 
     .hero-tagline {
-      font-size: 14px;
+      font-size: 14.5px;
       color: var(--text-muted);
       margin-top: 6px;
+      line-height: 1.5;
     }
 
     /* Contact Grid */
     .contact-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
       gap: 12px;
-      background: #181b26;
+      background: var(--card-inner);
       border: 1px solid var(--card-border);
-      border-radius: 14px;
-      padding: 16px;
-      margin-bottom: 28px;
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 30px;
       font-size: 13.5px;
     }
 
     .contact-item {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       color: var(--text-sub);
     }
 
     .contact-item span.icon {
       color: var(--primary-accent);
+      font-size: 16px;
       font-weight: bold;
     }
 
     .contact-item a {
       color: var(--text-sub);
       text-decoration: none;
+      transition: color 0.2s;
     }
 
     .contact-item a:hover {
       color: var(--primary-accent);
-      text-decoration: underline;
+    }
+
+    /* Stats Grid */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .stat-card {
+      background: #19120D;
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 14px 18px;
+      text-align: center;
+    }
+
+    .stat-val {
+      font-size: 24px;
+      font-weight: 800;
+      color: #ffffff;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .stat-val span {
+      color: var(--primary-accent);
+    }
+
+    .stat-lbl {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      margin-top: 2px;
+      font-weight: 600;
     }
 
     /* Section Block */
     .section-block {
-      margin-bottom: 28px;
+      margin-bottom: 30px;
     }
 
-    .section-heading {
-      font-size: 16.5px;
+    .section-title {
+      font-size: 18px;
       font-weight: 800;
-      color: #ffffff;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      margin-bottom: 14px;
+      color: var(--text-main);
       display: flex;
       align-items: center;
       gap: 10px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--card-border);
+      margin-bottom: 18px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
-    .section-heading::before {
-      content: '';
+    .section-title span.bar {
       display: inline-block;
-      width: 5px;
-      height: 19px;
+      width: 4px;
+      height: 18px;
       background: var(--primary-accent);
-      border-radius: 4px;
-      box-shadow: 0 0 10px var(--primary-accent);
+      border-radius: 2px;
     }
 
-    .summary-text {
-      font-size: 14.5px;
-      color: var(--text-sub);
-      line-height: 1.7;
+    /* Timeline & Experience Items */
+    .exp-item {
+      background: var(--card-inner);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 18px 20px;
+      margin-bottom: 14px;
+      transition: all 0.2s;
     }
 
-    /* Skills Container */
-    .skills-container {
+    .exp-header {
       display: flex;
+      justify-content: space-between;
+      align-items: baseline;
       flex-wrap: wrap;
       gap: 8px;
+      margin-bottom: 6px;
     }
 
-    .skill-tag {
-      background: #181b26;
-      border: 1px solid var(--card-border);
-      color: var(--text-main);
-      font-size: 12.5px;
+    .exp-role {
+      font-size: 16px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .exp-company {
+      font-size: 14px;
       font-weight: 600;
-      padding: 6px 14px;
-      border-radius: 8px;
-      transition: border-color 0.2s;
-    }
-
-    .skill-tag:hover {
-      border-color: var(--primary-accent);
-    }
-
-    .skill-tag.highlight {
-      border-color: rgba(58, 134, 255, 0.45);
-      background: rgba(58, 134, 255, 0.09);
       color: var(--primary-accent);
     }
 
-    /* Projects Grid */
-    .projects-grid {
+    .exp-badge {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent-gold);
+      background: rgba(223, 194, 154, 0.1);
+      padding: 3px 10px;
+      border-radius: 20px;
+      border: 1px solid rgba(223, 194, 154, 0.25);
+    }
+
+    .exp-desc {
+      font-size: 13.5px;
+      color: var(--text-sub);
+      line-height: 1.6;
+      margin-top: 6px;
+    }
+
+    .exp-list {
+      margin-top: 8px;
+      padding-left: 18px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .exp-list li {
+      margin-bottom: 4px;
+    }
+
+    /* Skills Grid */
+    .skills-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 14px;
     }
 
-    .project-card {
-      background: #181b26;
+    .skill-box {
+      background: var(--card-inner);
       border: 1px solid var(--card-border);
-      border-radius: 12px;
+      border-radius: 14px;
       padding: 16px;
-      transition: all 0.2s ease;
     }
 
-    .project-card:hover {
-      border-color: var(--primary-accent);
-      transform: translateY(-2px);
-    }
-
-    .project-title {
-      font-size: 15px;
+    .skill-box-title {
+      font-size: 14px;
       font-weight: 700;
-      color: #ffffff;
-      margin-bottom: 6px;
+      color: var(--accent-gold);
+      margin-bottom: 10px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      gap: 6px;
     }
 
-    .project-badge {
-      font-size: 10.5px;
-      font-weight: 700;
-      color: var(--primary-accent);
-      background: rgba(58, 134, 255, 0.12);
-      border: 1px solid rgba(58, 134, 255, 0.25);
-      padding: 2px 8px;
-      border-radius: 6px;
-    }
-
-    .project-desc {
-      font-size: 13px;
-      color: var(--text-muted);
-      line-height: 1.5;
-    }
-
-    /* Timeline Cards */
-    .timeline-card {
-      background: #181b26;
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 18px;
-      margin-bottom: 12px;
-    }
-
-    .timeline-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 6px;
-      gap: 10px;
-    }
-
-    .role-title {
-      font-size: 15.5px;
-      font-weight: 700;
-      color: #ffffff;
-    }
-
-    .role-period {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--primary-accent);
-      background: rgba(58, 134, 255, 0.12);
-      padding: 3px 10px;
-      border-radius: 20px;
-      white-space: nowrap;
-    }
-
-    .role-details {
-      font-size: 13.5px;
-      color: var(--text-muted);
-    }
-
-    /* Social Links Bar */
-    .social-bar {
+    .tag-cloud {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 6px;
     }
 
-    .social-pill {
-      background: #181b26;
+    .tag {
+      background: #120D09;
       border: 1px solid var(--card-border);
       color: var(--text-sub);
-      padding: 8px 14px;
-      border-radius: 10px;
-      font-size: 13px;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 12px;
       font-weight: 600;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: all 0.2s ease;
     }
 
-    .social-pill:hover {
+    .tag.highlight {
+      background: rgba(255, 122, 24, 0.12);
+      border-color: rgba(255, 122, 24, 0.35);
+      color: var(--primary-accent);
+    }
+
+    /* Footer Note */
+    .resume-footer {
+      text-align: center;
+      margin-top: 30px;
+      padding-top: 18px;
+      border-top: 1px solid var(--card-border);
+      font-size: 12.5px;
+      color: var(--text-muted);
+    }
+
+    .action-btn.primary-action {
       background: var(--primary-accent);
       color: #ffffff;
-      border-color: var(--primary-accent);
-      box-shadow: 0 4px 12px rgba(58, 134, 255, 0.35);
+      font-weight: 800;
+      border: 1px solid var(--primary-accent);
+      box-shadow: 0 4px 14px var(--accent-glow);
     }
 
-    /* Footer & QR Section */
-    .resume-footer {
-      margin-top: 32px;
-      padding-top: 24px;
-      border-top: 1px solid var(--card-border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-      flex-wrap: wrap;
+    .action-btn.primary-action:hover {
+      background: var(--primary-hover);
+      box-shadow: 0 0 20px var(--accent-glow);
     }
 
-    .qr-block {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      background: #181b26;
-      border: 1px solid var(--card-border);
-      padding: 10px 16px;
-      border-radius: 14px;
-    }
-
-    .qr-code-img {
-      width: 70px;
-      height: 70px;
-      border-radius: 8px;
-      background: #ffffff;
-      padding: 3px;
-    }
-
-    .qr-text h5 {
-      font-size: 13px;
-      font-weight: 700;
-      color: #ffffff;
-    }
-
-    .qr-text p {
-      font-size: 12px;
-      color: var(--primary-accent);
-      font-weight: 600;
-    }
-
-    .verify-badge {
-      font-size: 12px;
-      color: var(--text-muted);
-      text-align: right;
-    }
-
-    /* ATS Print Media Styles */
     @media print {
       body {
-        background: #ffffff !important;
-        color: #111827 !important;
+        background-color: #0E0A07 !important;
+        background-image: none !important;
+        color: #FAF6F0 !important;
         padding: 0 !important;
+        margin: 0 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color-adjust: exact !important;
       }
-
       .resume-container {
         border: none !important;
         box-shadow: none !important;
-        padding: 0 !important;
-        background: #ffffff !important;
-        color: #111827 !important;
+        background-color: #15100C !important;
+        padding: 24px !important;
         max-width: 100% !important;
+        width: 100% !important;
+        border-radius: 0 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color-adjust: exact !important;
       }
-
       .top-bar {
         display: none !important;
       }
-
-      .profile-photo {
-        border-color: #3A86FF !important;
+      .contact-grid, .stat-card, .exp-item, .skill-box {
+        background: #1D1510 !important;
+        border: 1px solid #2D1E16 !important;
+        color: #FAF6F0 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
       }
-
-      .hero-name {
-        color: #111827 !important;
+      .hero-name, .exp-role, .stat-val {
+        color: #FAF6F0 !important;
       }
-
-      .hero-title {
-        color: #2563eb !important;
+      .hero-title, .exp-company, .stat-val span, .contact-item span.icon {
+        color: #FF7A18 !important;
       }
-
-      .contact-grid {
-        background: #f3f4f6 !important;
-        border-color: #e5e7eb !important;
-        color: #1f2937 !important;
+      .exp-desc, .exp-list, .contact-item, .stat-lbl, .hero-tagline {
+        color: #A9A39A !important;
       }
-
-      .contact-item, .contact-item a {
-        color: #1f2937 !important;
+      .tag {
+        background: #120D09 !important;
+        color: #D8D2C8 !important;
+        border: 1px solid #2D1E16 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
       }
-
-      .section-heading {
-        color: #111827 !important;
-      }
-
-      .summary-text, .role-details, .project-desc {
-        color: #374151 !important;
-      }
-
-      .skill-tag, .project-card, .timeline-card, .social-pill, .qr-block, .offline-links-footer {
-        background: #f9fafb !important;
-        border-color: #e5e7eb !important;
-        color: #111827 !important;
-      }
-
-      .role-title, .project-title, .qr-text h5, #hdr-offline-links {
-        color: #111827 !important;
-      }
-
-      .social-pill {
-        color: #1f2937 !important;
+      .tag.highlight {
+        background: rgba(255, 122, 24, 0.18) !important;
+        color: #FF7A18 !important;
+        border-color: rgba(255, 122, 24, 0.4) !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
       }
     }
   </style>
@@ -488,371 +470,418 @@
 <body>
 
   <div class="resume-container">
+    
     <!-- Top Control Bar -->
     <div class="top-bar">
       <div class="lang-switcher">
-        <button class="lang-btn active" id="btn-bn" onclick="setLanguage('bn')">🇧🇩 বাংলা ভার্সন</button>
-        <button class="lang-btn" id="btn-en" onclick="setLanguage('en')">🇬🇧 English Version</button>
+        <button class="lang-btn active" id="btn-bn" onclick="switchLang('bn')">বাংলা (BN)</button>
+        <button class="lang-btn" id="btn-en" onclick="switchLang('en')">English (EN)</button>
       </div>
 
       <div class="print-actions">
-        <button class="action-btn" onclick="window.print()">
-          🖨️ <span id="lbl-print">Print / Save PDF</span>
-        </button>
         <a href="https://9t9.pro.bd" target="_blank" class="action-btn">
-          🌐 <span id="lbl-site">Live Portfolio</span>
+          🌐 <span>Live Portfolio</span>
         </a>
+        <button onclick="downloadAsPDF()" class="action-btn primary-action" id="btn-download-pdf">
+          📥 <span id="lbl-download">PDF ডাউনলোড</span>
+        </button>
+        <button onclick="window.print()" class="action-btn">
+          🖨️ <span id="lbl-print">Print / PDF</span>
+        </button>
       </div>
     </div>
 
-    <!-- Hero Header -->
+    <!-- Header / Profile Section -->
     <div class="hero-header">
-      <img src="https://i.postimg.cc/xCX1vY0H/Profile-pic.png" alt="Masum 9T9 Profile Photo" class="profile-photo" id="img-profile" onerror="this.src='/masum_profile.jpg'">
-      
+      <div class="profile-photo-wrapper">
+        <img 
+          src="https://i.postimg.cc/bYQL7Lvj/Profile-pic-(3).png" 
+          alt="Md. Masum Billah (Masum 9T9)" 
+          class="profile-photo"
+          onerror="this.src='https://i.postimg.cc/FzTMvwBb/Profile-pic.png'"
+        />
+      </div>
+
       <div class="hero-text">
         <h1 class="hero-name">
-          Masum 9T9
-          <span style="font-size:18px; color:#3A86FF;" title="Verified Profile">✓</span>
+          <span>Md. Masum Billah</span>
+          <span style="font-size: 20px; font-weight: 700; color: var(--accent-gold); font-family: 'Evantic', serif; letter-spacing: 0.5px;">(Masum 9T9)</span>
         </h1>
-        <div class="hero-title" id="txt-title">
-          Graphic Designer • Web Developer • Content Creator
+        <div class="hero-title" id="cv-roles">
+          গ্রাফিক্স ডিজাইনার • UI/UX স্পেশালিস্ট • ফ্রন্টএন্ড ডেভেলপার • কন্টেন্ট ক্রিয়েটর
         </div>
-        <div class="hero-tagline" id="txt-tagline">
-          Crafting High-CTR Visuals, Modern Web Applications & Educational Content
+        <div class="hero-tagline" id="cv-tagline">
+          ডিজিটাল ক্রিয়েটিভিটি ও কোডিং ইঞ্জিনিয়ারিংয়ের মেলবন্ধনে বিশ্বমানের ব্র্যান্ডিং, হাই-কনভার্টিং UI/UX এবং আধুনিক রিয়েক্ট ওয়েব অ্যাপ্লিকেশন তৈরি।
         </div>
       </div>
     </div>
 
-    <!-- Contact Grid -->
+    <!-- Contact & Quick Info Grid -->
     <div class="contact-grid">
       <div class="contact-item">
-        <span class="icon">📱</span>
-        <span><strong>Phone:</strong> +8801303-623838</span>
+        <span class="icon">📞</span>
+        <a href="tel:+8801303623838">+880 1303-623838</a>
       </div>
       <div class="contact-item">
         <span class="icon">✉️</span>
-        <span><strong>Email:</strong> <a href="mailto:masum.9t9.gd@gmail.com">masum.9t9.gd@gmail.com</a></span>
-      </div>
-      <div class="contact-item">
-        <span class="icon">🌐</span>
-        <span><strong>Website:</strong> <a href="https://9t9.pro.bd" target="_blank">9t9.pro.bd</a></span>
+        <a href="mailto:masum.9t9.gd@gmail.com">masum.9t9.gd@gmail.com</a>
       </div>
       <div class="contact-item">
         <span class="icon">📍</span>
-        <span><strong>Location:</strong> Dhaka / Satkhira, Bangladesh</span>
+        <span id="cv-location">সিলেট / ঢাকা, বাংলাদেশ (রিমোট ওয়ার্ল্ডওয়াইড)</span>
+      </div>
+      <div class="contact-item">
+        <span class="icon">🌐</span>
+        <a href="https://9t9.pro.bd" target="_blank">9t9.pro.bd</a>
+      </div>
+      <div class="contact-item">
+        <span class="icon">💬</span>
+        <a href="https://wa.me/8801303623838" target="_blank">WhatsApp Chat</a>
+      </div>
+      <div class="contact-item">
+        <span class="icon">✈️</span>
+        <a href="https://t.me/Masum_9T9" target="_blank">@Masum_9T9 (Telegram)</a>
       </div>
     </div>
 
-    <!-- Professional Summary / About -->
+    <!-- Stats Highlights -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-val">3<span>+</span> Yrs</div>
+        <div class="stat-lbl" id="cv-stat-exp">প্রফেশনাল অভিজ্ঞতা</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">100<span>+</span></div>
+        <div class="stat-lbl" id="cv-stat-proj">সম্পন্ন প্রজেক্ট</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">50<span>+</span></div>
+        <div class="stat-lbl" id="cv-stat-clients">হ্যাপি ক্লায়েন্ট</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">5.0<span>★</span></div>
+        <div class="stat-lbl" id="cv-stat-rating">১০০% ক্লায়েন্ট সন্তুষ্টি</div>
+      </div>
+    </div>
+
+    <!-- Summary Section -->
     <div class="section-block">
-      <div class="section-heading" id="hdr-summary">About / Professional Summary</div>
-      <p class="summary-text" id="txt-summary">
-        Creative professional specializing in Graphic Design, Web Development, and Content Creation. Passionate about designing visually engaging brands, building modern responsive websites, and creating educational digital content. Focused on delivering clean, user-friendly, and impactful digital experiences through creativity and technology.
+      <div class="section-title">
+        <span class="bar"></span>
+        <span id="cv-sec-summary">প্রফেশনাল সামারি</span>
+      </div>
+      <p class="exp-desc" id="cv-summary-text">
+        গত ৩ বছরের বেশি সময় ধরে গ্রাফিক্স ডিজাইন, ইউআই/ইউএক্স ইন্টারফেস ডিজাইন, ফ্রন্টএন্ড ওয়েব ডেভেলপমেন্ট এবং কন্টেন্ট ক্রিয়েশনের ফিল্ডে সক্রিয়ভাবে কাজ করছি। আধুনিক ওয়েব স্ট্যাক (HTML5, CSS3, Tailwind CSS, JavaScript, React, Next.js) এবং ক্রিয়েটিভ ডিজাইন টুলস (Photoshop, Illustrator, Figma) ব্যবহারে পারদর্শী। ইউটিউব থাম্বনেইল সাইকোলজি ও হাই-কনভার্টিং ডিজিটাল ব্র্যান্ডিংয়ে অভিজ্ঞ। একইসাথে 'পাড়াহীন একাডেমি' প্ল্যাটফর্মের প্রতিষ্ঠাতা হিসেবে হাজারো লার্নারকে টেকনোলজি ও ক্রিয়েটিভ স্কিল শেখাতে প্রতিশ্রুতিবদ্ধ।
       </p>
     </div>
 
-    <!-- Skills Section -->
+    <!-- Work Experience -->
     <div class="section-block">
-      <div class="section-heading" id="hdr-skills">Skills & Expertise</div>
-      <div class="skills-container" id="box-skills">
-        <span class="skill-tag highlight">Graphic Design</span>
-        <span class="skill-tag highlight">UI/UX Design</span>
-        <span class="skill-tag highlight">Branding & Visual Identity</span>
-        <span class="skill-tag highlight">React & TypeScript</span>
-        <span class="skill-tag highlight">Tailwind CSS</span>
-        <span class="skill-tag">HTML5 & CSS3</span>
-        <span class="skill-tag">JavaScript (ES6+)</span>
-        <span class="skill-tag">Responsive Web Design</span>
-        <span class="skill-tag">Git & GitHub</span>
-        <span class="skill-tag">YouTube High-CTR Visuals</span>
-        <span class="skill-tag">Poster Compositing</span>
-        <span class="skill-tag">Content Creation</span>
+      <div class="section-title">
+        <span class="bar"></span>
+        <span id="cv-sec-exp">কাজের অভিজ্ঞতা</span>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-header">
+          <div>
+            <div class="exp-role" id="exp1-role">ফাউন্ডার ও লিড ক্রিয়েটর</div>
+            <div class="exp-company">পাড়াহীন একাডেমি (Parahin Academy)</div>
+          </div>
+          <div class="exp-badge" id="exp1-badge">২০২৪ — বর্তমান</div>
+        </div>
+        <p class="exp-desc" id="exp1-desc">
+          টেক এডুকেশন এবং ডিজিটাল ক্রিয়েটিভিটি প্ল্যাটফর্ম পরিচালনা। শিক্ষার্থী ও উদ্যোক্তাদের জন্য আধুনিক ওয়েব কোডিং, গ্রাফিক্স ডিজাইন ও ডিজিটাল স্কিলের কোর্স ও টিউটোরিয়াল তৈরি।
+        </p>
+        <ul class="exp-list" id="exp1-list">
+          <li>হাজারো শিক্ষার্থীকে রিয়েক্ট, ইউআই ডিজাইন ও ফটোশপের প্র্যাকটিক্যাল গাইডলাইন প্রদান।</li>
+          <li>সোশ্যাল মিডিয়া ও ইউটিউবে ৫০,০০০+ লার্নারের সক্রিয় কমিউনিটি গঠন।</li>
+        </ul>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-header">
+          <div>
+            <div class="exp-role" id="exp2-role">সিনিয়র UI/UX ও গ্রাফিক্স ডিজাইনার</div>
+            <div class="exp-company">ফ্রিল্যান্স ও রিমোট (গ্লোবাল ক্লায়েন্টস)</div>
+          </div>
+          <div class="exp-badge" id="exp2-badge">২০২৩ — বর্তমান</div>
+        </div>
+        <p class="exp-desc" id="exp2-desc">
+          দেশি ও আন্তর্জাতিক উদ্যোক্তা, ব্র্যান্ড এবং ইউটিউব ক্রিয়েটরদের জন্য হাই-সিটিআর থাম্বনেইল, সোশ্যাল মিডিয়া কিট, লোগো ব্র্যান্ডিং ও ফিগমা ইউআই সিস্টেম তৈরি।
+        </p>
+        <ul class="exp-list" id="exp2-list">
+          <li>১০০+ সফল প্রজেক্ট ডেলিভারি এবং ৫.০ ক্লায়েন্ট রিভিউ রেটিং অর্জন।</li>
+          <li>হাই-কনভার্টিং ল্যান্ডিং পেজ ও ইউজার ফ্রেন্ডলি মোবাইল অ্যাপ ইন্টারফেস ডিজাইন।</li>
+        </ul>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-header">
+          <div>
+            <div class="exp-role" id="exp3-role">ফ্রন্টএন্ড ওয়েব ডেভেলপার</div>
+            <div class="exp-company">ওয়েব সল্যুশন ও ক্লাউড প্রজেক্টস</div>
+          </div>
+          <div class="exp-badge" id="exp3-badge">২০২৩ — বর্তমান</div>
+        </div>
+        <p class="exp-desc" id="exp3-desc">
+          React, TypeScript, Tailwind CSS ও আধুনিক এপিআই ব্যবহারের মাধ্যমে দ্রুতগতির, ফুললি রেসপন্সিভ এবং এসইও অপ্টিমাইজড ওয়েব অ্যাপ্লিকেশন ডেভেলপমেন্ট।
+        </p>
       </div>
     </div>
 
-    <!-- Tools Section -->
+    <!-- Skills Matrix -->
     <div class="section-block">
-      <div class="section-heading" id="hdr-tools">Software & Tools</div>
-      <div class="skills-container" id="box-tools">
-        <span class="skill-tag highlight">Adobe Photoshop</span>
-        <span class="skill-tag highlight">Adobe Illustrator</span>
-        <span class="skill-tag highlight">Figma</span>
-        <span class="skill-tag highlight">VS Code</span>
-        <span class="skill-tag">GitHub</span>
-        <span class="skill-tag">Pixellab</span>
-        <span class="skill-tag">Ibis Paint X</span>
-      </div>
-    </div>
-
-    <!-- Featured Projects -->
-    <div class="section-block">
-      <div class="section-heading" id="hdr-projects">Featured Projects</div>
-      <div class="projects-grid" id="box-projects">
-        <!-- Project 1 -->
-        <div class="project-card">
-          <div class="project-title">
-            <span id="p1-title">Personal Portfolio Website</span>
-            <span class="project-badge">Web Dev</span>
-          </div>
-          <div class="project-desc" id="p1-desc">
-            Interactive, responsive portfolio (9t9.pro.bd) built with React, TypeScript, and Tailwind CSS featuring dark/light themes and instant search.
-          </div>
-        </div>
-
-        <!-- Project 2 -->
-        <div class="project-card">
-          <div class="project-title">
-            <span id="p2-title">Modern Web Applications</span>
-            <span class="project-badge">Full-Stack</span>
-          </div>
-          <div class="project-desc" id="p2-desc">
-            Clean web utilities and web apps with modern component architectures, state management, and API integrations.
-          </div>
-        </div>
-
-        <!-- Project 3 -->
-        <div class="project-card">
-          <div class="project-title">
-            <span id="p3-title">Premium YouTube Thumbnails</span>
-            <span class="project-badge">Design</span>
-          </div>
-          <div class="project-desc" id="p3-desc">
-            100+ custom high-CTR thumbnails crafted for Parahin Academy and content creators, significantly boosting engagement.
-          </div>
-        </div>
-
-        <!-- Project 4 -->
-        <div class="project-card">
-          <div class="project-title">
-            <span id="p4-title">Poster & Social Media Design</span>
-            <span class="project-badge">Compositing</span>
-          </div>
-          <div class="project-desc" id="p4-desc">
-            Photorealistic composite art, banner design, and photo manipulation using Adobe Photoshop & Illustrator.
-          </div>
-        </div>
-
-        <!-- Project 5 -->
-        <div class="project-card">
-          <div class="project-title">
-            <span id="p5-title">Branding & Visual Identity</span>
-            <span class="project-badge">Branding</span>
-          </div>
-          <div class="project-desc" id="p5-desc">
-            Logos, social media brand kits, and vector graphics tailored for educational and digital platforms.
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Work Experience & Education -->
-    <div class="section-block">
-      <div class="section-heading" id="hdr-exp">Experience & Education</div>
-      
-      <div class="timeline-card">
-        <div class="timeline-top">
-          <div class="role-title" id="exp1-title">Graphic Designer, Web Developer & Content Creator</div>
-          <div class="role-period">2023 - Present</div>
-        </div>
-        <div class="role-details" id="exp1-desc">
-          Building web applications and creating 100+ high-quality graphic assets for local and international clients.
-        </div>
+      <div class="section-title">
+        <span class="bar"></span>
+        <span id="cv-sec-skills">দক্ষতা ও প্রযুক্তিগত জ্ঞান</span>
       </div>
 
-      <div class="timeline-card">
-        <div class="timeline-top">
-          <div class="role-title" id="exp2-title">Founder & Lead Instructor — Parahin Academy</div>
-          <div class="role-period">2024 - Present</div>
+      <div class="skills-grid">
+        <div class="skill-box">
+          <div class="skill-box-title">🎨 গ্রাফিক্স ডিজাইন ও ভিজ্যুয়াল আর্ট</div>
+          <div class="tag-cloud">
+            <span class="tag highlight">Adobe Photoshop</span>
+            <span class="tag highlight">Adobe Illustrator</span>
+            <span class="tag">YouTube Thumbnail Psychology</span>
+            <span class="tag">Brand Identity</span>
+            <span class="tag">Social Media Ad Creative</span>
+            <span class="tag">Photo Manipulation</span>
+            <span class="tag">Vector Art</span>
+          </div>
         </div>
-        <div class="role-details" id="exp2-desc">
-          Creating educational video content and graphic design masterclasses for 10,000+ online learners.
-        </div>
-      </div>
 
-      <div class="timeline-card">
-        <div class="timeline-top">
-          <div class="role-title" id="exp3-title">Diploma in Graphics & Digital Media</div>
-          <div class="role-period">2026</div>
+        <div class="skill-box">
+          <div class="skill-box-title">📱 UI/UX ডিজাইন ও প্রোটোটাইপিং</div>
+          <div class="tag-cloud">
+            <span class="tag highlight">Figma</span>
+            <span class="tag">Design Systems</span>
+            <span class="tag">Wireframing</span>
+            <span class="tag">Interactive Prototyping</span>
+            <span class="tag">User Research</span>
+            <span class="tag">Mobile & Web UX</span>
+          </div>
         </div>
-        <div class="role-details" id="exp3-desc">
-          Parahin Academy — Advanced Photoshop compositing, visual design hierarchy, and digital art.
+
+        <div class="skill-box">
+          <div class="skill-box-title">💻 ফ্রন্টএন্ড ওয়েব ডেভেলপমেন্ট</div>
+          <div class="tag-cloud">
+            <span class="tag highlight">React.js</span>
+            <span class="tag highlight">Tailwind CSS</span>
+            <span class="tag">TypeScript / JavaScript</span>
+            <span class="tag">HTML5 / Modern CSS</span>
+            <span class="tag">REST APIs</span>
+            <span class="tag">Responsive Architecture</span>
+          </div>
+        </div>
+
+        <div class="skill-box">
+          <div class="skill-box-title">🎬 কন্টেন্ট ক্রিয়েশন ও টুলস</div>
+          <div class="tag-cloud">
+            <span class="tag highlight">Video Editing & Scripting</span>
+            <span class="tag">Educational Content</span>
+            <span class="tag">Git & GitHub</span>
+            <span class="tag">Vite & Node.js</span>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Social Links -->
+    <!-- Education & Training -->
     <div class="section-block">
-      <div class="section-heading" id="hdr-socials">Social Profiles & Portfolios</div>
-      <div class="social-bar">
-        <a href="https://9t9.pro.bd" target="_blank" class="social-pill">
-          🌐 <span>Website (9t9.pro.bd)</span>
-        </a>
-        <a href="https://www.behance.net/masum_9t9_official" target="_blank" class="social-pill">
-          🎨 <span>Behance</span>
-        </a>
-        <a href="https://www.facebook.com/masum.9t9.official" target="_blank" class="social-pill">
-          📘 <span>Facebook</span>
-        </a>
-        <a href="https://github.com/masum-9t9/" target="_blank" class="social-pill">
-          🐙 <span>GitHub</span>
-        </a>
-        <a href="https://www.youtube.com/@ParahinAcademy" target="_blank" class="social-pill">
-          ▶️ <span>YouTube</span>
-        </a>
-        <a href="https://www.fiverr.com/sellers/masum9t9/" target="_blank" class="social-pill">
-          🟢 <span>Fiverr</span>
-        </a>
+      <div class="section-title">
+        <span class="bar"></span>
+        <span id="cv-sec-edu">শিক্ষা ও সার্টিফিকেশন</span>
       </div>
 
-      <!-- Offline Text-Based Footer with Full URLs for PDF/Print -->
-      <div class="offline-links-footer" style="margin-top: 16px; padding: 14px 18px; background: #181b26; border: 1px solid var(--card-border); border-radius: 12px; font-size: 12.5px; line-height: 1.7; color: var(--text-sub);">
-        <div style="font-weight: 700; color: #ffffff; margin-bottom: 8px; font-size: 13px;" id="hdr-offline-links">
-          🌐 Direct URLs for Offline & Print Reference
+      <div class="exp-item">
+        <div class="exp-header">
+          <div>
+            <div class="exp-role">ফ্রন্টএন্ড এন্ড ক্রিয়েটিভ মিডিয়া ডিপ্লোমা</div>
+            <div class="exp-company">পাড়াহীন একাডেমি (Parahin Academy)</div>
+          </div>
+          <div class="exp-badge">২০২৬</div>
         </div>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 6px 16px; word-break: break-all; font-family: monospace, sans-serif;">
-          <div>• <strong>Website:</strong> https://9t9.pro.bd</div>
-          <div>• <strong>Facebook:</strong> https://www.facebook.com/masum.9t9.official</div>
-          <div>• <strong>Behance:</strong> https://www.behance.net/masum_9t9_official</div>
-          <div>• <strong>GitHub:</strong> https://github.com/masum-9t9/</div>
-          <div>• <strong>YouTube:</strong> https://www.youtube.com/@ParahinAcademy</div>
-          <div>• <strong>Fiverr:</strong> https://www.fiverr.com/sellers/masum9t9/</div>
+        <p class="exp-desc">
+          অ্যাডভান্সড রিয়েক্ট ডেভেলপার একাডেমি, ইন্টারঅ্যাকটিভ ইউআই প্রোটোটাইপিং, ওয়েব আর্কিটেকচার এবং ডিজিটাল মিডিয়া প্রডাকশন।
+        </p>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-header">
+          <div>
+            <div class="exp-role">UI/UX ডিজাইন ও ক্রিয়েটিভ ব্র্যান্ডিং প্রফেশনাল প্রোগ্রাম</div>
+            <div class="exp-company">অনলাইন প্রফেশনাল ক্রিয়েটর একাডেমি</div>
+          </div>
+          <div class="exp-badge">২০২৪ — ২০২৫</div>
         </div>
+        <p class="exp-desc">
+          কালার থিওরি, টাইপোগ্রাফি হায়ারার্কি, ফিগমা ডিজাইন সিস্টেম এবং ইউজার এক্সপেরিয়েন্স রিসার্চ মেথডোলজি।
+        </p>
       </div>
     </div>
 
-    <!-- Footer & QR Code -->
+    <!-- Footer Note -->
     <div class="resume-footer">
-      <div class="qr-block">
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://9t9.pro.bd" alt="Scan QR Code to visit https://9t9.pro.bd" class="qr-code-img">
-        <div class="qr-text">
-          <h5 id="qr-title">Scan QR for Live Portfolio</h5>
-          <p>https://9t9.pro.bd</p>
-        </div>
-      </div>
-
-      <div class="verify-badge">
-        <p><strong>Masum 9T9 — Official Resume</strong></p>
-        <p style="font-size: 11px; margin-top:2px;" id="lbl-verified">Verified Identity • Updated 2026</p>
-      </div>
+      <p id="cv-footer-text">
+        © 2026 Md. Masum Billah (Masum 9T9). সর্বস্বত্ব সংরক্ষিত। ভেরিফাইড পোর্টফোলিও: <a href="https://9t9.pro.bd" style="color: var(--primary-accent); text-decoration: none;">9t9.pro.bd</a>
+      </p>
     </div>
+
   </div>
 
-  <!-- Language Switcher Logic -->
   <script>
-    const translations = {
-      en: {
-        title: "Graphic Designer • Web Developer • Content Creator",
-        tagline: "Crafting High-CTR Visuals, Modern Web Applications & Educational Content",
-        print: "Print / Save PDF",
-        site: "Live Portfolio",
-        hdrSummary: "About / Professional Summary",
-        txtSummary: "Creative professional specializing in Graphic Design, Web Development, and Content Creation. Passionate about designing visually engaging brands, building modern responsive websites, and creating educational digital content. Focused on delivering clean, user-friendly, and impactful digital experiences through creativity and technology.",
-        hdrTools: "Software & Tools",
-        hdrProjects: "Featured Projects",
-        p1Title: "Personal Portfolio Website",
-        p1Desc: "Interactive, responsive portfolio (9t9.pro.bd) built with React, TypeScript, and Tailwind CSS featuring dark/light themes and instant search.",
-        p2Title: "Modern Web Applications",
-        p2Desc: "Clean web utilities and web apps with modern component architectures, state management, and API integrations.",
-        p3Title: "Premium YouTube Thumbnails",
-        p3Desc: "100+ custom high-CTR thumbnails crafted for Parahin Academy and content creators, significantly boosting engagement.",
-        p4Title: "Poster & Social Media Design",
-        p4Desc: "Photorealistic composite art, banner design, and photo manipulation using Adobe Photoshop & Illustrator.",
-        p5Title: "Branding & Visual Identity",
-        p5Desc: "Logos, social media brand kits, and vector graphics tailored for educational and digital platforms.",
-        hdrExp: "Experience & Education",
-        exp1Title: "Graphic Designer, Web Developer & Content Creator",
-        exp1Desc: "Building web applications and creating 100+ high-quality graphic assets for local and international clients.",
-        exp2Title: "Founder & Lead Instructor — Parahin Academy",
-        exp2Desc: "Creating educational video content and graphic design masterclasses for 10,000+ online learners.",
-        exp3Title: "Diploma in Graphics & Digital Media",
-        exp3Desc: "Parahin Academy — Advanced Photoshop compositing, visual design hierarchy, and digital art.",
-        hdrSocials: "Social Profiles & Portfolios",
-        hdrOfflineLinks: "🌐 Direct URLs for Offline & Print Reference",
-        qrTitle: "Scan QR for Live Portfolio",
-        lblVerified: "Verified Identity • Updated 2026"
-      },
+    const cvData = {
       bn: {
-        title: "গ্রাফিক্স ডিজাইনার • ওয়েব ডেভেলপার • কন্টেন্ট ক্রিয়েটর",
-        tagline: "হাই-সিটিআর ভিজ্যুয়াল, আধুনিক ওয়েব অ্যাপ্লিকেশন ও এডুকেশনাল কন্টেন্ট মেকার",
-        print: "প্রিন্ট / সেভ PDF",
-        site: "লাইভ পোর্টফোলিও",
-        hdrSummary: "আমার সম্পর্কে (Professional Summary)",
-        txtSummary: "গ্রাফিক ডিজাইন, ওয়েব ডেভেলপমেন্ট এবং কন্টেন্ট তৈরির ক্ষেত্রে বিশেষ পারদর্শী একজন সৃজনশীল পেশাজীবী। দৃষ্টিনন্দন ব্র্যান্ড ডিজাইন, আধুনিক ও রেসপন্সিভ ওয়েবসাইট তৈরি এবং শিক্ষামূলক ডিজিটাল কন্টেন্ট তৈরির বিষয়ে আমি অত্যন্ত আগ্রহী। সৃজনশীলতা ও প্রযুক্তির সমন্বয়ে পরিচ্ছন্ন, ব্যবহারকারী-বান্ধব এবং প্রভাবশালী ডিজিটাল অভিজ্ঞতা প্রদানে আমি নিবেদিত।",
-        hdrSkills: "মূল দক্ষতা (Skills & Expertise)",
-        hdrTools: "সফটওয়্যার ও টুলস (Software & Tools)",
-        hdrProjects: "ফিচার্ড প্রজেক্টসমূহ (Featured Projects)",
-        p1Title: "পার্সোনাল পোর্টফোলিও ওয়েবসাইট",
-        p1Desc: "React, TypeScript ও Tailwind CSS দিয়ে তৈরি রেসপন্সিভ পোর্টফোলিও (9t9.pro.bd) - ডার্ক/লাইট থিম ও গ্লোবাল সার্চ সহ।",
-        p2Title: "আধুনিক ওয়েব অ্যাপ্লিকেশনসমূহ",
-        p2Desc: "ক্লিন আর্কিটেকচার, স্টেট ম্যানেজমেন্ট এবং API ইন্টিগ্রেশন সমৃদ্ধ বিভিন্ন ওয়েব টুলস ও অ্যাপ্লিকেশন।",
-        p3Title: "প্রিমিয়াম ইউটিউব থাম্বনেল",
-        p3Desc: "পাড়াহীন একাডেমি ও অন্যান্য ক্রিয়েটরদের জন্য ১০০+ হাই-সিটিআর থাম্বনেল ডিজাইন, যা অডিয়েন্স রিটেনশন বৃদ্ধি করেছে।",
-        p4Title: "পোস্টার ও সোশ্যাল মিডিয়া ডিজাইন",
-        p4Desc: "Adobe Photoshop & Illustrator দিয়ে ফটো-রিয়ালিস্টিক কম্পোজিটিং আর্ট, ব্যানার ও ফটো ম্যানিপুলেশন।",
-        p5Title: "ব্র্যান্ডিং ও ভিজ্যুয়াল আইডেন্টিটি",
-        p5Desc: "এডুকেশনাল ও ক্রিয়েটর ব্র্যান্ডের জন্য লোগো, সোশ্যাল মিডিয়া কিট এবং কাস্টম ভেক্টর গ্রাফিক্স।",
-        hdrExp: "অভিজ্ঞতা ও শিক্ষা (Experience & Education)",
-        exp1Title: "গ্রাফিক্স ডিজাইনার, ওয়েব ডেভেলপার ও কন্টেন্ট ক্রিয়েটর",
-        exp1Desc: "বাংলাদেশি ও আন্তর্জাতিক ক্লায়েন্টদের জন্য ওয়েব অ্যাপ্লিকেশন বিল্ড এবং ১০০+ প্রিমিয়াম গ্রাফিক্স ডিজাইন প্রদান।",
-        exp2Title: "ফাউন্ডার ও প্রধান প্রশিক্ষক — পাড়াহীন একাডেমি",
-        exp2Desc: "অনলাইন এডুকেশনাল ভিডিও টিউটোরিয়াল এবং গ্রাফিক্স গাইডলাইনের মাধ্যমে ১০,০০০+ শিক্ষার্থীদের দিকনির্দেশনা প্রদান।",
-        exp3Title: "গ্রাফিক্স ও ডিজিটাল মিডিয়া ডিপ্লোমা",
-        exp3Desc: "পাড়াহীন একাডেমি — অ্যাডভান্সড ফটোশপ কম্পোজিটিং, ভিজ্যুয়াল হায়ারার্কি ও ডিজিটাল আর্ট।",
-        hdrSocials: "সোশ্যাল প্রোফাইল ও পোর্টফোলিও",
-        hdrOfflineLinks: "🌐 অফলাইন ও প্রিন্ট রেফারেন্সের জন্য সরাসরি URL সমূহ",
-        qrTitle: "স্ক্যান করে পোর্টফোলিও দেখুন",
-        lblVerified: "যাচাইকৃত ডিজিটাল আইডি • আপডেট ২০২৬"
+        roles: "গ্রাফিক্স ডিজাইনার • UI/UX স্পেশালিস্ট • ফ্রন্টএন্ড ডেভেলপার • কন্টেন্ট ক্রিয়েটর",
+        tagline: "ডিজিটাল ক্রিয়েটিভিটি ও কোডিং ইঞ্জিনিয়ারিংয়ের মেলবন্ধনে বিশ্বমানের ব্র্যান্ডিং, হাই-কনভার্টিং UI/UX এবং আধুনিক রিয়েক্ট ওয়েব অ্যাপ্লিকেশন তৈরি।",
+        location: "সিলেট / ঢাকা, বাংলাদেশ (রিমোট ওয়ার্ল্ডওয়াইড)",
+        statExp: "প্রফেশনাল অভিজ্ঞতা",
+        statProj: "সম্পন্ন প্রজেক্ট",
+        statClients: "হ্যাপি ক্লায়েন্ট",
+        statRating: "১০০% ক্লায়েন্ট সন্তুষ্টি",
+        secSummary: "প্রফেশনাল সামারি",
+        summaryText: "গত ৩ বছরের বেশি সময় ধরে গ্রাফিক্স ডিজাইন, ইউআই/ইউএক্স ইন্টারফেস ডিজাইন, ফ্রন্টএন্ড ওয়েব ডেভেলপমেন্ট এবং কন্টেন্ট ক্রিয়েশনের ফিল্ডে সক্রিয়ভাবে কাজ করছি। আধুনিক ওয়েব স্ট্যাক (HTML5, CSS3, Tailwind CSS, JavaScript, React, Next.js) এবং ক্রিয়েটিভ ডিজাইন টুলস (Photoshop, Illustrator, Figma) ব্যবহারে পারদর্শী। ইউটিউব থাম্বনেইল সাইকোলজি ও হাই-কনভার্টিং ডিজিটাল ব্র্যান্ডিংয়ে অভিজ্ঞ। একইসাথে 'পাড়াহীন একাডেমি' প্ল্যাটফর্মের প্রতিষ্ঠাতা হিসেবে হাজারো লার্নারকে টেকনোলজি ও ক্রিয়েটিভ স্কিল শেখাতে প্রতিশ্রুতিবদ্ধ।",
+        secExp: "কাজের অভিজ্ঞতা",
+        exp1Role: "ফাউন্ডার ও লিড ক্রিয়েটর",
+        exp1Badge: "২০২৪ — বর্তমান",
+        exp1Desc: "টেক এডুকেশন এবং ডিজিটাল ক্রিয়েটিভিটি প্ল্যাটফর্ম পরিচালনা। শিক্ষার্থী ও উদ্যোক্তাদের জন্য আধুনিক ওয়েব কোডিং, গ্রাফিক্স ডিজাইন ও ডিজিটাল স্কিলের কোর্স ও টিউটোরিয়াল তৈরি।",
+        exp2Role: "সিনিয়র UI/UX ও গ্রাফিক্স ডিজাইনার",
+        exp2Badge: "২০২৩ — বর্তমান",
+        exp2Desc: "দেশি ও আন্তর্জাতিক উদ্যোক্তা, ব্র্যান্ড এবং ইউটিউব ক্রিয়েটরদের জন্য হাই-সিটিআর থাম্বনেইল, সোশ্যাল মিডিয়া কিট, লোগো ব্র্যান্ডিং ও ফিগমা ইউআই সিস্টেম তৈরি।",
+        exp3Role: "ফ্রন্টএন্ড ওয়েব ডেভেলপার",
+        exp3Badge: "২০২৩ — বর্তমান",
+        exp3Desc: "React, TypeScript, Tailwind CSS ও আধুনিক এপিআই ব্যবহারের মাধ্যমে দ্রুতগতির, ফুললি রেসপন্সিভ এবং এসইও অপ্টিমাইজড ওয়েব অ্যাপ্লিকেশন ডেভেলপমেন্ট।",
+        secSkills: "দক্ষতা ও প্রযুক্তিগত জ্ঞান",
+        secEdu: "শিক্ষা ও সার্টিফিকেশন",
+        footerText: "© 2026 Md. Masum Billah (Masum 9T9). সর্বস্বত্ব সংরক্ষিত। ভেরিফাইড পোর্টফোলিও: 9t9.pro.bd",
+        lblPrint: "প্রিন্ট",
+        lblDownload: "PDF ডাউনলোড"
+      },
+      en: {
+        roles: "Senior Graphic Designer • UI/UX Specialist • Frontend Developer • Content Creator",
+        tagline: "Bridging the gap between creative visual artistry and modern frontend engineering—delivering high-converting UI/UX, premium branding, and dynamic web apps.",
+        location: "Sylhet / Dhaka, Bangladesh (Available Worldwide)",
+        statExp: "Years Experience",
+        statProj: "Projects Completed",
+        statClients: "Happy Clients",
+        statRating: "100% Satisfaction",
+        secSummary: "Professional Summary",
+        summaryText: "Experienced Creative Technologist with 3+ years of proven expertise in Graphic Design, UI/UX Systems, Frontend Web Development, and Digital Media Creation. Highly proficient in Adobe Creative Cloud (Photoshop, Illustrator), Figma, React, TypeScript, and Tailwind CSS. Recognized for high-CTR YouTube thumbnail psychology, intuitive conversion-driven web design, and educational leadership as Founder of Parahin Academy.",
+        secExp: "Work Experience",
+        exp1Role: "Founder & Lead Creator",
+        exp1Badge: "2024 — Present",
+        exp1Desc: "Directing an online tech education and creative media platform empowering thousands of learners in web coding, graphic design, and content creation.",
+        exp2Role: "Senior UI/UX & Graphic Designer",
+        exp2Badge: "2023 — Present",
+        exp2Desc: "Designed high-CTR visual assets, brand identities, YouTube media packages, and Figma design systems for 50+ international businesses and creators.",
+        exp3Role: "Frontend Web Developer",
+        exp3Badge: "2023 — Present",
+        exp3Desc: "Building lightning-fast, pixel-perfect, and fully responsive React web applications with clean TypeScript code and Tailwind styling.",
+        secSkills: "Technical Skills & Competencies",
+        secEdu: "Education & Certifications",
+        footerText: "© 2026 Md. Masum Billah (Masum 9T9). All Rights Reserved. Verified Portfolio: 9t9.pro.bd",
+        lblPrint: "Print",
+        lblDownload: "Download PDF"
       }
     };
 
-    function setLanguage(lang) {
+    function switchLang(lang) {
       document.getElementById('btn-bn').classList.toggle('active', lang === 'bn');
       document.getElementById('btn-en').classList.toggle('active', lang === 'en');
-
-      const t = translations[lang] || translations['bn'];
-      document.getElementById('txt-title').innerHTML = t.title;
-      document.getElementById('txt-tagline').innerHTML = t.tagline;
-      document.getElementById('lbl-print').innerHTML = t.print;
-      document.getElementById('lbl-site').innerHTML = t.site;
-      document.getElementById('hdr-summary').innerHTML = t.hdrSummary;
-      document.getElementById('txt-summary').innerHTML = t.txtSummary;
-      document.getElementById('hdr-skills').innerHTML = t.hdrSkills;
-      document.getElementById('hdr-tools').innerHTML = t.hdrTools;
-      document.getElementById('hdr-projects').innerHTML = t.hdrProjects;
-      document.getElementById('p1-title').innerHTML = t.p1Title;
-      document.getElementById('p1-desc').innerHTML = t.p1Desc;
-      document.getElementById('p2-title').innerHTML = t.p2Title;
-      document.getElementById('p2-desc').innerHTML = t.p2Desc;
-      document.getElementById('p3-title').innerHTML = t.p3Title;
-      document.getElementById('p3-desc').innerHTML = t.p3Desc;
-      document.getElementById('p4-title').innerHTML = t.p4Title;
-      document.getElementById('p4-desc').innerHTML = t.p4Desc;
-      document.getElementById('p5-title').innerHTML = t.p5Title;
-      document.getElementById('p5-desc').innerHTML = t.p5Desc;
-      document.getElementById('hdr-exp').innerHTML = t.hdrExp;
-      document.getElementById('exp1-title').innerHTML = t.exp1Title;
-      document.getElementById('exp1-desc').innerHTML = t.exp1Desc;
-      document.getElementById('exp2-title').innerHTML = t.exp2Title;
-      document.getElementById('exp2-desc').innerHTML = t.exp2Desc;
-      document.getElementById('exp3-title').innerHTML = t.exp3Title;
-      document.getElementById('exp3-desc').innerHTML = t.exp3Desc;
-      document.getElementById('hdr-socials').innerHTML = t.hdrSocials;
-      if (document.getElementById('hdr-offline-links')) {
-        document.getElementById('hdr-offline-links').innerHTML = t.hdrOfflineLinks;
-      }
-      document.getElementById('qr-title').innerHTML = t.qrTitle;
-      document.getElementById('lbl-verified').innerHTML = t.lblVerified;
-
-      // Update URL search parameter
-      const url = new URL(window.location);
-      url.searchParams.set('lang', lang);
-      window.history.replaceState({}, '', url);
+      
+      const d = cvData[lang];
+      document.getElementById('cv-roles').textContent = d.roles;
+      document.getElementById('cv-tagline').textContent = d.tagline;
+      document.getElementById('cv-location').textContent = d.location;
+      document.getElementById('cv-stat-exp').textContent = d.statExp;
+      document.getElementById('cv-stat-proj').textContent = d.statProj;
+      document.getElementById('cv-stat-clients').textContent = d.statClients;
+      document.getElementById('cv-stat-rating').textContent = d.statRating;
+      document.getElementById('cv-sec-summary').textContent = d.secSummary;
+      document.getElementById('cv-summary-text').textContent = d.summaryText;
+      document.getElementById('cv-sec-exp').textContent = d.secExp;
+      document.getElementById('exp1-role').textContent = d.exp1Role;
+      document.getElementById('exp1-badge').textContent = d.exp1Badge;
+      document.getElementById('exp1-desc').textContent = d.exp1Desc;
+      document.getElementById('exp2-role').textContent = d.exp2Role;
+      document.getElementById('exp2-badge').textContent = d.exp2Badge;
+      document.getElementById('exp2-desc').textContent = d.exp2Desc;
+      document.getElementById('exp3-role').textContent = d.exp3Role;
+      document.getElementById('exp3-badge').textContent = d.exp3Badge;
+      document.getElementById('exp3-desc').textContent = d.exp3Desc;
+      document.getElementById('cv-sec-skills').textContent = d.secSkills;
+      document.getElementById('cv-sec-edu').textContent = d.secEdu;
+      document.getElementById('cv-footer-text').innerHTML = d.footerText;
+      document.getElementById('lbl-print').textContent = d.lblPrint;
+      const lblDownload = document.getElementById('lbl-download');
+      if (lblDownload) lblDownload.textContent = d.lblDownload;
     }
 
-    // Auto-detect language parameter or default to 'bn'
+    async function downloadAsPDF() {
+      const btn = document.getElementById('btn-download-pdf');
+      const origText = btn ? btn.innerHTML : '';
+      if (btn) {
+        btn.innerHTML = '⏳ <span>PDF তৈরি হচ্ছে...</span>';
+        btn.disabled = true;
+      }
+
+      try {
+        const target = document.querySelector('.resume-container');
+        const topBar = document.querySelector('.top-bar');
+        
+        if (topBar) topBar.style.display = 'none';
+        await new Promise(r => setTimeout(r, 100));
+
+        if (!window.html2canvas || !window.jspdf) {
+          window.print();
+          return;
+        }
+
+        const canvas = await window.html2canvas(target, {
+          scale: 2,
+          useCORS: true,
+          logging: false,
+          backgroundColor: '#0E0A07'
+        });
+
+        if (topBar) topBar.style.display = 'flex';
+
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+        const imgData = canvas.toDataURL('image/jpeg', 0.98);
+        pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+
+        const currentLang = document.getElementById('btn-bn').classList.contains('active') ? 'bn' : 'en';
+        const fileName = currentLang === 'bn' ? 'Masum_9T9_Resume_Bangla.pdf' : 'Masum_9T9_Resume_English.pdf';
+        pdf.save(fileName);
+      } catch (e) {
+        console.error("PDF generation error:", e);
+        window.print();
+      } finally {
+        const topBar = document.querySelector('.top-bar');
+        if (topBar) topBar.style.display = 'flex';
+        if (btn) {
+          btn.innerHTML = origText;
+          btn.disabled = false;
+        }
+      }
+    }
+
+    // Auto-detect language and download intent from URL params
     const urlParams = new URLSearchParams(window.location.search);
-    const initialLang = urlParams.get('lang') === 'en' ? 'en' : 'bn';
-    setLanguage(initialLang);
+    const langParam = urlParams.get('lang');
+    if (langParam === 'en') {
+      switchLang('en');
+    }
+    if (urlParams.get('download') === 'true') {
+      window.addEventListener('load', () => {
+        setTimeout(downloadAsPDF, 600);
+      });
+    }
   </script>
 </body>
 </html>

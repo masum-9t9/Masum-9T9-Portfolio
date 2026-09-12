@@ -24,27 +24,27 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
       <div className={`relative inline-block text-left ${className}`}>
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-neutral-900/90 hover:bg-neutral-800 border border-neutral-800 hover:border-[#3A86FF]/50 text-xs font-bold text-white transition-all shadow-sm active:scale-95"
+          className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#181511] hover:bg-[#211D17] border border-[#C7A77D]/30 hover:border-[#C7A77D] text-xs font-bold text-[#F1E8DC] transition-all shadow-sm active:scale-95"
           aria-expanded={isOpen}
           aria-label="Select Language"
         >
-          <Languages className="w-3.5 h-3.5 text-[#3A86FF]" />
+          <Languages className="w-3.5 h-3.5 text-[#C7A77D]" />
           <span>{isBn ? 'BD বাংলা' : 'US English'}</span>
         </button>
 
         {isOpen && (
-          <div className="absolute right-0 mt-2 w-36 rounded-xl bg-neutral-900 border border-neutral-800 shadow-2xl py-1 z-50 overflow-hidden backdrop-blur-xl">
+          <div className="absolute right-0 mt-2 w-36 rounded-xl bg-[#12100D] border border-[#C7A77D]/30 shadow-2xl py-1 z-50 overflow-hidden backdrop-blur-xl">
             <button
               onClick={() => {
                 setLanguage('bn');
                 setIsOpen(false);
               }}
               className={`w-full text-left px-3.5 py-2 text-xs font-bold flex items-center justify-between transition-colors ${
-                isBn ? 'bg-[#3A86FF]/15 text-[#3A86FF]' : 'text-neutral-300 hover:bg-neutral-800 hover:text-white'
+                isBn ? 'bg-[#C7A77D]/15 text-[#DFC29A]' : 'text-[#B8AA98] hover:bg-[#181511] hover:text-[#F1E8DC]'
               }`}
             >
               <span className="flex items-center gap-2">🇧🇩 বাংলা</span>
-              {isBn && <Check className="w-3.5 h-3.5 text-[#3A86FF]" />}
+              {isBn && <Check className="w-3.5 h-3.5 text-[#C7A77D]" />}
             </button>
             <button
               onClick={() => {
@@ -52,11 +52,11 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
                 setIsOpen(false);
               }}
               className={`w-full text-left px-3.5 py-2 text-xs font-bold flex items-center justify-between transition-colors ${
-                !isBn ? 'bg-[#3A86FF]/15 text-[#3A86FF]' : 'text-neutral-300 hover:bg-neutral-800 hover:text-white'
+                !isBn ? 'bg-[#C7A77D]/15 text-[#DFC29A]' : 'text-[#B8AA98] hover:bg-[#181511] hover:text-[#F1E8DC]'
               }`}
             >
               <span className="flex items-center gap-2">🇺🇸 English</span>
-              {!isBn && <Check className="w-3.5 h-3.5 text-[#3A86FF]" />}
+              {!isBn && <Check className="w-3.5 h-3.5 text-[#C7A77D]" />}
             </button>
           </div>
         )}
@@ -71,15 +71,15 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
         onClick={toggleLanguage}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className={`relative flex items-center gap-1 xs:gap-1.5 px-2 xs:px-2.5 sm:px-3 py-1 xs:py-1.5 rounded-full text-xs font-extrabold transition-all duration-200 select-none shadow-md ${
+        className={`relative flex items-center gap-1 xs:gap-1.5 px-2.5 xs:px-3 py-1 xs:py-1.5 rounded-full text-xs font-extrabold transition-all duration-200 select-none shadow-md ${
           isBn
-            ? 'bg-gradient-to-r from-emerald-950/80 via-neutral-900 to-neutral-900 border border-emerald-500/40 text-emerald-300 hover:border-emerald-400 hover:text-white'
-            : 'bg-gradient-to-r from-blue-950/80 via-neutral-900 to-neutral-900 border border-[#3A86FF]/40 text-blue-300 hover:border-[#3A86FF] hover:text-white'
+            ? 'bg-[#181511] border border-[#C7A77D]/40 text-[#DFC29A] hover:border-[#DFC29A] hover:text-white'
+            : 'bg-[#181511] border border-[#C7A77D]/30 text-[#B8AA98] hover:border-[#C7A77D] hover:text-white'
         }`}
         aria-label={t.switchLanguageTooltip}
         title={t.switchLanguageTooltip}
       >
-        <Globe className={`w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-45 ${isBn ? 'text-emerald-400' : 'text-[#3A86FF]'}`} />
+        <Globe className="w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-45 text-[#C7A77D]" />
         
         <div className="flex items-center gap-1">
           <span className="text-[10px] xs:text-[11px] font-black uppercase tracking-wider">
@@ -90,14 +90,12 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
 
         {/* Subtle glowing pill indicator */}
         <span
-          className={`w-1.5 h-1.5 rounded-full animate-pulse ml-0.5 ${
-            isBn ? 'bg-emerald-400 shadow-[0_0_8px_#34d399]' : 'bg-[#3A86FF] shadow-[0_0_8px_#3a86ff]'
-          }`}
+          className="w-1.5 h-1.5 rounded-full animate-pulse ml-0.5 bg-[#C7A77D] shadow-[0_0_8px_#C7A77D]"
         />
       </motion.button>
 
       {/* Floating Tooltip */}
-      <div className="absolute top-full mt-2 left-1/2 -translate-x-1/2 px-2.5 py-1 bg-neutral-900/95 border border-white/10 text-white text-[11px] font-semibold rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none whitespace-nowrap z-50 shadow-xl backdrop-blur-md">
+      <div className="absolute top-full mt-2 left-1/2 -translate-x-1/2 px-2.5 py-1 bg-[#181511]/95 border border-[#C7A77D]/30 text-[#F1E8DC] text-[11px] font-semibold rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none whitespace-nowrap z-50 shadow-xl backdrop-blur-md">
         {t.switchLanguageTooltip}
       </div>
     </div>

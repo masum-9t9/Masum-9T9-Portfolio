@@ -9,7 +9,10 @@ export const UI_TRANSLATIONS = {
       skills: 'দক্ষতা',
       services: 'সেবা',
       projects: 'প্রজেক্ট',
-      designProjects: 'ডিজাইন প্রজেক্ট',
+      uiUxDesign: 'ইউআই-ইউএক্স ডিজাইন',
+      frontendDev: 'ফ্রন্টএন্ড ডেভেলপমেন্ট',
+      graphicsDesign: 'গ্রাফিক্স ডিজাইন',
+      designProjects: 'গ্রাফিক্স ডিজাইন',
       codingProjects: 'কোডিং প্রজেক্ট',
       portfolio: 'ডিজাইন প্রজেক্ট',
       ecosystem: 'কোডিং প্রজেক্ট',
@@ -26,7 +29,7 @@ export const UI_TRANSLATIONS = {
     },
     about: {
       title: 'আমার সম্পর্কে',
-      subtitle: 'গ্রাফিক ডিজাইনার • ফ্রন্ট-এন্ড ওয়েব ডেভেলপার • কন্টেন্ট ক্রিয়েটর',
+      subtitle: 'প্যাশনেট ভিজ্যুয়াল স্টোরিটেলার ও গ্রাফিক্স ডিজাইনার',
       storyHeading: 'ডিজিটাল ক্রিয়েটিভিটির যাত্রাপথ',
       visionHeading: 'আমার লক্ষ্য ও ভিশন',
       careerGoalsHeading: 'ক্যারিয়ার গোলস',
@@ -133,8 +136,8 @@ export const UI_TRANSLATIONS = {
     footer: {
       roleTag: 'নতুন প্রজেক্টের জন্য এভেলেবল',
       availableForProjects: 'নতুন প্রজেক্টের জন্য এভেলেবল',
-      bio: 'প্রফেশনাল গ্রাফিক্স ডিজাইনার, ওয়েব ডেভেলপার ও কন্টেন্ট ক্রিয়েটর। পোস্টার ডিজাইন, হাই-সিটিআর ইউটিউব থাম্বনেল, এডুকেশন ভিজ্যুয়াল এবং কাস্টম থিম ডিজাইনে বিশেষজ্ঞ।',
-      brandBio: 'প্রফেশনাল গ্রাফিক্স ডিজাইনার, ওয়েব ডেভেলপার ও কন্টেন্ট ক্রিয়েটর। পোস্টার ডিজাইন, হাই-সিটিআর ইউটিউব থাম্বনেল, এডুকেশন ভিজ্যুয়াল এবং কাস্টম থিম ডিজাইনে বিশেষজ্ঞ।',
+      bio: 'ডেভেলপার, কন্টেন্ট ক্রিয়েটর ও ডিজাইনার। পোস্টার ডিজাইন, হাই-সিটিআর ইউটিউব থাম্বনেল, এডুকেশন ভিজ্যুয়াল এবং কাস্টম থিম ডিজাইনে বিশেষজ্ঞ।',
+      brandBio: 'ডেভেলপার, কন্টেন্ট ক্রিয়েটর ও ডিজাইনার। পোস্টার ডিজাইন, হাই-সিটিআর ইউটিউব থাম্বনেল, এডুকেশন ভিজ্যুয়াল এবং কাস্টম থিম ডিজাইনে বিশেষজ্ঞ।',
       quickNav: 'দ্রুত নেভিগেশন',
       copyright: 'সর্বস্বত্ব সংরক্ষিত।',
       rightsReserved: 'সর্বস্বত্ব সংরক্ষিত।',
@@ -151,7 +154,10 @@ export const UI_TRANSLATIONS = {
       skills: 'Skills',
       services: 'Services',
       projects: 'Projects',
-      designProjects: 'Design Projects',
+      uiUxDesign: 'UI-UX Design',
+      frontendDev: 'Frontend Development',
+      graphicsDesign: 'Graphics Design',
+      designProjects: 'Graphics Design',
       codingProjects: 'Coding Projects',
       portfolio: 'Design Projects',
       ecosystem: 'Coding Projects',
@@ -275,8 +281,8 @@ export const UI_TRANSLATIONS = {
     footer: {
       roleTag: 'Available for New Projects',
       availableForProjects: 'Available for New Projects',
-      bio: 'Professional Graphics Designer, Web Developer & Content Creator. Specialized in poster design, high-CTR YouTube thumbnails, educational visuals, and custom theme designs.',
-      brandBio: 'Professional Graphics Designer, Web Developer & Content Creator. Specialized in poster design, high-CTR YouTube thumbnails, educational visuals, and custom theme designs.',
+      bio: 'Designer & Web Developer. Specialized in poster design, high-CTR YouTube thumbnails, educational visuals, and custom theme designs.',
+      brandBio: 'Designer & Web Developer. Specialized in poster design, high-CTR YouTube thumbnails, educational visuals, and custom theme designs.',
       quickNav: 'Quick Navigation',
       copyright: 'All rights reserved.',
       rightsReserved: 'All rights reserved.',
@@ -291,7 +297,7 @@ export const ENGLISH_PORTFOLIO_CONFIG: PortfolioConfig = {
   hero: {
     greeting: "Hello, I'm",
     name: "Masum 9T9",
-    role: "Developer & Designer",
+    role: "Graphics Designer • UI/UX Designer • Web Developer • Content Creator",
     rotatingRoles: [
       "Poster Design Specialist",
       "YouTube Thumbnail Creator",
@@ -302,13 +308,13 @@ export const ENGLISH_PORTFOLIO_CONFIG: PortfolioConfig = {
     bio: "I specialize in creating modern, high-converting digital graphics art. From professional posters and high-CTR YouTube thumbnails to educational visuals and custom themes, I take your brand to the next level.",
     statusBadge: "Available for Work",
     availableForHire: true,
-    profileImage: "https://i.postimg.cc/xCX1vY0H/Profile-pic.png",
+    profileImage: "https://i.postimg.cc/gJT7B3XX/Profile-pic.png",
     ctaPrimaryText: "View Projects",
     ctaSecondaryText: "Contact Me"
   },
   about: {
     title: "About Me",
-    subtitle: "Graphic Designer • Frontend Web Developer • Content Creator",
+    subtitle: "Designer & Web Developer",
     storyHeading: "The Journey of Digital Creativity",
     storyParagraphs: [
       "For over 3 years, I have been passionately creating digital graphic art and thumbnail designs. Transforming ordinary visuals into compelling artwork is my core mission.",
@@ -597,90 +603,336 @@ export const ENGLISH_PORTFOLIO_CONFIG: PortfolioConfig = {
       clientName: "Meo Entertainment",
       year: "2025",
       liveUrl: "https://youtu.be/CYm9tW22qLo?si=6XM_GbUiYTWSUNXw"
+    },
+    {
+      id: "port_ui_1",
+      title: "Parahin Academy — Learning Management Mobile App UI Design",
+      category: "mobile_app_ui",
+      categoryLabel: "Mobile App UI",
+      imageUrl: "https://i.postimg.cc/rsFF9mFd/fbd8b403-9dba-42c1-a984-1293f50492cd.jpg",
+      description: "Modern, intuitive, and interactive learning platform mobile app UI design system (Figma) for 10,000+ learners.",
+      longDescription: "Complete mobile learning design system created for Parahin Academy students. Features dark mode optimization, course navigation, video lecture player, and student progress tracking dashboard.",
+      viewsCount: "10K+ Learners",
+      achievement: "Complete Figma Design System",
+      technologies: ["Figma", "UI/UX", "Prototyping", "Mobile UX"],
+      clientName: "Parahin Academy",
+      year: "2026",
+      liveUrl: "https://9t9.pro.bd"
+    },
+    {
+      id: "port_ui_2",
+      title: "Creative Studio Dark Analytics Dashboard UI",
+      category: "dashboard_ui",
+      categoryLabel: "Dashboard UI",
+      imageUrl: "https://i.postimg.cc/hvxNBYx5/edu-1.jpg",
+      description: "Luxury dark theme analytics dashboard tracking digital content performance, YouTube metrics, and creator revenue.",
+      longDescription: "Analytics interface crafted for content creators and agencies. Features real-time CTR charts, retention curves, and channel performance visualizers.",
+      viewsCount: "25+ Agencies",
+      achievement: "High-Conversion Dashboard Architecture",
+      technologies: ["Figma", "Design Systems", "UI Architecture"],
+      clientName: "Creator Studio Global",
+      year: "2025",
+      liveUrl: "https://9t9.pro.bd"
+    },
+    {
+      id: "port_web_1",
+      title: "Masum 9T9 — Modern Bilingual Portfolio Web App",
+      category: "portfolio_web",
+      categoryLabel: "Web Development",
+      imageUrl: "https://i.postimg.cc/Qxmcs9WJ/hyre-kopal-poster.jpg",
+      description: "Ultra-fast interactive personal portfolio and service platform built with React 19, TypeScript, Motion, and Tailwind CSS.",
+      longDescription: "Features 90+ Lighthouse score, bilingual English & Bengali support, custom sound effects, live interactive project price calculator, and instant CV PDF engine.",
+      viewsCount: "Active",
+      achievement: "100% Performance & Responsiveness",
+      technologies: ["React", "TypeScript", "Tailwind CSS", "Motion"],
+      clientName: "Masum 9T9",
+      year: "2026",
+      liveUrl: "https://9t9.pro.bd"
     }
   ],
   featuredEcosystem: [
     {
       id: "eco_1",
-      badge: "Portfolio",
-      title: "Portfolio Website",
+      badge: "Portfolio Platform",
+      title: "Portfolio Website & Digital Showcase",
+      subtitle: "Interactive Creative Technologist Showcase & Web App",
       mainUrl: "https://www.9t9.pro.bd",
-      description: "A professional portfolio featuring graphic design, branding, UI concepts, and AI-powered web development. Showcasing creative projects, technical expertise, and digital solutions for modern businesses.",
+      githubUrl: "https://github.com/masum-9t9/portfolio-theme",
+      imageUrl: "https://i.postimg.cc/rsFF9mFd/fbd8b403-9dba-42c1-a984-1293f50492cd.jpg",
+      description: "A professional creative technologist portfolio featuring graphic design, branding, UI/UX concepts, and full-stack web applications. Built with React 19, TypeScript, and Tailwind CSS for peak performance and micro-interactions.",
+      category: "Full-Stack Web App",
+      categoryBadges: ["React 19", "TypeScript", "Tailwind CSS", "Vite", "Motion"],
+      status: "Production Ready",
+      duration: "2026 / 3 Months",
+      uiuxDesignerName: "Masum 9T9",
+      developerName: "Masum 9T9",
+      completionProgress: 100,
+      designVersion: "v4.5 Stable",
+      techStack: ["HTML5", "CSS3", "JavaScript", "React", "TypeScript", "Tailwind CSS", "Firebase", "Node.js"],
       stats: [
-        { label: "ACHIEVEMENT", value: "100+ Clients" },
-        { label: "Earn", value: "$10K+" }
+        { label: "ACHIEVEMENT", value: "100+ Projects" },
+        { label: "Clients", value: "50+ Global" }
       ],
       keyFeatures: [
-        "Premium UI/UX with smooth interactive animations.",
-        "Seamless Bilingual Support (English & বাংলা)",
-        "Fully responsive across desktop, tablet, and mobile.",
-        "SEO & performance optimized for faster loading.",
-        "Professional showcase for design, branding, and web projects."
+        "Responsive Design across Desktop, Tablet & Mobile",
+        "Smooth Animations & Motion Transitions",
+        "SEO Friendly with Meta & OpenGraph Integration",
+        "Modern UI with Glassmorphism & High Contrast",
+        "Fast Performance & Instant Page Loading",
+        "Full Accessibility (WCAG AA Standard)",
+        "Dark Mode Luxury Palette with Subtle Glows",
+        "Reusable Modular React Components System"
       ],
       galleryImages: [
-        "https://i.postimg.cc/7ZcG0nqC/Screenshot-(17).png",
-        "https://i.postimg.cc/908FVcMX/Screenshot-(18).png",
-        "https://i.postimg.cc/SRvq3VTj/Screenshot-(19).png"
+        "https://i.postimg.cc/rsFF9mFd/fbd8b403-9dba-42c1-a984-1293f50492cd.jpg",
+        "https://i.postimg.cc/j28Vv1VJ/Songsar-er-bondhon.jpg",
+        "https://i.postimg.cc/wTv3H8BY/Hayre-Kopal.jpg"
       ],
       links: [
         {
           label: "Live Demo",
           url: "https://9t9.pro.bd",
           type: "web"
+        },
+        {
+          label: "GitHub Repository",
+          url: "https://github.com/masum-9t9/portfolio-theme",
+          type: "github"
+        }
+      ]
+    },
+    {
+      id: "eco_2",
+      badge: "Custom Theme",
+      title: "Premium Dark Luxury Custom Theme",
+      subtitle: "Ultra-Fast Glassmorphic Web & Blogger Theme",
+      mainUrl: "https://9t9.pro.bd",
+      githubUrl: "https://github.com/masum-9t9/custom-dark-theme",
+      imageUrl: "https://i.postimg.cc/rsFF9mFd/fbd8b403-9dba-42c1-a984-1293f50492cd.jpg",
+      description: "An ultra-responsive dark theme engineered with glassmorphism UI, 100/100 Lighthouse performance score, zero lag, and semantic HTML5/CSS3 architecture for modern web applications and blogs.",
+      category: "Frontend Web Theme",
+      categoryBadges: ["HTML5", "CSS3", "Tailwind CSS", "JavaScript", "Glassmorphism"],
+      status: "Completed",
+      duration: "2026",
+      uiuxDesignerName: "Masum 9T9",
+      developerName: "Masum 9T9",
+      completionProgress: 100,
+      designVersion: "v4.0 Master",
+      techStack: ["HTML5", "CSS3", "Tailwind CSS", "JavaScript", "ES6+"],
+      stats: [
+        { label: "Performance", value: "100/100" },
+        { label: "Load Speed", value: "0.4s Fast" }
+      ],
+      keyFeatures: [
+        "Responsive Layout across all screen sizes",
+        "100/100 Lighthouse Performance Score",
+        "SEO Friendly Schema Metadata",
+        "Glassmorphic Card UI & High Contrast",
+        "Fast Performance & Lightweight Footprint",
+        "Full Accessibility & Keyboard Navigation",
+        "Dark Mode Default Atmosphere",
+        "Reusable Components & Clean Code"
+      ],
+      galleryImages: [
+        "https://i.postimg.cc/rsFF9mFd/fbd8b403-9dba-42c1-a984-1293f50492cd.jpg",
+        "https://i.postimg.cc/hvxNBYx5/edu-1.jpg"
+      ],
+      links: [
+        {
+          label: "Live Demo",
+          url: "https://9t9.pro.bd",
+          type: "web"
+        },
+        {
+          label: "GitHub Repository",
+          url: "https://github.com/masum-9t9/custom-dark-theme",
+          type: "github"
+        }
+      ]
+    },
+    {
+      id: "eco_3",
+      badge: "Educational Hub",
+      title: "Parahin Academy Tech Media Platform",
+      subtitle: "Interactive Educational Ecosystem & Video Hub",
+      mainUrl: "https://www.youtube.com/@ParahinAcademy",
+      githubUrl: "https://github.com/masum-9t9/parahin-academy-web",
+      imageUrl: "https://i.postimg.cc/hvxNBYx5/edu-1.jpg",
+      description: "Comprehensive educational web platform for Parahin Academy, delivering tech video tutorials, graphic design courses, interactive quizzes, and downloadable resources.",
+      category: "Educational Web Platform",
+      categoryBadges: ["React", "Node.js", "Firebase", "Tailwind", "REST API"],
+      status: "Production Ready",
+      duration: "2025 - 2026",
+      uiuxDesignerName: "Masum 9T9",
+      developerName: "Masum 9T9",
+      completionProgress: 95,
+      designVersion: "v2.2 Pro",
+      techStack: ["React", "TypeScript", "Tailwind CSS", "Node.js", "Firebase"],
+      stats: [
+        { label: "Students", value: "10,000+" },
+        { label: "Courses", value: "50+ Tutorials" }
+      ],
+      keyFeatures: [
+        "Responsive Video Player & Course Interface",
+        "Smooth Animations & Micro-Interactions",
+        "SEO Friendly Video Metadata Integration",
+        "Modern UI with High-Contrast Dark Scheme",
+        "Fast Performance & Instant Resource Loading",
+        "Accessibility & Keyboard Controls",
+        "Dark Mode Optimized Palette",
+        "Reusable Modular Architecture"
+      ],
+      galleryImages: [
+        "https://i.postimg.cc/hvxNBYx5/edu-1.jpg",
+        "https://i.postimg.cc/XJ2Y5pzZ/edu-2.jpg"
+      ],
+      links: [
+        {
+          label: "Live Demo",
+          url: "https://www.youtube.com/@ParahinAcademy",
+          type: "web"
+        },
+        {
+          label: "GitHub Repository",
+          url: "https://github.com/masum-9t9/parahin-academy-web",
+          type: "github"
+        }
+      ]
+    },
+    {
+      id: "eco_4",
+      badge: "Creative Tooling",
+      title: "High-CTR Visuals Engine & Asset Manager",
+      subtitle: "Automated Web Asset & Design Management Portal",
+      mainUrl: "https://9t9.pro.bd",
+      githubUrl: "https://github.com/masum-9t9/visuals-engine",
+      imageUrl: "https://i.postimg.cc/wTv3H8BY/Hayre-Kopal.jpg",
+      description: "Web-based asset catalog and manager to preview, organize, and share high-conversion YouTube thumbnails, drama posters, and graphic design deliverables in real-time.",
+      category: "Web Application",
+      categoryBadges: ["React", "TypeScript", "Canvas API", "Tailwind"],
+      status: "Completed",
+      duration: "2025",
+      uiuxDesignerName: "Masum 9T9",
+      developerName: "Masum 9T9",
+      completionProgress: 100,
+      designVersion: "v1.8 Tool",
+      techStack: ["HTML5", "CSS3", "JavaScript", "React", "TypeScript", "Tailwind CSS"],
+      stats: [
+        { label: "Assets", value: "1,000+ Files" },
+        { label: "Views", value: "2.3M+ Reach" }
+      ],
+      keyFeatures: [
+        "Responsive Design for Mobile & Desktop",
+        "Smooth Animations & Image Zoom Effects",
+        "SEO Friendly URL Slug Generation",
+        "Modern UI with Clean Glass Cards",
+        "Fast Performance & Client-Side Caching",
+        "Accessibility & Screen Reader Friendly",
+        "Dark Mode Aesthetic Palette",
+        "Reusable Canvas & Grid Components"
+      ],
+      galleryImages: [
+        "https://i.postimg.cc/wTv3H8BY/Hayre-Kopal.jpg",
+        "https://i.postimg.cc/j28Vv1VJ/Songsar-er-bondhon.jpg"
+      ],
+      links: [
+        {
+          label: "Live Demo",
+          url: "https://9t9.pro.bd",
+          type: "web"
+        },
+        {
+          label: "GitHub Repository",
+          url: "https://github.com/masum-9t9/visuals-engine",
+          type: "github"
         }
       ]
     }
   ],
   testimonials: [
     {
-      id: "test_1",
-      name: "Ariful Islam",
-      role: "YouTuber & Content Creator",
-      company: "TechTalk BD (350k+ Subs)",
-      avatarUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=250",
-      rating: 5,
-      comment: "After using Masum brother's thumbnail designs, my channel's average CTR jumped from 9% to 15.4%! His finishing and typography are top-tier.",
-      projectType: "YouTube Thumbnail"
-    },
-    {
-      id: "test_2",
-      name: "Al Mahi Rahman",
-      role: "Instructor",
-      company: "HulkenStein Infinity School",
-      avatarUrl: "https://i.postimg.cc/VLJCtYG2/Al-Mahi-Rahman.jpg",
-      rating: 5,
-      comment: "Masum designed many of our academic class thumbnails and posters. I 100% recommend him for his timely delivery and premium quality.",
-      projectType: "Education Graphics"
-    },
-    {
-      id: "test_3",
+      id: "test_mh",
       name: "Megh Heem",
-      role: "Director",
+      role: "Drama Director",
       company: "Raad Multimedia & Meo Entertainment",
       avatarUrl: "https://i.postimg.cc/d1zKSjFk/Megh-Heem.jpg",
       rating: 5,
-      comment: "His composition sense in poster design is incredible. I've taken several posters and thumbnails including 'Hayre Kopal', 'Songsar-er Bondhon', and 'Abba'. Thanks to his great designs, our new channel gained 2.3M+ views immediately.",
-      projectType: "Poster Design"
+      comment: "What impresses me most about Masum brother is how he translates a story's emotional core into the poster's visual composition. For our drama 'Hayre Kopal', I was quite selective about the key visual and thumbnail. The way he sculpted custom Bengali typography with dramatic lighting grabbed immediate attention—a huge reason why the drama crossed 2.3M+ views on YouTube. I trust his artistic vision blindly for my productions.",
+      projectType: "Natok Poster & Thumbnail",
+      designImageUrl: "https://i.postimg.cc/Qxmcs9WJ/hyre-kopal-poster.jpg"
     },
     {
-      id: "test_4",
-      name: "Sadia Rahman",
-      role: "Digital Marketer",
-      company: "Smart Brands Ltd.",
-      avatarUrl: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=250",
+      id: "test_mr",
+      name: "Al Mahi Rahman",
+      role: "Senior Instructor",
+      company: "HulkenStein Infinity School",
+      avatarUrl: "https://i.postimg.cc/VLJCtYG2/Al-Mahi-Rahman.jpg",
       rating: 5,
-      comment: "Our promotional banner sales conversions increased significantly. Masum understands customer psychology very well. Thank you!",
-      projectType: "Social Banner"
+      comment: "In educational content, a thumbnail needs clarity and focus above pure aesthetics. Masum designed the class thumbnails for our 'Class 8 Exam Strategy' and 'Scholarship Exam 2025' live series with incredible precision. The color contrast and legibility made key topics pop immediately, pushing our YouTube CTR past 14%. His punctuality and willingness to refine feedback make him a valuable partner.",
+      projectType: "Education Thumbnail",
+      designImageUrl: "https://i.postimg.cc/hvxNBYx5/edu-1.jpg"
     },
     {
-      id: "test_5",
-      name: "Mahmudul Hasan",
-      role: "Blogger & Developer",
-      company: "TechTunes BD",
-      avatarUrl: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=250",
+      id: "test_tr",
+      name: "Tanveer Rahman",
+      role: "CU Admission Candidate",
+      company: "Chittagong University (CU)",
+      avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=TanveerRahman",
       rating: 5,
-      comment: "Masum's custom theme design work is extremely clean and responsive. Runs smoothly without any bugs. Highly professional!",
-      projectType: "Custom Theme"
+      comment: "During the intense admission test prep, Masum brother's lecture slides were a breath of fresh air. He formatted complex English grammar rules and shortcuts into intuitive visual breakdowns and clean charts. Instead of dense text walls, every slide was designed for quick retention. It genuinely made my study sessions more productive and structured.",
+      projectType: "Educational Slide & Content"
+    },
+    {
+      id: "test_ip",
+      name: "Md. Isradul Khan Plabon",
+      role: "DU Student",
+      company: "Dhaka University (DU)",
+      avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=IsradulPlabon",
+      rating: 5,
+      comment: "At Parahin Academy, the presentation slides and notes for HSC & Admission English were designed by Masum. The soft color palettes and clean typography made long lectures comfortable to read without eye strain. Having key concepts visually highlighted allowed us to grasp the essence of a lecture in seconds. He truly knows how design can serve effective learning.",
+      projectType: "Academic Slide Design"
+    },
+    {
+      id: "test_an",
+      name: "Asif Uzzaman Naeem",
+      role: "Creator & Digital Marketer",
+      company: "Universidade de Lisboa, Portugal",
+      avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=AsifNaeem",
+      rating: 5,
+      comment: "Working with Masum on my YouTube channel artwork and visual branding was a seamless experience. He pays attention to pixel perfection and color harmony that immediately elevates brand perception. What stands out most is his patient approach—he doesn't rush through iterations until the final output meets exact brand guidelines. Exceptional craft.",
+      projectType: "Branding & Channel Art"
+    },
+    {
+      id: "test_tv_rifat",
+      name: "Tanvir Ahmed Rifat",
+      role: "Content Producer",
+      company: "Raad Multimedia & Natok Hub",
+      avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=TanvirRifat",
+      rating: 5,
+      comment: "Working alongside Masum on the promotional key visual for our family drama 'Songsar-er Bondhon' was genuinely rewarding. He blended character cutouts with a warm sunset palette and custom emotional typography that reflected the story's soul. The moment we released the poster on social media, the audience response was overwhelming. A truly dedicated designer.",
+      projectType: "Natok Poster Design",
+      designImageUrl: "https://i.postimg.cc/j28Vv1VJ/Songsar-er-bondhon.jpg"
+    },
+    {
+      id: "test_mh_dev",
+      name: "Shahriar Alam Robin",
+      role: "Co-Founder & Client",
+      company: "NexaCraft Studio",
+      avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=ShahriarRobin",
+      rating: 5,
+      comment: "When a talented UI designer also happens to write high-performance React and Tailwind code, the results are outstanding. Masum built a modern glassmorphic dark interface for our web app with silky smooth motion and responsive layout. It achieved a 100/100 Google Lighthouse score with pristine code structure. My entire client team was thoroughly impressed.",
+      projectType: "UI/UX & Web Development",
+      designImageUrl: "https://i.postimg.cc/rsFF9mFd/fbd8b403-9dba-42c1-a984-1293f50492cd.jpg"
+    },
+    {
+      id: "test_sa",
+      name: "Siam Ahmed",
+      role: "Creative Director",
+      company: "Creative Canvas BD",
+      avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=SiamAhmed",
+      rating: 5,
+      comment: "A deep understanding of color theory, spacing, and brand identity shines through all of Masum 9T9's creative work. After he overhauled our agency's social media templates and channel graphics, our organic audience engagement saw a measurable boost. His ability to interpret brief requirements while adding thoughtful artistic touches makes him a go-to collaborator.",
+      projectType: "Branding & Social Graphics"
     }
   ],
   achievements: [
@@ -707,16 +959,16 @@ export const ENGLISH_PORTFOLIO_CONFIG: PortfolioConfig = {
     },
     {
       id: "ach_4",
-      number: 150,
+      number: 1000,
       suffix: "+",
       label: "Custom Art Assets",
       iconName: "Layers"
     },
     {
       id: "ach_5",
-      number: 525,
+      number: 1200,
       suffix: "+",
-      label: "Cup of milk tea ☕",
+      label: "Cups of Coffee ☕",
       iconName: "Coffee"
     }
   ],
@@ -771,7 +1023,7 @@ export const ENGLISH_PORTFOLIO_CONFIG: PortfolioConfig = {
     whatsappNumber: "+8801303623838",
     location: "Satkhira, Khulna, Bangladesh",
     googleSheetScriptUrl: "https://script.google.com/macros/s/AKfycbybx_ey85GMFxDSMHXH3ljkaM4s4PRircG3XPOWVYjYkLTfwJJqFo85wnKzjsbR51FIfg/exec",
-    telegramBotToken: (import.meta as unknown as { env: Record<string, string> }).env?.VITE_TELEGRAM_BOT_TOKEN || "8833148612:AAHihj3OkapzuM0RemcOv29ahsUEhnRIhuc",
-    telegramChatId: "8634088852"
+    telegramBotToken: (import.meta as unknown as { env: Record<string, string> }).env?.VITE_TELEGRAM_BOT_TOKEN || "",
+    telegramChatId: (import.meta as unknown as { env: Record<string, string> }).env?.VITE_TELEGRAM_CHAT_ID || ""
   }
 };

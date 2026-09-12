@@ -37,7 +37,7 @@ export interface AboutData {
 export interface SkillItem {
   id: string;
   name: string;
-  category: 'software' | 'design_field';
+  category: 'design' | 'development' | 'content' | 'software' | 'design_field';
   proficiency: number;
   iconName: string;
   description: string;
@@ -123,6 +123,7 @@ export interface SocialLinks {
   behance?: string;
   fiverr?: string;
   github?: string;
+  dribbble?: string;
 }
 
 export interface ContactConfig {
@@ -147,7 +148,9 @@ export interface FeaturedEcosystemItem {
   id: string;
   badge: string;
   title: string;
+  subtitle?: string;
   mainUrl?: string;
+  githubUrl?: string;
   imageUrl?: string;
   description: string;
   stats: {
@@ -163,6 +166,13 @@ export interface FeaturedEcosystemItem {
   uiuxDesignerUrl?: string;
   developerName?: string;
   developerUrl?: string;
+  category?: string;
+  categoryBadges?: string[];
+  status?: string;
+  duration?: string;
+  techStack?: string[];
+  documentationUrl?: string;
+  caseStudyUrl?: string;
 }
 
 export interface PortfolioConfig {
@@ -172,7 +182,9 @@ export interface PortfolioConfig {
   services: ServiceItem[];
   experiences: ExperienceItem[];
   portfolio: PortfolioItem[];
+  portfolioItems?: PortfolioItem[];
   featuredEcosystem?: FeaturedEcosystemItem[];
+  ecosystemProjects?: FeaturedEcosystemItem[];
   testimonials: TestimonialItem[];
   achievements: AchievementItem[];
   faqs: FAQItem[];

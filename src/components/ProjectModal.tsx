@@ -1,310 +1,429 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, ExternalLink, Calendar, User, CheckCircle, Maximize2, ZoomIn, Eye, Trophy, Award, Sparkles, Code2, Layers, Copy, Check, Share2, Link2 } from 'lucide-react';
+import { X, ExternalLink, Calendar, User, CheckCircle, Maximize2, ZoomIn, Eye, Trophy, Award, Sparkles, Layers, Check, Share2 } from 'lucide-react';
 import { PortfolioItem } from '../types';
 import { copyToClipboard, getProjectShareUrl } from '../utils/clipboard';
+import { pauseLenis, resumeLenis } from './SmoothScroll';
 
 interface ProjectModalProps {
   project: PortfolioItem | null;
   onClose: () => void;
   onOpenCreatorProfile?: () => void;
+  onNavigate?: (page: string) => void;
 }
 
-export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onOpenCreatorProfile }) => {
+export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onOpenCreatorProfile, onNavigate }) => {
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+
+  // Lock background website scroll (including html, body, and Lenis) so ONLY the modal content scrolls
+  useEffect(() => {
+    if (!project) return;
+    
+    // Completely pause smooth scroll provider to stop wheel hijacking
+    pauseLenis();
+
+    const originalHtmlOverflow = document.documentElement.style.overflow;
+    const originalBodyOverflow = document.body.style.overflow;
+    const originalBodyTouchAction = document.body.style.touchAction;
+    const originalBodyPaddingRight = document.body.style.paddingRight;
+    
+    // Prevent layout shift from scrollbar disappearing
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    if (scrollbarWidth > 0) {
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+    }
+
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
+    document.body.style.touchAction = 'none';
+
+    return () => {
+      document.documentElement.style.overflow = originalHtmlOverflow;
+      document.body.style.overflow = originalBodyOverflow;
+      document.body.style.touchAction = originalBodyTouchAction;
+      document.body.style.paddingRight = originalBodyPaddingRight;
+      resumeLenis();
+    };
+  }, [project]);
 
   if (!project) return null;
 
-  const handleCopyLink = async () => {
+  const handleShare = async () => {
     const url = getProjectShareUrl(project.id, project.liveUrl);
     const success = await copyToClipboard(url);
+
+    if (navigator.share && /mobile|android|iphone/i.test(navigator.userAgent)) {
+      try {
+        await navigator.share({
+          title: project.title,
+          text: project.description,
+          url: url,
+        });
+      } catch (err) {
+        // User closed native share sheet
+      }
+    }
+
     if (success) {
       setIsCopied(true);
-      setTimeout(() => setIsCopied(false), 2500);
+      setShowToast(true);
+      setTimeout(() => {
+        setIsCopied(false);
+        setShowToast(false);
+      }, 3000);
     }
   };
 
   return (
-    <AnimatePresence>
-      {/* Outer scrollable overlay using grid place-items-center so top of modal is always accessible */}
-      <div className="fixed inset-0 z-50 overflow-y-auto bg-black/90 backdrop-blur-md p-3 sm:p-6 grid place-items-center">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: 10 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95, y: 10 }}
-          className="bg-neutral-900 border border-neutral-800 rounded-3xl max-w-4xl w-full overflow-hidden shadow-2xl relative my-auto"
-        >
-            {/* Top Right Controls: Copy Link & Close */}
-            <div className="absolute top-4 right-4 z-20 flex items-center gap-2">
+    <motion.div 
+      data-lenis-prevent
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.28, ease: "easeOut" }}
+      className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md p-2 sm:p-4 md:p-6 flex items-center justify-center overflow-hidden"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+      onWheel={(e) => e.stopPropagation()}
+      onTouchMove={(e) => {
+        if (e.target === e.currentTarget) e.preventDefault();
+      }}
+    >
+      <AnimatePresence>
+        {showToast && (
+          <motion.div
+            initial={{ opacity: 0, y: -20, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0.9 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="fixed top-6 left-1/2 -translate-x-1/2 z-[80] px-5 py-3 rounded-2xl bg-[#C7A77D] text-[#0B0A08] font-bold text-xs sm:text-sm shadow-2xl flex items-center gap-2.5 border border-[#DFC29A]"
+          >
+            <CheckCircle className="w-5 h-5 text-[#0B0A08] shrink-0" />
+            <span>Copied! Direct project share link copied to clipboard</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <motion.div
+        data-lenis-prevent
+        initial={{ opacity: 0, scale: 0.94, y: 22 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.95, y: 16 }}
+        transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+        onClick={(e) => e.stopPropagation()}
+        className="bg-[#12100D] border border-[#C7A77D]/25 rounded-3xl max-w-4xl w-full my-auto shadow-2xl relative text-[#F1E8DC] overflow-hidden flex flex-col max-h-[92vh] sm:max-h-[90vh]"
+      >
+          {/* Top Sticky Header with Project Badge & Action Buttons */}
+          <div className="flex items-center justify-between px-4 sm:px-6 py-3.5 border-b border-[#C7A77D]/15 bg-[#12100D]/95 backdrop-blur-md z-30 shrink-0">
+            <div className="flex items-center gap-2.5 truncate max-w-[70%]">
+              <span className="inline-flex items-center px-2.5 py-1 rounded-md bg-[#181511] text-[#DFC29A] text-xs font-bold border border-[#C7A77D]/30 shrink-0">
+                {project.categoryLabel}
+              </span>
+              <span className="text-sm font-bold text-[#F1E8DC] truncate hidden xs:inline" title={project.title}>
+                {project.title}
+              </span>
+            </div>
+
+            <div className="flex items-center gap-2 shrink-0">
               <button
-                onClick={handleCopyLink}
-                className={`p-2.5 rounded-full backdrop-blur-md border transition-all shadow-lg flex items-center justify-center ${
+                type="button"
+                onClick={handleShare}
+                className={`ios-icon-btn w-9 h-9 ${
                   isCopied
-                    ? 'bg-emerald-950/90 border-emerald-500/50 text-emerald-400 scale-105'
-                    : 'bg-neutral-950/80 border-white/10 text-white hover:bg-neutral-800'
+                    ? '!border-[#C7B79A] !text-[#DFC29A]'
+                    : ''
                 }`}
-                title={isCopied ? 'লিংক কপি হয়েছে!' : 'প্রজেক্ট লিংক কপি করুন'}
+                title={isCopied ? 'Copied!' : 'Share Project'}
               >
-                {isCopied ? <Check className="w-5 h-5 text-emerald-400 animate-bounce" /> : <Link2 className="w-5 h-5 text-sky-400" />}
+                {isCopied ? <Check className="w-4 h-4 text-[#C7B79A]" /> : <Share2 className="w-4 h-4 text-[#C7B79A]" />}
               </button>
 
               <button
+                type="button"
                 onClick={onClose}
-                className="p-2.5 rounded-full bg-neutral-950/80 border border-white/10 text-white hover:bg-neutral-800 transition-colors shadow-lg"
+                className="ios-icon-btn w-9 h-9"
                 title="বন্ধ করুন"
               >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-          {/* Project Showcase Image Container */}
-          <div className="relative bg-neutral-950 flex flex-col items-center justify-center p-4 border-b border-neutral-800 group">
-            <div className="relative max-h-[65vh] w-full flex items-center justify-center overflow-hidden rounded-xl">
-              <img
-                src={project.imageUrl || 'https://i.postimg.cc/rsFF9mFd/fbd8b403-9dba-42c1-a984-1293f50492cd.jpg'}
-                alt={project.title}
-                referrerPolicy="no-referrer"
-                onError={(e) => {
-                  e.currentTarget.onerror = null;
-                  e.currentTarget.src = "https://i.postimg.cc/rsFF9mFd/fbd8b403-9dba-42c1-a984-1293f50492cd.jpg";
-                }}
-                className="max-h-[65vh] w-auto max-w-full object-contain rounded-xl shadow-2xl"
-              />
-              
-              {/* Full poster lightbox trigger overlay button */}
-              <button
-                onClick={() => setIsLightboxOpen(true)}
-                className="absolute bottom-3 right-3 px-3 py-1.5 rounded-xl bg-neutral-950/80 hover:bg-[#3A86FF] text-white border border-white/10 text-xs font-bold flex items-center gap-1.5 backdrop-blur-md transition-all shadow-lg hover:scale-105"
-              >
-                <Maximize2 className="w-3.5 h-3.5 text-[#3A86FF] group-hover:text-white" />
-                <span>ফুল পোস্টার ভিউ</span>
+                <X className="w-4 h-4" />
               </button>
             </div>
           </div>
 
-          {/* Details Content */}
-          <div className="p-6 sm:p-8 space-y-6">
-            <div>
-              <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
-                <div className="flex flex-wrap items-center gap-2">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#3A86FF]/10 text-[#3A86FF] text-xs font-bold border border-[#3A86FF]/20">
-                    {project.categoryLabel}
-                  </div>
+          {/* Dedicated Smooth Scrollable Body */}
+          <div 
+            data-lenis-prevent
+            tabIndex={0}
+            className="overflow-y-auto overscroll-contain flex-1 p-0 scroll-smooth focus:outline-none"
+            style={{ 
+              WebkitOverflowScrolling: 'touch',
+              overscrollBehavior: 'contain',
+              touchAction: 'pan-y',
+            }}
+            onWheel={(e) => {
+              e.stopPropagation();
+            }}
+            onTouchMove={(e) => {
+              e.stopPropagation();
+            }}
+          >
+            {/* Project Image Container */}
+            <div className="relative bg-[#0B0A08] flex flex-col items-center justify-center p-3 sm:p-5 border-b border-[#C7A77D]/15 group">
+              <div className="relative max-h-[55vh] sm:max-h-[60vh] w-full flex items-center justify-center overflow-hidden rounded-xl">
+                <img
+                  src={project.imageUrl || 'https://i.postimg.cc/rsFF9mFd/fbd8b403-9dba-42c1-a984-1293f50492cd.jpg'}
+                  alt={project.title}
+                  referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = "https://i.postimg.cc/rsFF9mFd/fbd8b403-9dba-42c1-a984-1293f50492cd.jpg";
+                  }}
+                  className="max-h-[55vh] sm:max-h-[60vh] w-auto max-w-full object-contain rounded-xl shadow-2xl"
+                />
+                
+                <button
+                  type="button"
+                  onClick={() => setIsLightboxOpen(true)}
+                  className="absolute bottom-3 right-3 px-3 py-1.5 rounded-xl bg-[#0B0A08]/80 hover:bg-[#181511] text-[#F1E8DC] border border-[#C7A77D]/30 text-xs font-bold flex items-center gap-1.5 backdrop-blur-md transition-all shadow-lg hover:scale-105 cursor-pointer"
+                >
+                  <Maximize2 className="w-3.5 h-3.5 text-[#C7A77D]" />
+                  <span>ফুল পোস্টার ভিউ</span>
+                </button>
+              </div>
+            </div>
 
+            {/* Details Content */}
+            <div className="p-5 sm:p-7 space-y-6">
+              <div>
+                <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={onOpenCreatorProfile}
+                      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-[#181511] border border-[#C7A77D]/30 text-[#B8AA98] hover:text-[#F1E8DC] text-xs font-bold transition-all cursor-pointer group"
+                    >
+                      <User className="w-3.5 h-3.5 text-[#C7A77D]" />
+                      <span>Designer: <strong className="text-[#DFC29A] underline">{project.designerName || "Masum 9T9"}</strong></span>
+                    </button>
+                  </div>
+                  
                   <button
-                    onClick={onOpenCreatorProfile}
-                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-sky-950/80 hover:bg-sky-900 border border-sky-400/30 text-sky-300 text-xs font-bold transition-all hover:scale-105 group"
-                    title="ক্রিয়েটর প্রোফাইল লিংক ও সোশ্যাল মিডিয়া খুলুন"
+                    type="button"
+                    onClick={() => setIsLightboxOpen(true)}
+                    className="text-xs text-[#DFC29A] hover:underline font-semibold flex items-center gap-1 cursor-pointer"
                   >
-                    <User className="w-3.5 h-3.5 text-sky-400 group-hover:scale-110 transition-transform" />
-                    <span>Designer: <strong className="text-white underline">{project.designerName || "Masum 9T9"}</strong></span>
+                    <ZoomIn className="w-3.5 h-3.5 text-[#C7A77D]" />
+                    <span>সম্পূর্ণ ইমেজ জুম করে দেখুন</span>
                   </button>
                 </div>
+
+                <h3 className="text-2xl sm:text-3xl font-bold text-[#F1E8DC] mb-3">{project.title}</h3>
                 
-                <button
-                  onClick={() => setIsLightboxOpen(true)}
-                  className="text-xs text-[#3A86FF] hover:underline font-semibold flex items-center gap-1"
-                >
-                  <ZoomIn className="w-3.5 h-3.5" />
-                  <span>সম্পূর্ণ ইমেজ জুম করে দেখুন</span>
-                </button>
-              </div>
-
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-white mb-3">{project.title}</h3>
-              
-              {/* Detailed Description */}
-              <div className="bg-neutral-950/60 p-4 rounded-2xl border border-neutral-800/80 mb-4">
-                <h4 className="text-xs font-bold text-[#3A86FF] mb-2 uppercase tracking-wider flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5" />
-                  <span>প্রজেক্ট ওভারভিউ ও বিস্তারিত</span>
-                </h4>
-                <p className="text-neutral-200 text-sm leading-relaxed whitespace-pre-line">
-                  {project.longDescription || project.description}
-                </p>
-              </div>
-            </div>
-
-            {/* Achievements & Views Section */}
-            {(project.viewsCount || project.achievement) && (
-              <div className="p-4 rounded-2xl bg-gradient-to-r from-neutral-950 via-neutral-900 to-neutral-950 border border-amber-500/30 text-xs space-y-2">
-                <h4 className="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
-                  <Trophy className="w-4 h-4 text-amber-400 shrink-0" />
-                  <span>অর্জন, ভিউজ ও পারফরম্যান্স (Achievements & Views)</span>
-                </h4>
-                
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-                  {project.viewsCount && (
-                    <div className="p-3 rounded-xl bg-neutral-900/90 border border-neutral-800 flex items-center gap-3">
-                      <div className="p-2 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                        <Eye className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <p className="text-neutral-400 text-[11px]">মোট ভিউজ / রিচ (Views & Reach)</p>
-                        <p className="text-base font-extrabold text-white">{project.viewsCount}</p>
-                      </div>
-                    </div>
-                  )}
-
-                  {project.achievement && (
-                    <div className="p-3 rounded-xl bg-neutral-900/90 border border-neutral-800 flex items-center gap-3">
-                      <div className="p-2 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20">
-                        <Award className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <p className="text-neutral-400 text-[11px]">প্রধান অর্জন / রেকর্ড (Key Achievement)</p>
-                        <p className="text-sm font-extrabold text-amber-300">{project.achievement}</p>
-                      </div>
-                    </div>
-                  )}
+                <div className="bg-[#0B0A08] p-4 rounded-2xl border border-[#C7A77D]/20 mb-4">
+                  <h4 className="text-xs font-bold text-[#DFC29A] mb-2 uppercase tracking-wider flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-[#C7A77D]" />
+                    <span>প্রজেক্ট ওভারভিউ ও বিস্তারিত</span>
+                  </h4>
+                  <p className="text-[#B8AA98] text-sm leading-relaxed whitespace-pre-line font-normal">
+                    {project.longDescription || project.description}
+                  </p>
                 </div>
               </div>
-            )}
 
-            {/* Meta Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 rounded-2xl bg-neutral-950 border border-neutral-800/80 text-xs">
-              {project.clientName && (
-                <div>
-                  <p className="text-neutral-400 font-medium mb-1">ক্লায়েন্ট / চ্যানেল</p>
-                  <p className="font-bold text-white flex items-center gap-1.5">
-                    <User className="w-3.5 h-3.5 text-[#3A86FF]" />
-                    <span>{project.clientName}</span>
-                  </p>
+              {(project.viewsCount || project.achievement) && (
+                <div className="p-4 rounded-2xl bg-[#0B0A08] border border-[#C7A77D]/25 text-xs space-y-2">
+                  <h4 className="text-xs font-bold text-[#DFC29A] uppercase tracking-wider flex items-center gap-1.5">
+                    <Trophy className="w-4 h-4 text-[#C7A77D] shrink-0" />
+                    <span>অর্জন, ভিউজ ও পারফরম্যান্স</span>
+                  </h4>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                    {project.viewsCount && (
+                      <div className="p-3 rounded-xl bg-[#12100D] border border-[#C7A77D]/20 flex items-center gap-3">
+                        <div className="p-2 rounded-lg bg-[#181511] text-[#DFC29A]">
+                          <Eye className="w-5 h-5 text-[#C7A77D]" />
+                        </div>
+                        <div>
+                          <p className="text-[#B8AA98] text-[11px]">মোট ভিউজ / রিচ</p>
+                          <p className="text-base font-bold text-[#F1E8DC]">{project.viewsCount}</p>
+                        </div>
+                      </div>
+                    )}
+
+                    {project.achievement && (
+                      <div className="p-3 rounded-xl bg-[#12100D] border border-[#C7A77D]/20 flex items-center gap-3">
+                        <div className="p-2 rounded-lg bg-[#181511] text-[#DFC29A]">
+                          <Award className="w-5 h-5 text-[#C7A77D]" />
+                        </div>
+                        <div>
+                          <p className="text-[#B8AA98] text-[11px]">প্রধান অর্জন / রেকর্ড</p>
+                          <p className="text-sm font-bold text-[#DFC29A]">{project.achievement}</p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               )}
 
-              {project.year && (
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 rounded-2xl bg-[#0B0A08] border border-[#C7A77D]/20 text-xs">
+                {project.clientName && (
+                  <div>
+                    <p className="text-[#B8AA98] font-medium mb-1">ক্লায়েন্ট / চ্যানেল</p>
+                    <p className="font-bold text-[#F1E8DC] flex items-center gap-1.5">
+                      <User className="w-3.5 h-3.5 text-[#C7A77D]" />
+                      <span>{project.clientName}</span>
+                    </p>
+                  </div>
+                )}
+
+                {project.year && (
+                  <div>
+                    <p className="text-[#B8AA98] font-medium mb-1">প্রজেক্ট সাল</p>
+                    <p className="font-bold text-[#F1E8DC] flex items-center gap-1.5">
+                      <Calendar className="w-3.5 h-3.5 text-[#C7A77D]" />
+                      <span>{project.year}</span>
+                    </p>
+                  </div>
+                )}
+
+                {project.designVersion && (
+                  <div>
+                    <p className="text-[#B8AA98] font-medium mb-1">ডিজাইন ভার্সন</p>
+                    <p className="font-bold text-[#DFC29A] flex items-center gap-1.5">
+                      <Layers className="w-3.5 h-3.5 text-[#C7A77D]" />
+                      <span>{project.designVersion}</span>
+                    </p>
+                  </div>
+                )}
+
                 <div>
-                  <p className="text-neutral-400 font-medium mb-1">প্রজেক্ট সাল</p>
-                  <p className="font-bold text-white flex items-center gap-1.5">
-                    <Calendar className="w-3.5 h-3.5 text-[#3A86FF]" />
-                    <span>{project.year}</span>
+                  <p className="text-[#B8AA98] font-medium mb-1">স্ট্যাটাস</p>
+                  <p className="font-bold text-[#DFC29A] flex items-center gap-1.5">
+                    <CheckCircle className="w-3.5 h-3.5 text-[#C7A77D]" />
+                    <span>সম্পন্ন (Completed)</span>
                   </p>
+                </div>
+              </div>
+
+              {project.technologies && project.technologies.length > 0 && (
+                <div>
+                  <h4 className="text-xs font-bold text-[#B8AA98] mb-2 uppercase tracking-wider">ব্যবহৃত সফটওয়্যার ও প্রযুক্তি</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {(project.technologies || []).map((tech, idx) => (
+                      <span
+                        key={idx}
+                        className="px-3 py-1 rounded-lg bg-[#0B0A08] text-[#B8AA98] text-xs font-medium border border-[#C7A77D]/20"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               )}
 
-              {project.designVersion && (
-                <div>
-                  <p className="text-neutral-400 font-medium mb-1">ডিজাইন ভার্সন</p>
-                  <p className="font-bold text-sky-300 flex items-center gap-1.5">
-                    <Layers className="w-3.5 h-3.5 text-sky-400" />
-                    <span>{project.designVersion}</span>
-                  </p>
+              {/* Bottom Actions inside the scrollable view with generous padding */}
+              <div className="pt-5 pb-4 border-t border-[#C7A77D]/15 flex flex-wrap items-center justify-between gap-3">
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setIsLightboxOpen(true)}
+                    className="ios-btn-secondary px-4 py-2 text-xs font-semibold flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <Eye className="w-4 h-4 text-[#C7A77D]" />
+                    <span>ফুল সাইজ দেখুন</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handleShare}
+                    className="ios-btn-secondary px-4 py-2 text-xs font-semibold flex items-center gap-2 cursor-pointer"
+                    title="Share project & copy direct link"
+                  >
+                    <Share2 className="w-4 h-4 text-[#C7A77D]" />
+                    <span>Share</span>
+                  </button>
                 </div>
-              )}
 
-              <div>
-                <p className="text-neutral-400 font-medium mb-1">স্ট্যাটাস</p>
-                <p className="font-bold text-emerald-400 flex items-center gap-1.5">
-                  <CheckCircle className="w-3.5 h-3.5" />
-                  <span>সম্পন্ন (Completed)</span>
-                </p>
-              </div>
-            </div>
-
-            {/* Technologies */}
-            {project.technologies && project.technologies.length > 0 && (
-              <div>
-                <h4 className="text-xs font-bold text-neutral-300 mb-2 uppercase tracking-wider">ব্যবহৃত সফটওয়্যার ও প্রযুক্তি</h4>
-                <div className="flex flex-wrap gap-2">
-                  {(project.technologies || []).map((tech, idx) => (
-                    <span
-                      key={idx}
-                      className="px-3 py-1 rounded-lg bg-neutral-950 text-neutral-300 text-xs font-medium border border-neutral-800"
-                    >
-                      {tech}
-                    </span>
-                  ))}
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={onClose}
+                    className="ios-btn-secondary px-5 py-2.5 text-xs font-semibold cursor-pointer"
+                  >
+                    বন্ধ করুন
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onClose();
+                      if (onNavigate) onNavigate('contact');
+                      else window.location.pathname = '/contact';
+                    }}
+                    className="ios-btn-primary px-6 py-2.5 text-xs font-bold flex items-center gap-2 cursor-pointer uppercase tracking-wider"
+                  >
+                    <span>এই ধরণের প্রজেক্ট অর্ডার করুন</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </button>
                 </div>
               </div>
-            )}
 
-            {/* Modal Actions */}
-            <div className="pt-4 border-t border-neutral-800 flex flex-wrap items-center justify-between gap-3">
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => setIsLightboxOpen(true)}
-                  className="px-4 py-2.5 rounded-xl bg-neutral-950 hover:bg-neutral-800 border border-neutral-700 text-neutral-200 text-xs font-semibold flex items-center gap-1.5 transition-all"
-                >
-                  <Eye className="w-4 h-4 text-[#3A86FF]" />
-                  <span>ফুল সাইজ দেখুন</span>
-                </button>
-
-                {/* Copy Link Action Button */}
-                <button
-                  onClick={handleCopyLink}
-                  className={`px-4 py-2.5 rounded-xl border text-xs font-semibold flex items-center gap-2 transition-all active:scale-95 ${
-                    isCopied
-                      ? 'bg-emerald-950/90 border-emerald-500/50 text-emerald-400 font-bold shadow-lg shadow-emerald-500/20'
-                      : 'bg-neutral-950 hover:bg-neutral-800 border-neutral-700 text-neutral-200 hover:text-white'
-                  }`}
-                >
-                  {isCopied ? (
-                    <>
-                      <Check className="w-4 h-4 text-emerald-400 animate-pulse" />
-                      <span>লিংক কপি হয়েছে!</span>
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="w-4 h-4 text-sky-400" />
-                      <span>লিংক কপি করুন</span>
-                    </>
-                  )}
-                </button>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={onClose}
-                  className="px-5 py-2.5 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-neutral-200 text-xs font-semibold"
-                >
-                  বন্ধ করুন
-                </button>
-                <a
-                  href="#contact"
-                  onClick={onClose}
-                  className="px-6 py-2.5 rounded-xl bg-[#3A86FF] hover:bg-[#2b75ed] text-white text-xs font-bold flex items-center gap-2 shadow-lg shadow-[#3A86FF]/20"
-                >
-                  <span>এই ধরণের প্রজেক্ট অর্ডার করুন</span>
-                  <ExternalLink className="w-3.5 h-3.5" />
-                </a>
-              </div>
             </div>
-
           </div>
         </motion.div>
-      </div>
 
-      {/* Fullscreen Lightbox Modal for HD Poster Inspection */}
-      {isLightboxOpen && (
-        <div className="fixed inset-0 z-[60] bg-black/95 backdrop-blur-xl flex flex-col items-center justify-between p-4 overflow-y-auto">
-          {/* Lightbox Header */}
-          <div className="w-full max-w-6xl flex items-center justify-between py-2 px-4 bg-neutral-900/80 border border-neutral-800 rounded-2xl mb-4">
-            <h4 className="text-sm font-bold text-white truncate max-w-md">{project.title} — এইচডি পোস্টার ভিউ</h4>
-            <button
-              onClick={() => setIsLightboxOpen(false)}
-              className="p-2 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-white text-xs font-bold flex items-center gap-1"
+        {/* Full Image HD Lightbox */}
+        <AnimatePresence>
+          {isLightboxOpen && (
+            <motion.div 
+              data-lenis-prevent
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 z-[60] bg-black/95 backdrop-blur-xl flex flex-col items-center justify-between p-3 sm:p-5 overflow-hidden"
+              onClick={(e) => {
+                if (e.target === e.currentTarget) setIsLightboxOpen(false);
+              }}
+              onWheel={(e) => e.stopPropagation()}
+              onTouchMove={(e) => {
+                if (e.target === e.currentTarget) e.preventDefault();
+              }}
             >
-              <X className="w-4 h-4" />
-              <span>বন্ধ করুন</span>
-            </button>
-          </div>
+              <div className="w-full max-w-6xl flex items-center justify-between py-2.5 px-4 bg-[#12100D] border border-[#C7A77D]/30 rounded-2xl mb-3 shrink-0">
+                <h4 className="text-sm font-bold text-[#F1E8DC] truncate max-w-md">{project.title} — এইচডি পোস্টার ভিউ</h4>
+                <button
+                  type="button"
+                  onClick={() => setIsLightboxOpen(false)}
+                  className="p-2 rounded-xl bg-[#181511] hover:bg-[#211D17] text-[#F1E8DC] text-xs font-bold flex items-center gap-1 cursor-pointer"
+                >
+                  <X className="w-4 h-4" />
+                  <span>বন্ধ করুন</span>
+                </button>
+              </div>
 
-          {/* Lightbox Image Container */}
-          <div className="flex-grow w-full max-w-5xl flex items-center justify-center overflow-y-auto my-auto p-2">
-            <img
-              src={project.imageUrl}
-              alt={project.title}
-              referrerPolicy="no-referrer"
-              className="max-h-[85vh] w-auto max-w-full object-contain rounded-2xl shadow-2xl border border-neutral-800"
-            />
-          </div>
+              <div 
+                data-lenis-prevent
+                className="flex-1 w-full max-w-5xl flex items-center justify-center p-2 overflow-y-auto overscroll-contain my-auto"
+                style={{ overscrollBehavior: 'contain', WebkitOverflowScrolling: 'touch' }}
+                onWheel={(e) => e.stopPropagation()}
+                onTouchMove={(e) => e.stopPropagation()}
+              >
+                <img
+                  src={project.imageUrl}
+                  alt={project.title}
+                  referrerPolicy="no-referrer"
+                  className="max-h-[82vh] w-auto max-w-full object-contain rounded-2xl shadow-2xl border border-[#C7A77D]/20"
+                />
+              </div>
 
-          <div className="mt-4 text-center text-xs text-neutral-400">
-            পোস্টারের সম্পূর্ণ ডিজাইন দেখতে ওপর-নিচে স্ক্রোল করুন
-          </div>
-        </div>
-      )}
-    </AnimatePresence>
-  );
+              <div className="mt-3 text-center text-xs text-[#B8AA98] shrink-0">
+                পোস্টারের সম্পূর্ণ ডিজাইন দেখতে ওপর-নিচে স্ক্রোল করুন
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+    );
 };

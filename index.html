@@ -1,62 +1,317 @@
 <!doctype html>
-<html lang="bn" class="scroll-smooth dark">
+<html lang="en" class="dark scroll-smooth" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      (function() {
+        try {
+          var currFetch = window.fetch;
+          if (typeof currFetch === 'function') {
+            var propDesc = {
+              get: function() { return currFetch; },
+              set: function(v) { currFetch = v; },
+              configurable: true,
+              enumerable: true
+            };
+            try { Object.defineProperty(window, 'fetch', propDesc); } catch (e) {}
+            try { Object.defineProperty(Window.prototype, 'fetch', propDesc); } catch (e) {}
+          }
+        } catch (e) {}
+
+        // Permanent Dark Theme Configuration
+        try {
+          var root = document.documentElement;
+          root.classList.add('dark');
+          root.classList.remove('light');
+          root.setAttribute('data-theme', 'dark');
+          root.style.colorScheme = 'dark';
+          localStorage.removeItem('theme');
+        } catch (e) {}
+      })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Masum 9T9 | Graphic Designer, Content Creator & Web Developer</title>
+    <title>Masum 9T9 | Senior Graphic Designer &amp; Full-Stack Web Developer | Official Portfolio</title>
     
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="Masum 9T9 - Graphic Designer, Content Creator & Web Developer. Expert in UI/UX Design, Poster Design, YouTube Thumbnails, and Modern Web Development." />
-    <meta name="keywords" content="Masum 9T9, Web Development, Masum, Masum Gfx, Md. Masum Billah, Graphics Designer Bangladesh, Poster Design, Youtube Thumbnail Design, Education Thumbnail, Custom Theme Design, Ibis Paint X, Pixellab, Photoshop, Illustrator" />
-    <meta name="author" content="Masum 9T9" />
+    <!-- Primary SEO Meta Tags -->
+    <meta name="title" content="Masum 9T9 | Senior Graphic Designer &amp; Full-Stack Web Developer | Official Portfolio" />
+    <meta name="description" content="Official portfolio of Masum 9T9 (Nex Masum / Md. Masum Billah) – Senior Graphic Designer, Full-Stack Web Developer, UI/UX Designer &amp; Content Creator at Parahin Academy. Explore creative design, poster design, brand identity, YouTube thumbnails, web applications, and direct collaboration." />
+    <meta name="keywords" content="Masum 9T9, Nex Masum, Masum9T9, Md. Masum Billah, Masum Billah, Masum Gfx, Masum, মাসুম ৯টি৯, মাসুম বিল্লাহ, নেক্স মাসুম, 9t9.pro.bd, Masum 9T9 Official Website, Masum 9T9 Portfolio, Senior Graphic Designer, Graphic Designer Bangladesh, Best Graphic Designer in Bangladesh, UI/UX Designer Bangladesh, Full-Stack Web Developer Bangladesh, React Developer, TypeScript Developer, YouTube Thumbnail Designer, Banner Designer, Poster Designer, Brand Identity Specialist, Parahin Academy" />
+    <meta name="author" content="Masum 9T9 (Nex Masum / Md. Masum Billah)" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
     
-<!-- Favicon & Brand Icons -->
-<link rel="icon" type="image/png" href="/favicon.png" sizes="any" />
-<link rel="apple-touch-icon" href="/favicon.png" />
-<link rel="shortcut icon" href="/favicon.png" />
+    <!-- Geographic & Localization Meta Tags -->
+    <meta name="geo.region" content="BD" />
+    <meta name="geo.placename" content="Bangladesh" />
+    <meta name="language" content="English, Bengali" />
+    <meta name="coverage" content="Worldwide" />
+    <meta name="distribution" content="Global" />
+    <meta name="rating" content="General" />
+    <meta name="revisit-after" content="2 days" />
+    
+    <!-- Favicon & Brand Icons -->
+    <link rel="icon" type="image/png" href="/favicon.png" sizes="any" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
+    <link rel="shortcut icon" href="/favicon.png" />
 
-    
-    <!-- Canonical URL -->
+    <!-- Canonical URL & Alternate Hreflang -->
     <link rel="canonical" href="https://9t9.pro.bd/" />
+    <link rel="alternate" hreflang="en" href="https://9t9.pro.bd/" />
+    <link rel="alternate" hreflang="bn" href="https://9t9.pro.bd/" />
+    <link rel="alternate" hreflang="x-default" href="https://9t9.pro.bd/" />
 
-    <!-- Open Graph / Facebook / Messenger -->
-    <meta property="og:type" content="website" />
+    <!-- Open Graph / Facebook / WhatsApp Social Previews -->
+    <meta property="og:type" content="profile" />
     <meta property="og:url" content="https://9t9.pro.bd/" />
-    <meta property="og:site_name" content="Masum 9T9 Portfolio" />
-    <meta property="og:title" content="Masum 9T9 | Official Personal Portfolio" />
-    <meta property="og:description" content="Masum 9T9-এর অফিসিয়াল পোর্টফোলিও। প্রিমিয়াম গ্রাফিক্স ডিজাইন, ইউআই/ইউএক্স কনসেপ্ট, পোস্টার ডিজাইন এবং আধুনিক ওয়েব ডেভেলপমেন্ট প্রজেক্ট।" />
+    <meta property="og:site_name" content="Masum 9T9 Official Portfolio" />
+    <meta property="og:title" content="Masum 9T9 | Senior Graphic Designer &amp; Full-Stack Web Developer | Official Portfolio" />
+    <meta property="og:description" content="Official portfolio of Masum 9T9 (Nex Masum / Md. Masum Billah) – Senior Graphic Designer, Full-Stack Web Developer, UI/UX Designer &amp; Content Creator at Parahin Academy. Explore creative design, poster design, brand identity, YouTube thumbnails, web applications, and direct collaboration." />
     <meta property="og:image" content="https://i.postimg.cc/GtXH9NMv/2c316df0-e850-4976-aae2-e4c2c5e95cd5.jpg" />
+    <meta property="og:image:secure_url" content="https://i.postimg.cc/GtXH9NMv/2c316df0-e850-4976-aae2-e4c2c5e95cd5.jpg" />
+    <meta property="og:image:alt" content="Masum 9T9 - Senior Graphic Designer &amp; Developer Portfolio" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="bn_BD" />
+    <meta property="profile:first_name" content="Masum" />
+    <meta property="profile:last_name" content="Billah" />
+    <meta property="profile:username" content="masum_9t9_official" />
+    <meta property="profile:gender" content="male" />
     
-    <!-- Twitter Card -->
+    <!-- Twitter / X Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content="https://9t9.pro.bd/" />
-    <meta name="twitter:title" content="Masum 9T9 | Official Personal Portfolio" />
-    <meta name="twitter:description" content="Masum 9T9 - Graphic Designer, Content Creator & Web Developer. Showcasing creative projects and digital solutions." />
+    <meta name="twitter:title" content="Masum 9T9 | Senior Graphic Designer &amp; Full-Stack Web Developer" />
+    <meta name="twitter:description" content="Official portfolio of Masum 9T9 (Nex Masum / Md. Masum Billah) – Graphic Designer, UI/UX Specialist, Full-Stack Web Developer &amp; Content Creator." />
     <meta name="twitter:image" content="https://i.postimg.cc/GtXH9NMv/2c316df0-e850-4976-aae2-e4c2c5e95cd5.jpg" />
+    <meta name="twitter:image:alt" content="Masum 9T9 Official Portfolio" />
+    <meta name="twitter:creator" content="@masum_9t9_official" />
+    <meta name="twitter:site" content="@masum_9t9_official" />
+
+    <!-- Preconnect to Image CDN and Google Fonts -->
+    <link rel="preconnect" href="https://i.postimg.cc" crossorigin>
+    <link rel="dns-prefetch" href="https://i.postimg.cc">
+
+    <!-- Preload Custom Signature Font -->
+    <link rel="preload" href="/fonts/Evantic-Regular.ttf" as="font" type="font/ttf" crossorigin />
 
     <!-- Google Fonts & Font Awesome Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Hind+Siliguri:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     
-    <!-- JSON-LD Structured Data -->
+    <!-- JSON-LD Structured Data for Search Engines & AI Crawlers (Google Knowledge Graph / GEO / AIO) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Masum 9T9",
-      "alternateName": "Md. Masum Billah",
-      "jobTitle": "Professional Graphic Designer, Content Creator & Web Developer",
-      "telephone": "+8801303623838",
-      "email": "masum.9t9.gd@gmail.com",
-      "knowsAbout": ["Poster Design", "YouTube Thumbnail Design", "Education Thumbnail Design", "Content Creation", "Custom Theme Design", "Photoshop", "Illustrator", "Pixellab", "Ibis Paint X", "CoderVai", "BD Coder", "Free Coding Resources", "Web Development", "Web Developer"]
+      "@graph": [
+        {
+          "@type": "Person",
+          "@id": "https://9t9.pro.bd/#masum9t9",
+          "name": "Masum 9T9",
+          "givenName": "Masum",
+          "familyName": "Billah",
+          "additionalName": "Nex Masum",
+          "alternateName": [
+            "Nex Masum",
+            "NexMasum",
+            "Md. Masum Billah",
+            "Masum Billah",
+            "Masum Gfx",
+            "Masum",
+            "Masum9T9",
+            "মাসুম ৯টি৯",
+            "মাসুম বিল্লাহ",
+            "নেক্স মাসুম"
+          ],
+          "url": "https://9t9.pro.bd/",
+          "image": "https://i.postimg.cc/GtXH9NMv/2c316df0-e850-4976-aae2-e4c2c5e95cd5.jpg",
+          "jobTitle": "Senior Graphic Designer, UI/UX Designer & Full-Stack Web Developer",
+          "description": "Senior Graphic Designer, UI/UX Specialist, Full-Stack Web Developer & Content Creator at Parahin Academy. Over 5+ years of experience delivering premium brand identities, posters, social media banners, YouTube thumbnails, and high-performance modern web applications.",
+          "telephone": "+8801303623838",
+          "email": "masum.9t9.gd@gmail.com",
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "BD",
+            "addressLocality": "Bangladesh"
+          },
+          "sameAs": [
+            "https://9t9.pro.bd",
+            "https://www.facebook.com/masum.9t9.official",
+            "https://www.youtube.com/@ParahinAcademy",
+            "https://www.behance.net/masum_9t9_official",
+            "https://github.com/masum-9t9/",
+            "https://t.me/masum_9t9_official",
+            "https://www.fiverr.com/sellers/masum9t9/"
+          ],
+          "worksFor": {
+            "@type": "Organization",
+            "name": "Parahin Academy",
+            "url": "https://www.youtube.com/@ParahinAcademy"
+          },
+          "hasOccupation": [
+            {
+              "@type": "Occupation",
+              "name": "Graphic Designer",
+              "occupationalCategory": "27-1024.00"
+            },
+            {
+              "@type": "Occupation",
+              "name": "Full-Stack Web Developer",
+              "occupationalCategory": "15-1254.00"
+            },
+            {
+              "@type": "Occupation",
+              "name": "UI/UX Designer",
+              "occupationalCategory": "27-1024.00"
+            },
+            {
+              "@type": "Occupation",
+              "name": "Content Creator & Educator"
+            }
+          ],
+          "knowsAbout": [
+            "Masum 9T9",
+            "Nex Masum",
+            "Masum Gfx",
+            "Md. Masum Billah",
+            "Graphic Designer Bangladesh",
+            "Senior Graphic Designer",
+            "Full-Stack Web Developer",
+            "UI/UX Design",
+            "Photoshop",
+            "Illustrator",
+            "Figma",
+            "React.js",
+            "TypeScript",
+            "Tailwind CSS",
+            "Poster Design",
+            "YouTube Thumbnail Design",
+            "Social Media Design",
+            "Brand Identity",
+            "Parahin Academy",
+            "Content Creation"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://9t9.pro.bd/#website",
+          "url": "https://9t9.pro.bd/",
+          "name": "Masum 9T9 | Senior Graphic Designer & Full-Stack Developer",
+          "alternateName": [
+            "Masum 9T9 Official Website",
+            "Nex Masum Portfolio",
+            "9T9 Pro BD",
+            "Masum Portfolio"
+          ],
+          "description": "Official personal portfolio website of Masum 9T9 / Nex Masum (Md. Masum Billah) showcasing creative Graphic Design, UI/UX Design, Full-Stack Web Development, and Digital Branding.",
+          "publisher": {
+            "@id": "https://9t9.pro.bd/#masum9t9"
+          },
+          "inLanguage": ["en", "bn"]
+        },
+        {
+          "@type": "ProfessionalService",
+          "@id": "https://9t9.pro.bd/#service",
+          "name": "Masum 9T9 Creative & Development Services",
+          "image": "https://i.postimg.cc/GtXH9NMv/2c316df0-e850-4976-aae2-e4c2c5e95cd5.jpg",
+          "url": "https://9t9.pro.bd/",
+          "telephone": "+8801303623838",
+          "email": "masum.9t9.gd@gmail.com",
+          "priceRange": "$$",
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "BD",
+            "addressLocality": "Bangladesh"
+          },
+          "areaServed": "Worldwide",
+          "serviceType": [
+            "Graphic Design",
+            "UI/UX Design",
+            "Full-Stack Web Development",
+            "Social Media Poster Design",
+            "YouTube Thumbnail Design",
+            "Brand Identity Design"
+          ],
+          "provider": {
+            "@id": "https://9t9.pro.bd/#masum9t9"
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://9t9.pro.bd/#breadcrumbs",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://9t9.pro.bd/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "About",
+              "item": "https://9t9.pro.bd/about"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Services",
+              "item": "https://9t9.pro.bd/services"
+            },
+            {
+              "@type": "ListItem",
+              "position": 4,
+              "name": "Projects",
+              "item": "https://9t9.pro.bd/projects"
+            },
+            {
+              "@type": "ListItem",
+              "position": 5,
+              "name": "Reviews",
+              "item": "https://9t9.pro.bd/reviews"
+            },
+            {
+              "@type": "ListItem",
+              "position": 6,
+              "name": "Contact",
+              "item": "https://9t9.pro.bd/contact"
+            }
+          ]
+        }
+      ]
     }
     </script>
   </head>
-  <body class="bg-[#090D16] text-neutral-100 font-['Inter','Hind_Siliguri',sans-serif] antialiased selection:bg-[#3A86FF] selection:text-white overflow-x-hidden">
+  <body class="bg-[#0D0C0A] text-[#E8E2D8] font-['Manrope','Inter','Hind_Siliguri',sans-serif] antialiased selection:bg-[#C7B79A] selection:text-[#0D0C0A] overflow-x-hidden">
+    <!-- Semantic Noscript Crawl Fallback for Instant Search Engine Indexing (Googlebot, Bingbot, Yandex, DuckDuckGo) -->
+    <noscript>
+      <header>
+        <h1>Masum 9T9 (Nex Masum / Md. Masum Billah) - Senior Graphic Designer &amp; Full-Stack Web Developer</h1>
+        <p>Welcome to the official portfolio of Masum 9T9. Specialized in Graphic Design, UI/UX Design, Full-Stack Web Development, YouTube Thumbnails, Social Media Posters, Brand Identity, and Founder of Parahin Academy.</p>
+        <nav aria-label="Noscript Primary Navigation">
+          <ul>
+            <li><a href="https://9t9.pro.bd/">Home</a></li>
+            <li><a href="https://9t9.pro.bd/about">About Masum 9T9</a></li>
+            <li><a href="https://9t9.pro.bd/services">Services (Graphic Design, Web Development, UI/UX)</a></li>
+            <li><a href="https://9t9.pro.bd/projects">Portfolio &amp; Projects</a></li>
+            <li><a href="https://9t9.pro.bd/reviews">Client Testimonials &amp; Reviews</a></li>
+            <li><a href="https://9t9.pro.bd/contact">Contact Masum 9T9</a></li>
+            <li><a href="https://9t9.pro.bd/resume.html">Resume &amp; CV</a></li>
+          </ul>
+        </nav>
+      </header>
+      <main>
+        <section>
+          <h2>About Masum 9T9</h2>
+          <p>Masum 9T9 (also known as Nex Masum, Md. Masum Billah, and Masum Gfx) is a top-tier creative professional from Bangladesh delivering high-impact visual design, brand strategies, and high-performance modern web applications built with React and TypeScript.</p>
+          <p>Phone: +880 1303-623838 | Email: masum.9t9.gd@gmail.com</p>
+        </section>
+      </main>
+    </noscript>
+
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

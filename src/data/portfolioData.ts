@@ -12,3 +12,4 @@ export const PORTFOLIO_CONFIG = INITIAL_PORTFOLIO_CONFIG;
 export const translations = UI_TRANSLATIONS;
 
 export default INITIAL_PORTFOLIO_CONFIG;
+

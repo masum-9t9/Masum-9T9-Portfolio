@@ -1,322 +1,732 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
-import { ArrowUpRight, MessageCircle, Sparkles, Facebook, Youtube, Send, PhoneCall, Github, ShieldCheck, Award, Zap } from 'lucide-react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { 
+  ArrowRight,
+  ArrowDown,
+  Palette,
+  Code2,
+  Sparkles,
+  MapPin,
+  Clock,
+  CheckCircle2,
+  Send,
+  Mail,
+  Facebook,
+  Phone,
+  Youtube,
+  Github,
+  Keyboard,
+  Layers,
+  Briefcase,
+  User,
+  Video
+} from 'lucide-react';
 import { HeroData, SocialLinks } from '../types';
 import { useLanguage } from '../context/LanguageContext';
 import { UI_TRANSLATIONS } from '../data/translations';
+import { FramerButton } from './FramerButton';
+import { LiquidEmberMotionBackground } from './LiquidEmberMotionBackground';
 
 interface HeroProps {
   data: HeroData;
   socials: SocialLinks;
+  onOpenKeymapping?: () => void;
+  onNavigate?: (page: string) => void;
 }
 
-export const Hero: React.FC<HeroProps> = ({ data, socials }) => {
-  const { language } = useLanguage();
-  const t = UI_TRANSLATIONS[language];
-  const [currentRoleIndex, setCurrentRoleIndex] = useState(0);
+// Introduction phrases for typewriter animation
+const INTRO_PHRASES_EN = [
+  "Hi, I am Md. Masum Billah",
+  "Welcome to my creative universe",
+  "Crafting high-impact visuals & code",
+  "Turning ideas into digital reality"
+];
 
-  const roles = data?.rotatingRoles || (data?.role ? [data.role] : ['Graphics Designer']);
+const INTRO_PHRASES_BN = [
+  "হ্যালো, আমি মো. মাসুম বিল্লাহ",
+  "আমার ক্রিয়েটিভ পোর্টফোলিওতে স্বাগতম",
+  "ডিজাইন ও কোডিংয়ের নান্দনিক মেলবন্ধন",
+  "আইডিয়াকে বাস্তবে রূপ দেওয়াই আমার কাজ"
+];
+
+export const Hero: React.FC<HeroProps> = ({ data, socials, onOpenKeymapping, onNavigate }) => {
+  const { language } = useLanguage();
+  const isBn = language === 'bn';
+  const t = UI_TRANSLATIONS[language];
+
+  // =========================================================================
+  // 1. TYPING ANIMATION FOR INTRODUCTION (Smooth Vanilla JS timer cycle)
+  // =========================================================================
+  const [introText, setIntroText] = useState('');
+  const [phraseIndex, setPhraseIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
-    if (!roles || roles.length === 0) return;
-    const interval = setInterval(() => {
-      setCurrentRoleIndex((prev) => (prev + 1) % roles.length);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, [roles]);
+    const currentPhrases = isBn ? INTRO_PHRASES_BN : INTRO_PHRASES_EN;
+    const targetPhrase = currentPhrases[phraseIndex % currentPhrases.length];
+    let timer: ReturnType<typeof setTimeout>;
+
+    if (!isDeleting) {
+      // Typing forward
+      if (introText.length < targetPhrase.length) {
+        timer = setTimeout(() => {
+          setIntroText(targetPhrase.slice(0, introText.length + 1));
+        }, 65 + Math.random() * 25);
+      } else {
+        // Pause when fully typed
+        timer = setTimeout(() => {
+          setIsDeleting(true);
+        }, 2200);
+      }
+    } else {
+      // Deleting backwards
+      if (introText.length > 0) {
+        timer = setTimeout(() => {
+          setIntroText(targetPhrase.slice(0, introText.length - 1));
+        }, 30);
+      } else {
+        // Move to next phrase
+        setIsDeleting(false);
+        setPhraseIndex((prev) => (prev + 1) % currentPhrases.length);
+      }
+    }
+
+    return () => clearTimeout(timer);
+  }, [introText, isDeleting, phraseIndex, isBn]);
+
+  // Reset text on language change
+  useEffect(() => {
+    setIntroText('');
+    setIsDeleting(false);
+    setPhraseIndex(0);
+  }, [language]);
+
+  // =========================================================================
+  // 2. ROTATING TEXT FOR KEYWORDS ('Graphics Designer', 'Content Creator', etc.)
+  // =========================================================================
+  const keywords = useMemo(() => {
+    if (isBn) {
+      return [
+        { text: 'গ্রাফিক্স ডিজাইনার', icon: <Palette className="w-4 h-4 text-[#FF7A18]" /> },
+        { text: 'কনটেন্ট ক্রিয়েটর', icon: <Video className="w-4 h-4 text-[#FF7A18]" /> },
+        { text: 'UI/UX ডিজাইনার', icon: <Layers className="w-4 h-4 text-[#FF7A18]" /> },
+        { text: 'ফুল-স্ট্যাক ডেভেলপার', icon: <Code2 className="w-4 h-4 text-[#FF7A18]" /> },
+        { text: 'এআই ক্রিয়েটিভ স্পেশালিস্ট', icon: <Sparkles className="w-4 h-4 text-[#FF7A18]" /> }
+      ];
+    }
+    return [
+      { text: 'Graphics Designer', icon: <Palette className="w-4 h-4 text-[#FF7A18]" /> },
+      { text: 'Content Creator', icon: <Video className="w-4 h-4 text-[#FF7A18]" /> },
+      { text: 'UI/UX Visualizer', icon: <Layers className="w-4 h-4 text-[#FF7A18]" /> },
+      { text: 'Full-Stack Developer', icon: <Code2 className="w-4 h-4 text-[#FF7A18]" /> },
+      { text: 'AI Creative Specialist', icon: <Sparkles className="w-4 h-4 text-[#FF7A18]" /> }
+    ];
+  }, [isBn]);
+
+  const [keywordIndex, setKeywordIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setKeywordIndex((prev) => (prev + 1) % keywords.length);
+    }, 2800);
+    return () => clearInterval(timer);
+  }, [keywords.length]);
+
+  const currentKeyword = keywords[keywordIndex % keywords.length];
+
+  const handleExploreProjects = () => {
+    if (onNavigate) {
+      onNavigate('projects');
+    } else {
+      window.location.pathname = '/projects';
+    }
+  };
+
+  const handleAboutMe = () => {
+    if (onNavigate) {
+      onNavigate('about');
+    } else {
+      window.location.pathname = '/about';
+    }
+  };
+
+  const handleContact = () => {
+    if (onNavigate) {
+      onNavigate('contact');
+    } else {
+      window.location.pathname = '/contact';
+    }
+  };
 
   return (
-    <section id="hero" className="relative min-h-screen flex items-center justify-center pt-28 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden bg-[radial-gradient(circle_at_25%_40%,#0d1e36_0%,#070b12_70%)]">
-      {/* Concentric Orbital Vector Rings (স্ক্রিনশটের মতো নিখুঁতভাবে বাম পাশের আলোর সাথে অ্যালাইন করা) */}
-      <div className="absolute top-[45%] left-[-15%] -translate-y-1/2 w-[1000px] h-[1000px] pointer-events-none opacity-[0.12] select-none z-0">
-        <svg className="w-full h-full" viewBox="0 0 900 900" fill="none" xmlns="http://w3.org">
-          <circle cx="450" cy="450" r="180" stroke="#38BDF8" strokeWidth="1" strokeDasharray="6 6" className="animate-spin-slower origin-center" />
-          <circle cx="450" cy="450" r="280" stroke="#818CF8" strokeWidth="1" opacity="0.6" />
-          <circle cx="450" cy="450" r="390" stroke="#38BDF8" strokeWidth="1" strokeDasharray="12 8" opacity="0.5" />
-          <circle cx="450" cy="450" r="440" stroke="#34D399" strokeWidth="1" opacity="0.3" />
-          {/* Accent vector nodes on the rings */}
-          <circle cx="450" cy="270" r="3.5" fill="#38BDF8" />
-          <circle cx="730" cy="450" r="3.5" fill="#818CF8" />
-          <circle cx="450" cy="840" r="3.5" fill="#34D399" />
-          <circle cx="170" cy="450" r="3" fill="#38BDF8" />
-        </svg>
+    <section 
+      id="hero" 
+      className="relative min-h-[92vh] sm:min-h-screen w-full flex flex-col justify-between items-center pt-12 xs:pt-14 sm:pt-28 pb-4 sm:pb-8 px-2.5 xs:px-3 sm:px-6 lg:px-12 overflow-hidden bg-[#0E0A07]"
+    >
+      {/* Atmospheric Warm Radial Glow & Subtle Grid Overlay */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 bg-fiery-amber-spotlight opacity-80" />
+        <div className="fiery-ambient-glow opacity-60" />
+        <div className="absolute inset-0 grid-bg-overlay opacity-25" />
+        <LiquidEmberMotionBackground opacity={0.42} />
       </div>
 
-      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center relative z-10">
+      {/* ========================================================================= */}
+      {/* 📱 MOBILE HERO LAYOUT (Full Screenfill & Massive Prominent Portrait)       */}
+      {/* ========================================================================= */}
+      <div className="md:hidden w-full max-w-lg mx-auto flex flex-col items-center relative z-10 space-y-2 xs:space-y-2.5 pt-0 pb-2">
         
-        {/* Left Column: Text Info & CTA */}
-        <div className="lg:col-span-7 flex flex-col items-start text-left">
-          
-          {/* Status Badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
+        {/* Mobile Header Row: Typed Introduction Badge + Live Availability Status (Floating Higher Up) */}
+        <div className="w-full flex items-center justify-between gap-2 px-1 z-20 -mb-3 xs:-mb-5">
+          <motion.div 
+            initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sky-950/60 border border-sky-500/30 text-xs sm:text-sm text-sky-300 font-medium mb-4 sm:mb-6 backdrop-blur-md shadow-[0_0_15px_rgba(56,189,248,0.2)]"
+            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#1D140D]/95 border border-[#FF7A18]/35 text-[11px] font-semibold text-[#FAF6F0] shadow-sm backdrop-blur-md min-w-0 max-w-[70%]"
           >
-            <span className="relative flex h-2.5 w-2.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500 shadow-[0_0_8px_#10B981]" />
+            <Sparkles className="w-3 h-3 text-[#FF7A18] shrink-0 animate-pulse" />
+            <span className={`truncate ${isBn ? 'font-bn' : ''}`}>
+              {introText || (isBn ? "হ্যালো, আমি মাসুম ৯টি৯" : "Hi, I'm Masum 9T9")}
             </span>
-            <span className="tracking-wide font-semibold">{data.statusBadge}</span>
+            <span className="hero-typing-cursor shrink-0" />
           </motion.div>
 
-          {/* Greeting */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
+          {/* Status Availability Tag */}
+          <motion.div 
+            initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-neutral-400 text-base sm:text-xl font-medium tracking-wide mb-1.5 flex items-center gap-2"
+            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#16100B]/95 border border-[#22C55E]/30 text-[11px] font-medium text-[#22C55E] shadow-sm shrink-0 backdrop-blur-md"
           >
-            <span>{data.greeting}</span>
-            <span className="inline-block animate-bounce">👋</span>
-          </motion.p>
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#22C55E] opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#22C55E]" />
+            </span>
+            <span className={isBn ? 'font-bn' : ''}>{isBn ? 'অ্যাভেইলেবল' : 'Available'}</span>
+          </motion.div>
+        </div>
 
-          {/* Name Header */}
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-3xl xs:text-4xl sm:text-6xl lg:text-7xl font-black text-white tracking-tight leading-[1.1] mb-3 sm:mb-4"
+        {/* Mobile Centerpiece: Massive Screen-Filling Portrait Cutout Positioned Higher Up */}
+        <div className="relative w-full flex flex-col items-center justify-center pt-0 pb-0 select-none overflow-visible">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.94 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.08 }}
+            className="relative z-10 flex flex-col items-center justify-center w-full"
           >
-            <span className="text-gradient-cyan">{data.name}</span>
-          </motion.h1>
+            {/* Rich Ambient Glow behind portrait filling background aura */}
+            <div className="absolute w-80 xs:w-96 sm:w-[460px] h-80 xs:h-96 sm:h-[460px] rounded-full bg-[#FF7A18]/30 blur-[75px] pointer-events-none" />
 
-          {/* Rotating Role Text */}
-          <div className="h-9 sm:h-12 overflow-hidden mb-4 sm:mb-6">
-            <motion.div
-              key={currentRoleIndex}
-              initial={{ y: 30, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -30, opacity: 0 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
-              className="text-lg xs:text-xl sm:text-2xl lg:text-3xl font-extrabold text-sky-400 flex items-center gap-2"
-            >
-              <div className="p-1 rounded-lg bg-sky-500/20 border border-sky-400/30">
-                <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-sky-400 animate-pulse" />
-              </div>
-              <span className="bg-gradient-to-r from-sky-400 via-blue-400 to-indigo-300 bg-clip-text text-transparent">
-                {roles[currentRoleIndex] || data?.role || ''}
-              </span>
-            </motion.div>
+            <div className="relative w-full max-w-[480px] h-[390px] xs:h-[440px] sm:h-[490px] flex items-end justify-center overflow-visible">
+              <img
+                src={data.profileImage || "https://i.postimg.cc/bYQL7Lvj/Profile-pic-(3).png"}
+                alt="Md. Masum Billah (Masum 9T9)"
+                referrerPolicy="no-referrer"
+                loading="eager"
+                fetchPriority="high"
+                decoding="async"
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = "https://i.postimg.cc/bYQL7Lvj/Profile-pic-(3).png";
+                }}
+                className="relative z-10 w-full h-full object-contain object-bottom contrast-[1.06] brightness-[1.03] portrait-mask-fade drop-shadow-[0_16px_40px_rgba(255,122,24,0.32)] scale-115 xs:scale-120 sm:scale-125 origin-bottom will-change-transform"
+              />
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Dynamic Rotating Role Capsule */}
+        <motion.div 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="w-full flex items-center justify-center -mt-2 xs:-mt-3 z-20"
+        >
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#18120C]/95 border border-[#FF7A18]/35 shadow-lg backdrop-blur-md">
+            <Sparkles className="w-3 h-3 text-[#FF7A18] shrink-0" />
+            <span className="text-[10px] text-[#A9A39A] uppercase tracking-wider font-semibold">
+              {isBn ? 'ভূমিকা:' : 'Role:'}
+            </span>
+            <div className="h-4.5 xs:h-5 overflow-hidden flex items-center min-w-[130px]">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={keywordIndex}
+                  initial={{ y: 12, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: -12, opacity: 0 }}
+                  transition={{ duration: 0.25 }}
+                  className="flex items-center gap-1.5 text-[11px] font-bold text-[#FF7A18] whitespace-nowrap"
+                >
+                  {currentKeyword.icon}
+                  <span className={isBn ? 'font-bn' : ''}>{currentKeyword.text}</span>
+                </motion.div>
+              </AnimatePresence>
+            </div>
           </div>
+        </motion.div>
 
-          {/* Bio Description */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="text-neutral-300 text-sm sm:text-lg leading-relaxed max-w-2xl mb-6 sm:mb-8 font-normal"
-          >
-            {data.bio}
-          </motion.p>
+        {/* Mobile Name & Bio Tagline */}
+        <motion.div 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.25 }}
+          className="text-center px-2 space-y-1"
+        >
+          <h2 className="text-base xs:text-lg font-bold text-[#FAF6F0] tracking-tight font-display">
+            {isBn ? 'মো. মাসুম বিল্লাহ' : 'Md. Masum Billah'}
+          </h2>
+          <p className={`text-[11px] xs:text-xs text-[#FAF6F0] leading-relaxed font-medium ${isBn ? 'font-bn' : ''}`}>
+            {isBn ? (
+              <>
+                <span className="text-[#FAF6F0]">আইডিয়াকে বাস্তবে রূপ দিই — </span>
+                <span className="text-[#FF9238] font-semibold">ডিজাইন, ওয়েব ও AI প্রযুক্তির মাধ্যমে।</span>
+              </>
+            ) : (
+              <>
+                <span className="text-[#FAF6F0]">Transforming Ideas into Reality — </span>
+                <span className="text-[#FF9238] font-semibold">Through Design, Web & AI Innovation.</span>
+              </>
+            )}
+          </p>
+        </motion.div>
 
-          {/* CTA Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            className="flex flex-col xs:flex-row items-stretch xs:items-center gap-3 sm:gap-4 mb-8 sm:mb-10 w-full xs:w-auto"
-          >
-            <a
-              href="#portfolio"
-              className="glow-button px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl bg-gradient-to-r from-sky-500 via-blue-600 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white font-bold text-xs sm:text-sm tracking-wide transition-all duration-300 flex items-center justify-center gap-2.5 shadow-[0_10px_30px_rgba(56,189,248,0.35)] active:scale-95 group text-center"
-            >
-              <span>{data.ctaPrimaryText}</span>
-              <ArrowUpRight className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-            </a>
-
-            <a
-              href="#contact"
-              className="px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl bg-neutral-900/90 hover:bg-neutral-800 text-neutral-200 border border-white/15 hover:border-sky-500/40 font-bold text-xs sm:text-sm transition-all duration-300 flex items-center justify-center gap-2.5 active:scale-95 shadow-lg backdrop-blur-md text-center"
-            >
-              <MessageCircle className="w-4 h-4 text-sky-400" />
-              <span>{data.ctaSecondaryText}</span>
-            </a>
-          </motion.div>
-
-          {/* Social Links Bar */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-            className="flex flex-wrap items-center gap-2 sm:gap-3 pt-4 sm:pt-5 border-t border-white/10 w-full max-w-xl"
-          >
-            <span className="text-xs text-neutral-400 font-semibold uppercase tracking-wider mr-1 w-full sm:w-auto mb-1 sm:mb-0">
-              {language === 'bn' ? 'সোশ্যাল লিংকসমূহ:' : 'Social Links:'}
-            </span>
-            
-            <a
-              href={socials.facebook}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-neutral-900/80 border border-white/10 flex items-center justify-center text-neutral-300 hover:text-sky-400 hover:border-sky-500/50 hover:bg-sky-500/10 transition-all duration-300 shadow-md"
+        {/* Mobile Connect Section: "Connect: [FB] [WA] [TG] [YT] [GH]" */}
+        <motion.div 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.3 }}
+          className="w-full flex items-center justify-between py-2 px-3 bg-[#16100B]/95 border border-white/10 rounded-2xl shadow-lg backdrop-blur-md"
+        >
+          <span className="text-[11px] font-bold text-[#FF7A18] uppercase tracking-wider flex items-center gap-1">
+            <Sparkles className="w-3 h-3 text-[#FF7A18]" />
+            <span className={isBn ? 'font-bn' : ''}>{isBn ? 'কানেক্ট:' : 'Connect:'}</span>
+          </span>
+          
+          <div className="flex items-center gap-1.5">
+            <a 
+              href={socials.facebook} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="w-8.5 h-8.5 rounded-xl bg-[#1D140D] border border-white/10 text-[#1877F2] flex items-center justify-center active:scale-90 transition-transform"
               title="Facebook"
             >
               <Facebook className="w-4 h-4" />
             </a>
-
-            <a
-              href={socials.whatsapp}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-neutral-900/80 border border-white/10 flex items-center justify-center text-neutral-300 hover:text-emerald-400 hover:border-emerald-500/50 hover:bg-emerald-500/10 transition-all duration-300 shadow-md"
+            <a 
+              href={socials.whatsapp ? socials.whatsapp : `tel:${socials.phone}`} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="w-8.5 h-8.5 rounded-xl bg-[#1D140D] border border-white/10 text-[#25D366] flex items-center justify-center active:scale-90 transition-transform"
               title="WhatsApp"
             >
-              <PhoneCall className="w-4 h-4" />
+              <Phone className="w-4 h-4" />
             </a>
-
-            <a
-              href={socials.telegram}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-neutral-900/80 border border-white/10 flex items-center justify-center text-neutral-300 hover:text-cyan-400 hover:border-cyan-500/50 hover:bg-cyan-500/10 transition-all duration-300 shadow-md"
-              title="Telegram"
-            >
-              <Send className="w-4 h-4" />
-            </a>
-
-            <a
-              href={socials.youtube}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-neutral-900/80 border border-white/10 flex items-center justify-center text-neutral-300 hover:text-rose-500 hover:border-rose-500/50 hover:bg-rose-500/10 transition-all duration-300 shadow-md"
+            <a 
+              href={socials.youtube} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="w-8.5 h-8.5 rounded-xl bg-[#1D140D] border border-white/10 text-[#FF0000] flex items-center justify-center active:scale-90 transition-transform"
               title="YouTube"
             >
               <Youtube className="w-4 h-4" />
             </a>
-
-            <a
-              href={socials.behance || "https://www.behance.net/masum_9t9_official"}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-neutral-900/80 border border-white/10 flex items-center justify-center text-neutral-300 hover:text-blue-400 hover:border-blue-500/50 hover:bg-blue-500/10 transition-all duration-300 shadow-md"
-              title="Behance Portfolio"
+            <a 
+              href={socials.telegram} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="w-8.5 h-8.5 rounded-xl bg-[#1D140D] border border-white/10 text-[#229ED9] flex items-center justify-center active:scale-90 transition-transform"
+              title="Telegram"
             >
-              <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                <path d="M22 7h-7v-2h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426h-3.033c-.085-.814-.808-1.571-2.177-1.571-1.394 0-2.383.967-2.383 2.68 0 1.776.97 2.755 2.456 2.755 1.341 0 2.18-.84 2.298-1.695h2.663zm-14.726-8.6h-5v3.13h4.63c.63 0 1.25-.23 1.25-.97 0-.79-.58-1.16-1.14-1.16zm.4 4.88h-5.4v3.72h5.4c.73 0 1.48-.28 1.48-1.19 0-.96-.75-1.28-1.48-1.28zm-8.4-7.28h8.841c2.147 0 3.823.824 3.823 2.784 0 1.15-.688 2.037-1.802 2.522 1.483.435 2.338 1.547 2.338 3.037 0 2.261-1.921 3.257-4.148 3.257h-9.052v-11.6zm0 0"/>
-              </svg>
+              <Send className="w-4 h-4" />
             </a>
-
-            <a
-              href={socials.fiverr || "https://www.fiverr.com/sellers/masum9t9/"}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-neutral-900/80 border border-white/10 flex items-center justify-center text-neutral-300 hover:text-emerald-400 hover:border-emerald-500/50 hover:bg-emerald-500/10 transition-all duration-300 shadow-md"
-              title="Fiverr Profile"
-            >
-              <span className="font-extrabold text-xs tracking-tighter leading-none text-[#1DBF73]">
-                fi
-              </span>
-            </a>
-
-            <a
-              href={socials.github || "https://github.com/masum-9t9/"}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-neutral-900/80 border border-white/10 flex items-center justify-center text-neutral-300 hover:text-white hover:border-white/40 hover:bg-white/10 transition-all duration-300 shadow-md"
-              title="GitHub Profile"
+            <a 
+              href={socials.github || "https://github.com/masum-9t9"} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="w-8.5 h-8.5 rounded-xl bg-[#1D140D] border border-white/10 text-white flex items-center justify-center active:scale-90 transition-transform"
+              title="GitHub"
             >
               <Github className="w-4 h-4" />
             </a>
-          </motion.div>
+          </div>
+        </motion.div>
 
-        </div>
-
-        {/* Right Column: Profile Image Frame with Luxury Glows & Floating Badges */}
-        <div className="lg:col-span-5 flex justify-center lg:justify-end">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="relative w-full max-w-md aspect-square"
+        {/* Mobile 2 Primary Action Cards - Side-by-side compact pills */}
+        <div className="w-full grid grid-cols-2 gap-2 mt-4 pt-1 max-w-sm mx-auto">
+          <motion.button
+            type="button"
+            whileTap={{ scale: 0.96 }}
+            whileHover={{ scale: 1.02 }}
+            onClick={handleExploreProjects}
+            className="py-2.5 px-3 rounded-full bg-gradient-to-r from-[#FFA053] via-[#FF852E] to-[#F76707] hover:brightness-110 text-white font-semibold text-xs flex items-center justify-center gap-1.5 shadow-[0_4px_16px_rgba(255,122,24,0.3)] hover:shadow-[0_6px_22px_rgba(255,122,24,0.45)] cursor-pointer active:scale-95 transition-all"
           >
-            {/* Ambient Background Glow Behind Avatar */}
-            <div className="absolute -inset-4 rounded-full bg-gradient-to-r from-sky-500/30 via-indigo-500/20 to-emerald-500/30 blur-3xl opacity-70 animate-pulse pointer-events-none" />
+            <Briefcase className="w-3.5 h-3.5 shrink-0" />
+            <span className={`truncate leading-tight font-semibold ${isBn ? 'font-bn text-xs' : ''}`}>
+              {isBn ? 'প্রজেক্ট দেখুন' : 'Explore Projects'}
+            </span>
+            <ArrowRight className="w-3.5 h-3.5 shrink-0" />
+          </motion.button>
 
-            {/* Profile Image Glass Container */}
-            <div className="relative w-full h-full rounded-3xl overflow-hidden glass-card p-2.5 border border-white/15 shadow-[0_25px_60px_rgba(0,0,0,0.8)] bg-neutral-900/90 group">
-              <img
-                src={data.profileImage || "https://i.postimg.cc/xCX1vY0H/Profile-pic.png"}
-                alt={data.name}
-                referrerPolicy="no-referrer"
-                onError={(e) => {
-                  e.currentTarget.onerror = null;
-                  e.currentTarget.src = "https://i.postimg.cc/xCX1vY0H/Profile-pic.png";
-                }}
-                className="w-full h-full object-cover rounded-2xl grayscale group-hover:grayscale-0 transition-all duration-700 transform group-hover:scale-105"
-              />
-              
-              {/* Top Floating Badge */}
-              <div className="absolute top-5 right-5 px-3 py-1.5 rounded-xl bg-neutral-950/80 backdrop-blur-xl border border-white/20 flex items-center gap-2 shadow-2xl">
-                <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                <span className="text-xs font-bold text-white tracking-wide">
-                  {language === 'bn' ? 'ভেরিফাইড প্রফেশনাল' : 'Verified Professional'}
-                </span>
-              </div>
-
-              {/* Bottom Badge Overlay */}
-              <div className="absolute bottom-5 left-5 right-5 p-4 rounded-2xl bg-neutral-950/85 backdrop-blur-xl border border-white/15 flex items-center justify-between shadow-2xl">
-                <div className="overflow-hidden pr-2">
-                  <p className="text-[11px] uppercase tracking-wider text-sky-400 font-bold mb-0.5 truncate">
-                    {language === 'bn' ? 'অফিশিয়াল পোর্টফোলিও' : 'Official Portfolio'}
-                  </p>
-                  <p className="text-sm text-white font-extrabold truncate">{data.name} • {data.role}</p>
-                </div>
-                {data.logoImage ? (
-                  <img 
-                    src={data.logoImage} 
-                    alt="Logo" 
-                    referrerPolicy="no-referrer"
-                    onError={(e) => {
-                      e.currentTarget.style.display = 'none';
-                      if (e.currentTarget.nextElementSibling) {
-                        (e.currentTarget.nextElementSibling as HTMLElement).style.display = 'flex';
-                      }
-                    }}
-                    className="w-10 h-10 shrink-0 rounded-xl object-cover border border-white/20 shadow-md" 
-                  />
-                ) : null}
-                <div 
-             className="w-10 h-10 shrink-0 rounded-xl bg-gradient-to-br from-sky-500 to-indigo-600 text-white flex items-center justify-center font-black text-xs shadow-md border border-white/20 overflow-hidden"
-  style={{ display: data.logoImage ? 'none' : 'flex' }}
->
-              <img 
-               src="https://i.postimg.cc/xCX1vY0H/Profile-pic.png" 
-             alt="Profile pic" 
-              className="w-full h-full object-cover" 
-            />
-            </div>
-              </div>
-
-            </div>
-
-            {/* Bottom Floating Stat pill */}
-            <div className="absolute -bottom-6 -left-4 px-4 py-3 rounded-2xl bg-neutral-900/90 backdrop-blur-2xl border border-white/15 shadow-2xl flex items-center gap-3 hidden sm:flex">
-              <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center justify-center">
-                <Award className="w-5 h-5" />
-              </div>
-              <div>
-                <p className="text-xs text-neutral-400 font-medium">{language === 'bn' ? 'অভিজ্ঞতা' : 'Experience'}</p>
-                <p className="text-sm font-extrabold text-white">{language === 'bn' ? '৩+ বছর' : '3+ Years'}</p>
-              </div>
-            </div>
-
-            <div className="absolute -top-6 -left-4 px-4 py-3 rounded-2xl bg-neutral-900/90 backdrop-blur-2xl border border-white/15 shadow-2xl flex items-center gap-3 hidden sm:flex">
-              <div className="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center">
-                <Zap className="w-5 h-5" />
-              </div>
-              <div>
-                <p className="text-xs text-neutral-400 font-medium">{language === 'bn' ? 'সফল প্রজেক্ট' : 'Projects Done'}</p>
-                <p className="text-sm font-extrabold text-white">{language === 'bn' ? '১০০+ সাকসেস' : '100+ Completed'}</p>
-              </div>
-            </div>
-
-          </motion.div>
+          <motion.button
+            type="button"
+            whileTap={{ scale: 0.96 }}
+            whileHover={{ scale: 1.02 }}
+            onClick={handleAboutMe}
+            className="py-2.5 px-3 rounded-full bg-[#16100B] border border-[#FF852E]/35 hover:border-[#FFA053] text-[#FAF6F0] font-semibold text-xs flex items-center justify-center gap-1.5 shadow-md cursor-pointer active:scale-95 transition-all hover:bg-[#1E140E]"
+          >
+            <User className="w-3.5 h-3.5 text-[#FF9238] shrink-0" />
+            <span className={`truncate leading-tight font-semibold ${isBn ? 'font-bn text-xs' : ''}`}>
+              {isBn ? 'আমার সম্পর্কে' : 'About Me'}
+            </span>
+            <ArrowRight className="w-3.5 h-3.5 shrink-0 text-[#FF9238]" />
+          </motion.button>
         </div>
 
       </div>
+
+      {/* ========================================================================= */}
+      {/* 💻 DESKTOP & TABLET HERO LAYOUT (>= md screens)                            */}
+      {/* ========================================================================= */}
+      <div className="hidden md:flex w-full max-w-7xl mx-auto flex-1 flex-col items-center justify-center relative my-auto py-4 sm:py-6 md:py-8 z-10">
+        
+        {/* Background Name Typography ("MASUM 9T9") with Interactive Depth Parallax */}
+        <div className="w-full relative flex flex-col items-center justify-center z-0 select-none">
+          
+          {/* Dynamic Typing Introduction Tag above the top-left start of "MASUM 9T9" */}
+          <div className="w-full max-w-6xl flex justify-start pl-2 sm:pl-4 md:pl-6 lg:pl-10 xl:pl-12 -mb-2 sm:-mb-3 md:-mb-4 z-10">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#1D140D]/90 border border-[#FF7A18]/30 text-[11px] sm:text-xs font-semibold tracking-normal text-[#FAF6F0]/95 shadow-[0_4px_16px_rgba(0,0,0,0.4)] backdrop-blur-md">
+              <Sparkles className="w-3 h-3 text-[#FF7A18] shrink-0 animate-pulse" />
+              <span className={isBn ? 'font-bn' : ''}>
+                {introText || (isBn ? 'হ্যালো, আমি মো. মাসুম বিল্লাহ' : 'Hi, I am Md. Masum Billah')}
+              </span>
+              <span className="hero-typing-cursor" />
+            </span>
+          </div>
+
+          {/* Background Name Typography ("MASUM 9T9") */}
+          <div
+            className="w-full flex items-center justify-center pointer-events-none select-none overflow-hidden px-1 sm:px-4"
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96, y: 15 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <h1 className="text-[17vw] xs:text-[18vw] sm:text-[18vw] md:text-[18vw] lg:text-[190px] xl:text-[235px] 2xl:text-[270px] font-evantic tracking-tight sm:tracking-normal md:tracking-[0.02em] uppercase leading-[0.82] font-bold text-white text-center whitespace-nowrap opacity-[0.14]">
+                MASUM 9T9
+              </h1>
+            </motion.div>
+          </div>
+        </div>
+
+        {/* Foreground Cutout: High-Resolution Portrait */}
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[52%] sm:-translate-y-[52%] md:-translate-y-[52%] lg:-translate-y-[54%] xl:-translate-y-[56%] z-10 flex items-center justify-center pointer-events-auto select-none"
+        >
+          {/* Gentle Radial Ambient Warm Glow Behind Head & Shoulders */}
+          <div 
+            className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 sm:w-80 md:w-[500px] lg:w-[560px] h-64 sm:h-80 md:h-[500px] lg:h-[560px] rounded-full bg-[#FF7A18]/25 blur-[60px] md:blur-[80px] pointer-events-none" 
+          />
+          
+          <motion.div
+            initial={{ opacity: 0, scale: 0.92, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+            className="relative w-[340px] xs:w-[400px] sm:w-[460px] md:w-[540px] lg:w-[680px] xl:w-[760px] 2xl:w-[840px] max-w-[96vw] aspect-[3.7/4.6] flex items-end justify-center"
+          >
+            <img
+              src={data.profileImage || "https://i.postimg.cc/bYQL7Lvj/Profile-pic-(3).png"}
+              alt="Md. Masum Billah (Masum 9T9)"
+              referrerPolicy="no-referrer"
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
+              onError={(e) => {
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = "https://i.postimg.cc/bYQL7Lvj/Profile-pic-(3).png";
+              }}
+              className="relative z-10 w-full h-full object-contain object-bottom contrast-[1.05] brightness-[1.02] portrait-mask-fade drop-shadow-[0_12px_28px_rgba(255,122,24,0.15)]"
+            />
+          </motion.div>
+        </div>
+
+        {/* Desktop Bottom Composition: Headline & CTAs (Left) + Status Card (Right) */}
+        <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-7 lg:gap-8 items-end relative z-20 mt-10 sm:mt-12 md:mt-14">
+          
+          {/* Left Content Area */}
+          <div
+            className="lg:col-span-7 xl:col-span-7 flex flex-col items-start text-left space-y-3.5 lg:space-y-4"
+          >
+            {/* Dynamic Rotating Keywords Capsule ('Graphics Designer', 'Content Creator', etc.) */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="inline-flex items-center gap-2 px-2.5 sm:px-3 lg:px-3.5 py-1 sm:py-1.5 rounded-full bg-[#16100B]/95 border border-[#FF7A18]/30 shadow-sm backdrop-blur-md"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-[#FF7A18] animate-ping" />
+              <span className={`text-[10.5px] sm:text-xs lg:text-[12px] font-medium text-[#A9A39A] ${isBn ? 'font-bn' : ''}`}>
+                {isBn ? 'আমি একজন' : "I am a"}
+              </span>
+
+              {/* Seamless Animated Keyword Rotation */}
+              <div className="relative h-5 sm:h-5.5 lg:h-6 overflow-hidden flex items-center min-w-[130px] sm:min-w-[155px] lg:min-w-[175px]">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={keywordIndex}
+                    initial={{ y: 12, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -12, opacity: 0 }}
+                    transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                    className="flex items-center gap-1.5 text-xs sm:text-[12.5px] lg:text-[13px] font-bold text-[#FF7A18] whitespace-nowrap"
+                  >
+                    {currentKeyword.icon}
+                    <span className={isBn ? 'font-bn' : ''}>{currentKeyword.text}</span>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            </motion.div>
+
+            {/* Main Specified Headline - Refined, balanced, slightly reduced on desktop */}
+            <motion.h2 
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className={`text-base sm:text-lg md:text-xl lg:text-[22px] xl:text-[25px] 2xl:text-[27px] font-bold text-[#FAF6F0] leading-snug lg:leading-[1.3] tracking-tight max-w-sm sm:max-w-md lg:max-w-lg xl:max-w-xl ${isBn ? 'font-bn' : ''}`}
+            >
+              {isBn ? (
+                <>
+                  <span className="block text-[#FAF6F0]">আইডিয়াকে বাস্তবে রূপ দিই —</span>
+                  <span className="text-[#FF9238] font-bold">ডিজাইন, ওয়েব ও AI প্রযুক্তির মাধ্যমে।</span>
+                </>
+              ) : (
+                <>
+                  <span className="block text-[#FAF6F0]">Bringing Ideas to Life —</span>
+                  <span className="text-[#FF9238] font-bold">Through Design, Web & AI Innovation.</span>
+                </>
+              )}
+            </motion.h2>
+
+            {/* Action Buttons: Perfectly sized & proportioned */}
+            <motion.div 
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.35 }}
+              className="flex items-center gap-2.5 sm:gap-3 mt-3.5 sm:mt-4 lg:mt-5 w-auto flex-nowrap"
+            >
+              <FramerButton
+                variant="primary"
+                size="sm"
+                onClick={handleExploreProjects}
+                icon={<ArrowRight className="w-3.5 h-3.5 lg:w-4 lg:h-4" />}
+                iconPosition="right"
+                className="!rounded-full !px-3.5 sm:!px-4.5 lg:!px-5 !py-2 sm:!py-2.5 !text-xs sm:!text-[13px] lg:!text-sm font-semibold shadow-[0_4px_18px_rgba(255,122,24,0.3)] hover:shadow-[0_6px_22px_rgba(255,122,24,0.45)] whitespace-nowrap shrink-0 transition-all cursor-pointer"
+              >
+                <span className={isBn ? 'font-bn' : ''}>
+                  {isBn ? 'প্রজেক্ট দেখুন' : 'Explore Projects'}
+                </span>
+              </FramerButton>
+
+              <FramerButton
+                variant="secondary"
+                size="sm"
+                onClick={handleAboutMe}
+                icon={<ArrowRight className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-[#FF9238]" />}
+                iconPosition="right"
+                className="!rounded-full !px-3.5 sm:!px-4.5 lg:!px-5 !py-2 sm:!py-2.5 !text-xs sm:!text-[13px] lg:!text-sm font-semibold whitespace-nowrap shrink-0 hover:border-[#FFA053] hover:bg-[#1E140E] transition-all cursor-pointer"
+              >
+                <span className={isBn ? 'font-bn' : ''}>
+                  {isBn ? 'আমার সম্পর্কে' : 'About Me'}
+                </span>
+              </FramerButton>
+            </motion.div>
+          </div>
+
+          {/* Right Content Area: Status Card */}
+          <div
+            className="hidden lg:flex lg:col-span-5 xl:col-span-5 justify-end w-full max-w-sm sm:max-w-md lg:max-w-none lg:pl-6 xl:pl-12"
+          >
+            <motion.div 
+              initial={{ opacity: 0, x: 25 }}
+              animate={{ opacity: 1, x: 0 }}
+              whileHover={{ y: -3, boxShadow: '0 4px 20px rgba(255, 102, 0, 0.15)' }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              className="glass-card p-5 sm:p-6 rounded-3xl w-full max-w-sm sm:max-w-md lg:max-w-[340px] xl:max-w-sm relative overflow-hidden bg-[#16100B] border border-[#FF7A18]/25 shadow-xl group hover:border-[#FF7A18]/50 transition-all duration-300 lg:ml-auto cursor-default hover:-translate-y-[3px] hover:shadow-[0_4px_20px_rgba(255,102,0,0.15)]"
+            >
+              <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-40 h-16 bg-[#FF7A18]/20 blur-xl pointer-events-none" />
+
+              <div className="flex items-center justify-between gap-2 pb-3 border-b border-white/10">
+                <div className="flex items-center gap-2">
+                  <span className="relative flex h-2.5 w-2.5">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#22C55E] opacity-75" />
+                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#22C55E]" />
+                  </span>
+                  <span className={`text-xs font-bold text-[#FAF6F0] ${isBn ? 'font-bn' : ''}`}>
+                    {isBn ? 'বর্তমানে কাজ করছি' : 'Currently Building'}
+                  </span>
+                </div>
+
+                <span className="text-[10px] font-bold text-[#FF7A18] px-2.5 py-0.5 rounded-full bg-[#1D140D] border border-[#FF7A18]/30">
+                  Web • Design • AI
+                </span>
+              </div>
+
+              <div className="py-3.5 space-y-2.5">
+                <div className="flex items-center justify-between text-xs text-[#A9A39A]">
+                  <span className="flex items-center gap-1.5 font-medium">
+                    <MapPin className="w-3.5 h-3.5 text-[#FF7A18] shrink-0" />
+                    <span className={isBn ? 'font-bn' : ''}>{isBn ? 'অবস্থান:' : 'Base:'}</span>
+                  </span>
+                  <span className={`text-[#FAF6F0] font-semibold ${isBn ? 'font-bn' : ''}`}>
+                    {isBn ? 'ঢাকা, বাংলাদেশ' : 'Dhaka, Bangladesh'}
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between text-xs text-[#A9A39A]">
+                  <span className="flex items-center gap-1.5 font-medium">
+                    <Clock className="w-3.5 h-3.5 text-[#FF7A18] shrink-0" />
+                    <span className={isBn ? 'font-bn' : ''}>{isBn ? 'স্ট্যাটাস:' : 'Availability:'}</span>
+                  </span>
+                  <span className={`text-[#22C55E] font-semibold flex items-center gap-1 ${isBn ? 'font-bn' : ''}`}>
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[#22C55E]" />
+                    <span>{isBn ? 'নতুন প্রজেক্টের জন্য উন্মুক্ত' : 'Available for Work'}</span>
+                  </span>
+                </div>
+
+                <div className="pt-1 flex flex-wrap gap-1.5">
+                  <span className="px-2.5 py-1 rounded-lg bg-[#120D09] hover:bg-[#1E140E] border border-white/10 hover:border-[#FFA053]/50 text-[11px] font-medium text-[#FAF6F0] hover:text-white flex items-center gap-1.5 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_2px_12px_rgba(255,122,24,0.22)] cursor-default select-none group/tag">
+                    <Palette className="w-3 h-3 text-[#FF7A18] group-hover/tag:text-[#FFA053] group-hover/tag:scale-110 transition-transform" />
+                    <span>Graphic Art</span>
+                  </span>
+                  <span className="px-2.5 py-1 rounded-lg bg-[#120D09] hover:bg-[#1E140E] border border-white/10 hover:border-[#FFA053]/50 text-[11px] font-medium text-[#FAF6F0] hover:text-white flex items-center gap-1.5 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_2px_12px_rgba(255,122,24,0.22)] cursor-default select-none group/tag">
+                    <Code2 className="w-3 h-3 text-[#FF7A18] group-hover/tag:text-[#FFA053] group-hover/tag:scale-110 transition-transform" />
+                    <span>Full-Stack Web</span>
+                  </span>
+                  <span className="px-2.5 py-1 rounded-lg bg-[#120D09] hover:bg-[#1E140E] border border-white/10 hover:border-[#FFA053]/50 text-[11px] font-medium text-[#FAF6F0] hover:text-white flex items-center gap-1.5 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_2px_12px_rgba(255,122,24,0.22)] cursor-default select-none group/tag">
+                    <Sparkles className="w-3 h-3 text-[#FF7A18] group-hover/tag:text-[#FFA053] group-hover/tag:scale-110 transition-transform" />
+                    <span>AI Engineering</span>
+                  </span>
+                </div>
+              </div>
+
+              <div className="pt-3 border-t border-white/10 grid grid-cols-2 gap-2">
+                {/* High-contrast primary orange CTA: "যোগাযোগ" / "Contact" */}
+                <button
+                  type="button"
+                  onClick={handleContact}
+                  className="w-full py-2 px-2.5 rounded-xl bg-gradient-to-r from-[#FFA053] via-[#FF852E] to-[#F76707] hover:brightness-110 text-white text-xs font-bold transition-all duration-200 flex items-center justify-center gap-1.5 cursor-pointer shadow-[0_4px_14px_rgba(255,122,24,0.35)] hover:shadow-[0_6px_20px_rgba(255,122,24,0.5)] active:scale-95 border border-white/30 hover:-translate-y-0.5"
+                >
+                  <Mail className="w-3.5 h-3.5 shrink-0" />
+                  <span className={`truncate ${isBn ? 'font-bn' : ''}`}>{isBn ? 'যোগাযোগ' : 'Contact'}</span>
+                </button>
+
+                {/* Transparent ghost button with subtle border: "মেসেজ পাঠান" / "Send Message" */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    const cleanNumber = (socials.whatsapp || '8801303623838').replace(/[^0-9]/g, '');
+                    const msg = encodeURIComponent(isBn ? 'হ্যালো Masum 9T9! আমি আপনার সাথে একটি প্রজেক্ট নিয়ে কথা বলতে চাই।' : 'Hello Masum 9T9! I would like to discuss a project with you.');
+                    window.open(`https://wa.me/${cleanNumber}?text=${msg}`, '_blank');
+                  }}
+                  className="w-full py-2 px-2.5 rounded-xl bg-transparent hover:bg-white/[0.06] border border-white/20 hover:border-white/40 text-[#FAF6F0] hover:text-white text-xs font-semibold transition-all duration-200 flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 hover:-translate-y-0.5"
+                >
+                  <Send className="w-3.5 h-3.5 text-[#FF9238] shrink-0" />
+                  <span className={`truncate ${isBn ? 'font-bn' : ''}`}>{isBn ? 'মেসেজ পাঠান' : 'Send Message'}</span>
+                </button>
+              </div>
+
+            </motion.div>
+          </div>
+
+        </div>
+
+      </div>
+
+      {/* Desktop Social Links & Shortcuts Bar */}
+      <div className="hidden md:flex w-full max-w-7xl mx-auto relative z-20 pt-4 border-t border-white/10 flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#A9A39A]">
+        {/* Social Links */}
+        <div className="flex items-center flex-wrap gap-2 sm:gap-2.5">
+          <span className="uppercase tracking-wider text-[11px] text-[#A9A39A] font-semibold flex items-center gap-1.5 mr-1">
+            <Sparkles className="w-3 h-3 text-[#FF7A18]" />
+            <span className={isBn ? 'font-bn' : ''}>{isBn ? 'কানেক্ট:' : 'Connect:'}</span>
+          </span>
+          
+          {/* Facebook */}
+          <a 
+            href={socials.facebook} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#16100B] hover:bg-[#1877F2]/20 border border-white/10 hover:border-[#1877F2]/50 text-[#FAF6F0] transition-all duration-200 hover:-translate-y-0.5 shadow-sm" 
+            title="Facebook"
+          >
+            <Facebook className="w-3.5 h-3.5 text-[#1877F2]" />
+            <span className="text-[11px] font-medium hidden xs:inline">Facebook</span>
+          </a>
+
+          {/* WhatsApp */}
+          <a 
+            href={socials.whatsapp ? socials.whatsapp : `tel:${socials.phone}`} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#16100B] hover:bg-[#25D366]/20 border border-white/10 hover:border-[#25D366]/50 text-[#FAF6F0] transition-all duration-200 hover:-translate-y-0.5 shadow-sm" 
+            title="WhatsApp"
+          >
+            <Phone className="w-3.5 h-3.5 text-[#25D366]" />
+            <span className="text-[11px] font-medium hidden xs:inline">WhatsApp</span>
+          </a>
+
+          {/* Telegram */}
+          <a 
+            href={socials.telegram} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#16100B] hover:bg-[#229ED9]/20 border border-white/10 hover:border-[#229ED9]/50 text-[#FAF6F0] transition-all duration-200 hover:-translate-y-0.5 shadow-sm" 
+            title="Telegram"
+          >
+            <Send className="w-3.5 h-3.5 text-[#229ED9]" />
+            <span className="text-[11px] font-medium hidden xs:inline">Telegram</span>
+          </a>
+
+          {/* YouTube */}
+          <a 
+            href={socials.youtube} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#16100B] hover:bg-[#FF0000]/20 border border-white/10 hover:border-[#FF0000]/50 text-[#FAF6F0] transition-all duration-200 hover:-translate-y-0.5 shadow-sm" 
+            title="YouTube"
+          >
+            <Youtube className="w-3.5 h-3.5 text-[#FF0000]" />
+            <span className="text-[11px] font-medium hidden xs:inline">YouTube</span>
+          </a>
+
+          {/* GitHub */}
+          <a 
+            href={socials.github || "https://github.com/masum-9t9/"} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#16100B] hover:bg-white/20 border border-white/10 hover:border-white/50 text-[#FAF6F0] transition-all duration-200 hover:-translate-y-0.5 shadow-sm" 
+            title="GitHub"
+          >
+            <Github className="w-3.5 h-3.5 text-white" />
+            <span className="text-[11px] font-medium hidden xs:inline">GitHub</span>
+          </a>
+        </div>
+
+        {/* Keyboard Shortcuts Trigger */}
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={onOpenKeymapping}
+            className="hover:text-[#FAF6F0] flex items-center gap-1.5 transition-colors cursor-pointer px-3 py-1.5 rounded-full bg-[#16100B] hover:bg-[#1D140D] border border-white/10 hover:border-[#FF7A18]/30"
+          >
+            <Keyboard className="w-3.5 h-3.5 text-[#FF7A18]" />
+            <span className="text-[11px]">Shortcuts</span>
+            <span className="font-mono text-[9px] bg-white/10 px-1 py-0.5 rounded border border-white/10 font-bold">?</span>
+          </button>
+        </div>
+      </div>
+
     </section>
   );
 };
+
+
 
