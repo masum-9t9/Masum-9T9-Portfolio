@@ -9,7 +9,7 @@
 
 <!-- Badges Row 1: Brand & Domain -->
 [![Official Website](https://img.shields.io/badge/🌐_Official_Portal-9t9.pro.bd-FF7A18?style=for-the-badge&labelColor=0E0A07)](https://9t9.pro.bd)
-[![Version](https://img.shields.io/badge/🚀_Release-v2.5_Production-FFA053?style=for-the-badge&labelColor=16100B)](https://9t9.pro.bd)
+[![Version](https://img.shields.io/badge/🚀_Release-v2.0.0_Production-FFA053?style=for-the-badge&labelColor=16100B)](https://9t9.pro.bd)
 [![License](https://img.shields.io/badge/⚖️_Copyright-2026_All_Rights_Reserved-FF9238?style=for-the-badge&labelColor=0E0A07)](#17-license--copyright)
 
 <!-- Badges Row 2: Tech Stack -->
