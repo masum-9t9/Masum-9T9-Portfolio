@@ -22,6 +22,7 @@ import { ServicesPage } from './pages/ServicesPage';
 import { ProjectsPage } from './pages/ProjectsPage';
 import { ReviewsPage } from './pages/ReviewsPage';
 import { ContactPage } from './pages/ContactPage';
+import { NotePage } from './pages/NotePage'; // NotePage Import
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -91,9 +92,6 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
   }
 }
 
-/**
- * Helper to resolve a portfolio project or featured ecosystem item by its ID from config
- */
 function resolveProjectFromConfig(
   projectId: string | null,
   config: PortfolioConfig | null
@@ -138,26 +136,22 @@ function MainContent() {
     }
   });
 
-  // Client-side Page Routing with Clean Path Sync (/page-name)
-  const [activePage, setActivePage] = useState<PageId>(() => {
-    const validPages: PageId[] = ['home', 'about', 'services', 'projects', 'reviews', 'contact'];
+  const [activePage, setActivePage] = useState<PageId | 'note'>(() => {
+    const validPages = ['home', 'about', 'services', 'projects', 'reviews', 'contact', 'note'];
     
-    // Check clean pathname (e.g. "/about" -> "about")
     const pathname = window.location.pathname.replace(/^\//, '').split('/')[0];
-    if (validPages.includes(pathname as PageId)) {
-      return pathname as PageId;
+    if (validPages.includes(pathname)) {
+      return pathname as PageId | 'note';
     }
 
-    // Fallback/Legacy hash migration (e.g. "/#/about")
     const hash = window.location.hash.replace('#/', '').replace('#', '').split('/')[0];
-    if (validPages.includes(hash as PageId)) {
-      return hash as PageId;
+    if (validPages.includes(hash)) {
+      return hash as PageId | 'note';
     }
 
     return 'home';
   });
 
-  // Initialize selected project immediately on mount from URL query parameters (?project=...)
   const [selectedProject, setSelectedProject] = useState<PortfolioItem | null>(() => {
     if (typeof window === 'undefined') return null;
     try {
@@ -179,28 +173,25 @@ function MainContent() {
   const [isCreatorModalOpen, setIsCreatorModalOpen] = useState(false);
   const [isKeymappingOpen, setIsKeymappingOpen] = useState(false);
 
-  // Dynamically get English or Bengali config safely (memoized to avoid recalculating on re-renders)
   const activeConfig = useMemo(() => {
     return getLocalizedPortfolioConfig(baseConfig || INITIAL_PORTFOLIO_CONFIG, language || 'bn');
   }, [baseConfig, language]);
 
-  // Handle Clean Path & Popstate / Legacy Hash Navigation
   useEffect(() => {
     const handlePopState = () => {
-      const validPages: PageId[] = ['home', 'about', 'services', 'projects', 'reviews', 'contact'];
+      const validPages = ['home', 'about', 'services', 'projects', 'reviews', 'contact', 'note'];
       const pathname = window.location.pathname.replace(/^\//, '').split('/')[0];
       const hash = window.location.hash.replace('#/', '').replace('#', '').split('/')[0];
 
-      let targetPage: PageId = 'home';
-      if (validPages.includes(pathname as PageId)) {
-        targetPage = pathname as PageId;
-      } else if (validPages.includes(hash as PageId)) {
-        targetPage = hash as PageId;
+      let targetPage: PageId | 'note' = 'home';
+      if (validPages.includes(pathname)) {
+        targetPage = pathname as PageId | 'note';
+      } else if (validPages.includes(hash)) {
+        targetPage = hash as PageId | 'note';
       }
 
       setActivePage(targetPage);
 
-      // Synchronize project details popup from URL parameter on browser back/forward
       const params = new URLSearchParams(window.location.search);
       const projectId = params.get('project');
       if (!projectId) {
@@ -214,11 +205,10 @@ function MainContent() {
       smoothScrollToTop(0.6);
     };
 
-    // Auto-migrate legacy hash URLs (e.g., /#/about) to clean path (/about)
     if (window.location.hash) {
       const hash = window.location.hash.replace('#/', '').replace('#', '').split('/')[0];
-      const validPages: PageId[] = ['home', 'about', 'services', 'projects', 'reviews', 'contact'];
-      if (validPages.includes(hash as PageId)) {
+      const validPages = ['home', 'about', 'services', 'projects', 'reviews', 'contact', 'note'];
+      if (validPages.includes(hash)) {
         const cleanPath = hash === 'home' ? '/' : `/${hash}`;
         window.history.replaceState({}, '', cleanPath + window.location.search);
       }
@@ -232,7 +222,7 @@ function MainContent() {
     };
   }, [activeConfig]);
 
-  const navigateToPage = (pageId: PageId, filter?: 'all' | 'ui_ux' | 'graphics' | 'frontend') => {
+  const navigateToPage = (pageId: PageId | 'note', filter?: 'all' | 'ui_ux' | 'graphics' | 'frontend') => {
     setActivePage(pageId);
     if (filter) {
       setProjectsFilter(filter);
@@ -244,7 +234,6 @@ function MainContent() {
     smoothScrollToTop(0.75);
   };
 
-  // Helper to open project and automatically update the direct project link in the browser URL
   const handleSelectProject = (project: PortfolioItem | null) => {
     setSelectedProject(project);
     if (typeof window !== 'undefined') {
@@ -266,7 +255,6 @@ function MainContent() {
     }
   };
 
-  // Synchronize or update active project when URL or activeConfig changes
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const projectId = params.get('project');
@@ -278,10 +266,8 @@ function MainContent() {
     }
   }, [activeConfig]);
 
-  // Global Keyboard Shortcuts (Keymapping across entire website)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Don't trigger shortcuts if user is typing inside an input, textarea, or contentEditable element
       const target = e.target as HTMLElement;
       if (
         target &&
@@ -293,7 +279,6 @@ function MainContent() {
         return;
       }
 
-      // Search Modal Shortcut: Cmd+K / Ctrl+K or /
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
         setIsSearchOpen((prev) => !prev);
@@ -312,7 +297,6 @@ function MainContent() {
         return;
       }
 
-      // Escape to close modals
       if (e.key === 'Escape') {
         if (isSearchOpen) setIsSearchOpen(false);
         if (isKeymappingOpen) setIsKeymappingOpen(false);
@@ -321,7 +305,6 @@ function MainContent() {
         return;
       }
 
-      // Quick Page Navigation Keybindings (1-6 or single letters H, P, S, R, A, C)
       const key = e.key.toLowerCase();
       if (key === '1' || key === 'h') {
         navigateToPage('home');
@@ -368,26 +351,21 @@ function MainContent() {
 
   const pageTransition = {
     duration: prefersReducedMotion ? 0.15 : 0.42,
-    ease: [0.22, 1, 0.36, 1], // Studio-grade cubic bezier for silky smooth entrance
+    ease: [0.22, 1, 0.36, 1],
   };
 
   return (
     <div className={`min-h-screen text-[#E8E2D8] font-['Manrope','Hind_Siliguri',sans-serif] selection:bg-[#C7B79A] selection:text-[#0D0C0A] relative overflow-x-hidden transition-colors duration-500 ${isCreatorModalOpen ? 'bg-black' : 'bg-[#0D0C0A]'}`}>
       
-      {/* Global Framer Motion Scroll Progress & Jump-To-Top Control */}
       <GlobalScrollProgress />
-
-      {/* High-Performance Animated Vector Background */}
       <AnimatedVectorBG />
 
-      {/* Floating Apple macOS Dock Navigation */}
       <NavigationDock
-        activePage={activePage}
+        activePage={activePage as PageId}
         onNavigate={navigateToPage}
         onOpenSearch={() => setIsSearchOpen(true)}
       />
 
-      {/* Animated Multi-Page Render */}
       <main className="min-h-[80vh] relative z-10">
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
@@ -446,11 +424,14 @@ function MainContent() {
                 config={activeConfig}
               />
             )}
+
+            {activePage === 'note' && (
+              <NotePage />
+            )}
           </motion.div>
         </AnimatePresence>
       </main>
 
-      {/* Floating Quick Action Contacts */}
       <DesktopContactButton
         whatsappNumber={activeConfig.contact?.whatsappNumber || '8801303623838'}
         facebookUrl={activeConfig.socials?.facebook || 'https://www.facebook.com/masum.9t9.official'}
@@ -462,14 +443,12 @@ function MainContent() {
         whatsappNumber={activeConfig.contact?.whatsappNumber || '8801303623838'}
       />
 
-      {/* Footer */}
       <Footer 
         socials={activeConfig.socials} 
         profileImage={activeConfig.hero?.profileImage || "https://i.postimg.cc/xCX1vY0H/Profile-pic.png"}
         onNavigate={navigateToPage}
       />
 
-      {/* Portfolio Item Detail Lightbox Modal */}
       <AnimatePresence>
         {selectedProject && (
           <ProjectModal
@@ -482,7 +461,6 @@ function MainContent() {
         )}
       </AnimatePresence>
 
-      {/* Creator Contact & Social Links Modal (Black BG) */}
       {isCreatorModalOpen && (
         <CreatorProfileModal
           isOpen={isCreatorModalOpen}
@@ -494,7 +472,6 @@ function MainContent() {
         />
       )}
 
-      {/* Global Project & Code Search Modal */}
       {isSearchOpen && (
         <GlobalSearchModal
           isOpen={isSearchOpen}
@@ -510,7 +487,6 @@ function MainContent() {
         />
       )}
 
-      {/* Keyboard Shortcuts Keymapping Modal */}
       {isKeymappingOpen && (
         <KeyboardShortcutsModal
           isOpen={isKeymappingOpen}
