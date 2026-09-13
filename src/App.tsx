@@ -1,5 +1,5 @@
 import React, { useState, useEffect, ReactNode, ErrorInfo, useMemo } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { loadPortfolioConfig, savePortfolioConfig, getLocalizedPortfolioConfig, INITIAL_PORTFOLIO_CONFIG } from './data/config';
 import { PortfolioConfig, PortfolioItem } from './types';
 import { LanguageProvider, useLanguage } from './context/LanguageContext';
@@ -22,7 +22,7 @@ import { ServicesPage } from './pages/ServicesPage';
 import { ProjectsPage } from './pages/ProjectsPage';
 import { ReviewsPage } from './pages/ReviewsPage';
 import { ContactPage } from './pages/ContactPage';
-import { NotePage } from './pages/NotePage'; // NotePage Import
+import { NotePage } from './pages/NotePage';
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -136,17 +136,17 @@ function MainContent() {
     }
   });
 
-  const [activePage, setActivePage] = useState<PageId | 'note'>(() => {
-    const validPages = ['home', 'about', 'services', 'projects', 'reviews', 'contact', 'note'];
+  const [activePage, setActivePage] = useState<PageId>(() => {
+    const validPages: PageId[] = ['home', 'about', 'services', 'projects', 'reviews', 'contact', 'note'];
     
     const pathname = window.location.pathname.replace(/^\//, '').split('/')[0];
-    if (validPages.includes(pathname)) {
-      return pathname as PageId | 'note';
+    if (validPages.includes(pathname as PageId)) {
+      return pathname as PageId;
     }
 
     const hash = window.location.hash.replace('#/', '').replace('#', '').split('/')[0];
-    if (validPages.includes(hash)) {
-      return hash as PageId | 'note';
+    if (validPages.includes(hash as PageId)) {
+      return hash as PageId;
     }
 
     return 'home';
@@ -179,15 +179,15 @@ function MainContent() {
 
   useEffect(() => {
     const handlePopState = () => {
-      const validPages = ['home', 'about', 'services', 'projects', 'reviews', 'contact', 'note'];
+      const validPages: PageId[] = ['home', 'about', 'services', 'projects', 'reviews', 'contact', 'note'];
       const pathname = window.location.pathname.replace(/^\//, '').split('/')[0];
       const hash = window.location.hash.replace('#/', '').replace('#', '').split('/')[0];
 
-      let targetPage: PageId | 'note' = 'home';
-      if (validPages.includes(pathname)) {
-        targetPage = pathname as PageId | 'note';
-      } else if (validPages.includes(hash)) {
-        targetPage = hash as PageId | 'note';
+      let targetPage: PageId = 'home';
+      if (validPages.includes(pathname as PageId)) {
+        targetPage = pathname as PageId;
+      } else if (validPages.includes(hash as PageId)) {
+        targetPage = hash as PageId;
       }
 
       setActivePage(targetPage);
@@ -207,8 +207,8 @@ function MainContent() {
 
     if (window.location.hash) {
       const hash = window.location.hash.replace('#/', '').replace('#', '').split('/')[0];
-      const validPages = ['home', 'about', 'services', 'projects', 'reviews', 'contact', 'note'];
-      if (validPages.includes(hash)) {
+      const validPages: PageId[] = ['home', 'about', 'services', 'projects', 'reviews', 'contact', 'note'];
+      if (validPages.includes(hash as PageId)) {
         const cleanPath = hash === 'home' ? '/' : `/${hash}`;
         window.history.replaceState({}, '', cleanPath + window.location.search);
       }
@@ -222,7 +222,7 @@ function MainContent() {
     };
   }, [activeConfig]);
 
-  const navigateToPage = (pageId: PageId | 'note', filter?: 'all' | 'ui_ux' | 'graphics' | 'frontend') => {
+  const navigateToPage = (pageId: PageId, filter?: 'all' | 'ui_ux' | 'graphics' | 'frontend') => {
     setActivePage(pageId);
     if (filter) {
       setProjectsFilter(filter);
@@ -318,6 +318,8 @@ function MainContent() {
         navigateToPage('about');
       } else if (key === '6' || key === 'c') {
         navigateToPage('contact');
+      } else if (key === 'n') {
+        navigateToPage('note');
       }
     };
 
@@ -361,7 +363,7 @@ function MainContent() {
       <AnimatedVectorBG />
 
       <NavigationDock
-        activePage={activePage as PageId}
+        activePage={activePage}
         onNavigate={navigateToPage}
         onOpenSearch={() => setIsSearchOpen(true)}
       />

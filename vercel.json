@@ -1,8 +1,5 @@
 {
   "rewrites": [
-    {
-      "source": "/note",
-      "destination": "/note.md"
-    }
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
