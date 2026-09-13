@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/note",
+      "destination": "/note.md"
+    }
+  ]
+}
